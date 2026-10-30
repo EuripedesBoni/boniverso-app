@@ -1,0 +1,25 @@
+BONIVERSO AI - INSTALACAO V0.1
+Projeto: EuripedesBoni/boniverso-app
+
+1. Descompacte o arquivo ZIP no iPad ou computador.
+2. No GitHub, abra o repositorio boniverso-app, Add file > Upload files.
+3. Envie os arquivos index.html, sw.js, ai-link.js e boniverso-ai.html para a RAIZ do repositorio main.
+4. Confirme o Commit changes. Aguarde o GitHub Pages concluir a publicacao.
+5. Abra o BoniVerso em uma aba privada do Safari e faca login na conta do Prof. Rafael.
+6. Na navegacao do professor aparecera BoniVerso AI.
+
+BACKEND JA IMPLANTADO NO SUPABASE
+- Edge Function: boniverso-ai-correct; verify_jwt=true.
+- Rascunhos privados por RLS e publicacao mediante aprovacao do professor.
+- Limite de 20 tentativas por dia e uma tentativa automatica por redacao.
+- A IA permanece INATIVA, sem chamadas pagas, ate configurar no Supabase Secrets:
+  OPENAI_API_KEY = sua chave PRIVADA da OpenAI API (jamais compartilhar ou colocar no GitHub)
+  BONIVERSO_AI_ENABLED = true
+  (Somente configure quando o orcamento da API estiver definido.)
+
+IMPORTANTE
+- Nao altere o projeto Medatlas.
+- Nao envie config.js, photos, senhas ou outras chaves secretas.
+- O professor pode usar o painel para redigir, salvar e aprovar rascunhos manualmente, mesmo sem API.
+- Notas da IA sao sugestoes, nao notas oficiais do ENEM.
+- Caso uma geracao automatica falhe apos iniciada, o bloqueio evita repetir despesas. O desbloqueio precisa de revisao tecnica.
