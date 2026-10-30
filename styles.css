@@ -9,3 +9,31 @@
 /* BoniVerso online — reutiliza a identidade do layout aprovado */
 .btn-block{width:100%;justify-content:center}.login-layout{display:grid;grid-template-columns:minmax(350px,1.05fr) minmax(340px,.95fr);min-height:100svh;padding:0;background:#F8F9FB}.login-showcase{position:relative;overflow:hidden;background:radial-gradient(circle at 75% 80%,#2D6AD5 0,transparent 43%),linear-gradient(145deg,#101D38,#122E58 70%,#234B8A);color:#fff;padding:40px 54px;min-height:650px}.login-brand{display:flex;align-items:center;gap:16px;position:relative;z-index:2}.login-brand img{width:62px;height:62px;border-radius:16px}.login-brand h1{font-size:27px;letter-spacing:-1.2px}.login-brand h1 span{color:#D6B16F}.login-brand p{font-size:11px;letter-spacing:1.4px}.login-hero{position:relative;z-index:2;margin-top:70px;max-width:425px}.login-hero h2{font-size:clamp(34px,3.7vw,56px);line-height:1.04;letter-spacing:-2px;margin:18px 0}.login-hero p{font-size:15px;max-width:360px;line-height:1.7;color:#DCE7FC}.login-teacher{height:min(55%,460px);position:absolute;bottom:0;right:-4%;z-index:1;object-fit:contain;object-position:bottom}.login-formside{display:flex;align-items:center;justify-content:center;padding:40px 22px}.login-formcard{max-width:410px;width:100%;padding:34px;background:#FFF;border-radius:23px;box-shadow:0 18px 50px #15294A12;border:1px solid #EBEFF7}.login-formcard h2{font-size:25px;margin:13px 0 4px}.login-formcard .callout{margin-top:12px}.auth-links{display:flex;justify-content:space-between;gap:9px;flex-wrap:wrap;margin-top:19px}.auth-links button{border:0;background:none;color:#2863BA;font-size:11px;text-decoration:underline;cursor:pointer}.online-identity{display:flex;align-items:center;gap:10px;font-size:12px;padding:13px;color:#DDE8FE}.online-identity small{display:block;color:#AAB9D4;font-size:10px;margin-top:3px}.nav-link{display:flex;width:100%;align-items:center;gap:13px;text-align:left;border:0;cursor:pointer}.mini-delete{border:0;background:#FFF2F1;border-radius:8px;padding:9px;color:#A34D43;cursor:pointer}.db-error{margin:12vh auto;padding:40px;max-width:500px;border-radius:20px;border:1px solid #E4EAF3;background:#FFF;text-align:center}.db-error img{width:85px;margin-bottom:25px}.db-error p{color:#62748C;line-height:1.7;margin:18px 0}.db-error pre{white-space:pre-wrap;text-align:left;font-size:11px;word-break:break-word}.db-error .btn{margin-top:20px}.dialog .form-field input{width:100%}
 @media(max-width:760px){.login-layout{grid-template-columns:1fr}.login-showcase{min-height:270px;padding:20px 24px}.login-brand img{height:45px;width:45px}.login-brand h1{font-size:23px}.login-hero{margin-top:30px;max-width:250px}.login-hero h2{font-size:28px;letter-spacing:-.6px;margin:11px 0}.login-hero p{font-size:11px}.login-teacher{height:85%;right:-18%;opacity:.93}.login-formside{padding:20px 15px}.login-formcard{padding:24px;border-radius:17px}.login-formcard h2{font-size:23px}}
+
+/* BoniVerso — ajuste responsivo da apresentação do Prof. Rafa Boni — v0.5 */
+@media (min-width: 761px) {
+  .login-hero { max-width: min(425px, 61%); margin-top: clamp(90px, 11vh, 120px); }
+  .login-hero p { max-width: min(315px, 100%); text-wrap: pretty; }
+  .login-teacher { right: -2%; height: min(57%, 560px); }
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  .login-showcase { padding: 34px; }
+  .login-hero { max-width: 58%; margin-top: 60px; }
+  .login-hero h2 { font-size: clamp(30px, 3.4vw, 42px); letter-spacing: -1px; }
+  .login-hero p { max-width: 235px; font-size: 13px; }
+  .login-teacher { height: min(47%, 400px); right: -8%; }
+}
+@media (max-width: 760px) {
+  .login-showcase { min-height: 340px; }
+  .login-hero { max-width: 60%; margin-top: 24px; }
+  .login-hero h2 { font-size: clamp(23px, 5vw, 29px); }
+  .login-hero p { max-width: 182px; font-size: 11px; line-height: 1.55; }
+  .login-teacher { height: 72%; max-width: 56%; right: -6%; opacity: 1; }
+}
+@media (max-width: 425px) {
+  .login-showcase { min-height: 320px; }
+  .login-hero { max-width: 57%; }
+  .login-hero h2 { font-size: 23px; }
+  .login-hero p { max-width: 155px; font-size: 10px; }
+  .login-teacher { height: 64%; right: -12%; }
+}
