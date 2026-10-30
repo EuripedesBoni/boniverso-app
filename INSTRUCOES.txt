@@ -1,19 +1,6 @@
-BONIVERSO — RSB Educação — Atualização v0.5 (layout)
+BoniVerso v0.7 — Duas formas de enviar redação: digitar ou anexar PDF (5 MB).
 
-Objetivo: evitar que o texto "Prof. Rafa Boni" fique sobre a fotografia
-na tela de login, com ajustes responsivos para iPad, tablet e celular.
-
-COMO ATUALIZAR:
-1. Extraia este ZIP no aplicativo Arquivos.
-2. No GitHub, abra: https://github.com/EuripedesBoni/boniverso-app
-3. Use Add file > Upload files e envie APENAS os arquivos styles.css e sw.js.
-4. Confirme a substituição e finalize em Commit changes na branch main.
-5. Abra o site em uma aba privada do Safari depois da publicação:
-   https://euripedesboni.github.io/boniverso-app/
-   Caso a versão antiga apareça, recarregue a página ou abra uma nova aba privada.
-
-Não envie INSTRUCOES.txt ao repositório. Os arquivos não mudam
-login, plano, dados, chave de API ou permissões do Supabase.
-
-Esta alteração foi preparada e verificada localmente. Ainda é necessário
-publicá-la no seu repositório GitHub.
+No GitHub, substitua NA RAIZ do repositório estes 3 arquivos: online-app.js, boniverso-ai.html e sw.js.
+Não modifique config.js, ai-link.js, bootstrap.js nem o Supabase.
+A correção pelo Luna é prévia e precisa ser aprovada pelo professor.
+PDF pode conter texto digitado ou manuscrito legível; o custo por PDF pode ser maior pelo processamento das imagens.

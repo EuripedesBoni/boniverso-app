@@ -73,9 +73,34 @@ export async function startBoniVerso(db) {
   async function openCourse(id){const c=courses.find(c=>c.id===id);if(!c)return;const accessible=hasAccess(c);const rows=accessible?lessons.filter(l=>l.course_id===c.id).map(l=>`<div class="lesson-row"><div class="lesson-icon">${svg('play')}</div><div><strong>${esc(l.title)}</strong><small>${progress.some(p=>p.lesson_id===l.id)?'✓ Concluída':'Não concluída'}</small></div>${action('Abrir aula','lesson',l.id,'btn-sm')}</div>`).join(''):'';
     modal(`<h2>${esc(c.title)}</h2><p class="muted">${esc(c.summary)}</p><div class="section">${accessible?(rows||empty('Aulas em preparação','O professor ainda não cadastrou as aulas.')):`<div class="callout gold">${svg('lock')} Conteúdo reservado. A compra e o acesso por assinatura estarão disponíveis depois da integração do sistema de pagamentos.</div>`}</div>${staffRole?`<hr/><h3>Adicionar aula</h3><form id="newLesson" data-course="${esc(c.id)}">${formRow('Título','title','','text','required maxlength="140"')}${formRow('Descrição','description','','text','maxlength="300"')}<label class="form-field"><span class="muted">Link de vídeo (somente conteúdos públicos gratuitos; NÃO utilizar links privados pagos)</span><input name="video_reference" type="url" placeholder="https://..."/></label><label><input type="checkbox" name="published"/> Publicar aula</label><button class="btn section" type="submit">Salvar aula</button></form>`:''}`);
   }
+  async function openSubmittedPdf(id){
+    const s=submissions.find(x=>x.id===id);if(!s?.attachment_path)return;
+    if(!staffRole && s.user_id!==user.id)return toast('Acesso negado ao anexo.');
+    const {data,error}=await db.storage.from('boniverso-essays').createSignedUrl(s.attachment_path,60);
+    if(error||!data?.signedUrl)throw error||new Error('PDF indisponível.');
+    const link=document.createElement('a');link.href=data.signedUrl;link.target='_blank';link.rel='noopener noreferrer';document.body.appendChild(link);link.click();link.remove();
+  }
   async function openLesson(id){const l=lessons.find(x=>x.id===id);if(!l)return;const course=courses.find(c=>c.id===l.course_id);if(!course||!hasAccess(course))return toast('Seu plano não libera esta aula.');const link=course.is_free&&/^https:\/\/(www\.)?(youtube\.com|youtu\.be|vimeo\.com)\//i.test(l.video_reference||'')?`<a class="btn btn-outline" href="${esc(l.video_reference)}" rel="noopener noreferrer" target="_blank">Assistir à videoaula pública</a>`:'<div class="callout gold">Videoaulas protegidas serão integradas em uma etapa posterior.</div>';modal(`<h2>${esc(l.title)}</h2><p class="muted">${esc(l.description||'')}</p><div class="section">${link}</div><div class="section">${action(progress.some(x=>x.lesson_id===id)?'Marcar como não concluída':'Marcar como concluída','complete-lesson',id)}</div>`);}
-  async function openAssignment(id){const a=assignments.find(x=>x.id===id);if(!a)return;const mine=submissions.find(s=>s.user_id===user.id&&s.assignment_id===id);const deadline=a.due_at&&new Date(a.due_at)<new Date();modal(`<h2>${esc(a.title)}</h2><p class="muted">${esc(a.instructions)}</p><div class="callout section">Prazo: ${brDate(a.due_at)} · Nota máxima: ${a.max_points}</div>${mine?`<div class="panel section"><strong>${mine.status==='graded'?'Corrigida':'Enviada com sucesso'}</strong><p>${esc(mine.body)}</p>${mine.status==='graded'?`<p><b>Nota ${mine.score}</b> · ${esc(mine.feedback||'')}</p>`:''}</div>`:deadline?'<div class="callout warn section">Prazo encerrado.</div>':`<form id="sendEssay" data-assignment="${esc(id)}"><div class="form-field"><label>Seu texto</label><textarea name="body" required minlength="100" maxlength="20000" rows="12" placeholder="Digite sua redação aqui..."></textarea></div><button class="btn" type="submit">Enviar redação</button></form>`}`);}
-  function openReview(id){const s=submissions.find(x=>x.id===id);if(!s||!staffRole)return;modal(`<h2>Correção de redação</h2><p style="white-space:pre-wrap;line-height:1.7">${esc(s.body)}</p><form id="gradeEssay" data-submission="${esc(id)}" class="section">${formRow('Nota (0–1000)','score','0','number','min="0" max="1000" required')}<div class="form-field"><label>Devolutiva para o aluno</label><textarea name="feedback" required maxlength="5000"></textarea></div><button class="btn" type="submit">Enviar correção</button></form>`);}
+  async function openAssignment(id){
+    const a=assignments.find(x=>x.id===id);if(!a)return;
+    const mine=submissions.find(s=>s.user_id===user.id&&s.assignment_id===id);
+    const deadline=a.due_at&&new Date(a.due_at)<new Date();
+    const already=mine?`<div class="panel section"><strong>${mine.status==='graded'?'Corrigida':'Enviada com sucesso'}</strong>
+      ${mine.attachment_path?`<p>📄 PDF enviado: ${esc(mine.attachment_name||'redacao.pdf')}</p>${action('Abrir meu PDF','view-essay-pdf',mine.id,'btn-sm btn-outline')}`:`<p style="white-space:pre-wrap">${esc(mine.body)}</p>`}
+      ${mine.status==='graded'?`<p><b>Nota ${mine.score}</b> · ${esc(mine.feedback||'')}</p>`:''}</div>`:'';
+    const send=`<form id="sendEssay" data-assignment="${esc(id)}">
+      <fieldset class="essay-mode-choices" style="border:1px solid #DDE6F4;border-radius:12px;padding:15px;margin:14px 0">
+        <legend style="font-weight:700;padding:0 5px">Como deseja enviar a redação?</legend>
+        <label style="display:inline-flex;gap:8px;margin-right:20px;align-items:center"><input type="radio" name="essay_mode" value="text" checked/> Escrever aqui</label>
+        <label style="display:inline-flex;gap:8px;align-items:center"><input type="radio" name="essay_mode" value="pdf"/> Anexar PDF</label>
+      </fieldset>
+      <div class="essay-entry-text form-field"><label for="essayBody">Sua redação</label><textarea id="essayBody" name="body" required minlength="100" maxlength="20000" rows="12" placeholder="Digite sua redação aqui..."></textarea></div>
+      <div class="essay-entry-pdf form-field" hidden style="display:none"><label for="essayPdf">Escolha um PDF com sua redação</label><input id="essayPdf" name="essay_pdf" type="file" accept=".pdf,application/pdf"/><small>PDF de até 5 MB. Você não precisa digitar ou copiar o texto do arquivo. Evite incluir dados pessoais; a IA analisará o documento quando o professor solicitar.</small></div>
+      <button class="btn" type="submit">Enviar redação</button>
+    </form>`;
+    modal(`<h2>${esc(a.title)}</h2><p class="muted">${esc(a.instructions)}</p><div class="callout section">Prazo: ${brDate(a.due_at)} · Nota máxima: ${a.max_points}</div>${mine?already:deadline?'<div class="callout warn section">Prazo encerrado.</div>':send}`);
+  }
+  function openReview(id){const s=submissions.find(x=>x.id===id);if(!s||!staffRole)return;modal(`<h2>Correção de redação</h2>${s.attachment_path?`<p>📄 Redação enviada como PDF: ${esc(s.attachment_name||'redacao.pdf')}</p>${action('Abrir PDF original','view-essay-pdf',s.id,'btn-sm btn-outline')}`:`<p style="white-space:pre-wrap;line-height:1.7">${esc(s.body)}</p>`}<form id="gradeEssay" data-submission="${esc(id)}" class="section">${formRow('Nota (0–1000)','score','0','number','min="0" max="1000" required')}<div class="form-field"><label>Devolutiva para o aluno</label><textarea name="feedback" required maxlength="5000"></textarea></div><button class="btn" type="submit">Enviar correção</button></form>`);}
   async function refresh(next){await fetchData();screen=next||screen;await redraw();}
   function setBusy(form,busy){const b=form?.querySelector('button[type="submit"]');if(b)b.disabled=busy;}
   document.addEventListener('click', async ev=>{
@@ -90,11 +115,22 @@ export async function startBoniVerso(db) {
       if(act==='publish-assignment'&&staffRole){const a=assignments.find(x=>x.id===id);if(!a)return;const {error}=await db.from('assignments').update({published:!a.published}).eq('id',id);if(error)throw error;await refresh();return;}
       if(act==='lesson')return openLesson(id);
       if(act==='assignment')return openAssignment(id);
+      if(act==='view-essay-pdf')return await openSubmittedPdf(id);
       if(act==='review')return openReview(id);
       if(act==='toggle-task'){const t=tasks.find(x=>x.id===id);if(!t)return;const {error}=await db.from('study_tasks').update({completed:!t.completed}).eq('id',id).eq('user_id',user.id);if(error)throw error;await refresh();return;}
       if(act==='delete-task'){if(!confirm('Excluir esta tarefa?'))return;const {error}=await db.from('study_tasks').delete().eq('id',id).eq('user_id',user.id);if(error)throw error;await refresh();return;}
       if(act==='complete-lesson'){const exists=progress.some(x=>x.lesson_id===id);const q=exists?db.from('lesson_progress').delete().eq('lesson_id',id).eq('user_id',user.id):db.from('lesson_progress').insert({lesson_id:id,user_id:user.id});const {error}=await q;if(error)throw error;close();await refresh();return;}
     }catch(err){toast(errorLabel(err));}
+  });
+  document.addEventListener('change',ev=>{
+    if(!ev.target.matches('#sendEssay input[name="essay_mode"]'))return;
+    const form=ev.target.closest('#sendEssay');
+    const isPdf=form.querySelector('input[name="essay_mode"]:checked')?.value==='pdf';
+    const textBox=form.querySelector('.essay-entry-text'),pdfBox=form.querySelector('.essay-entry-pdf');
+    textBox.hidden=isPdf;textBox.style.display=isPdf?'none':'';
+    pdfBox.hidden=!isPdf;pdfBox.style.display=isPdf?'':'none';
+    form.querySelector('textarea[name="body"]').required=!isPdf;
+    form.querySelector('input[name="essay_pdf"]').required=isPdf;
   });
   document.addEventListener('submit',async ev=>{
     const f=ev.target;if(!['authForm','newTask','newCourse','newLesson','newAssignment','sendEssay','gradeEssay','profileUpdate','changePassword'].includes(f.id))return;
@@ -114,7 +150,26 @@ export async function startBoniVerso(db) {
         case 'newCourse':if(!staffRole)throw Error('Somente o professor pode cadastrar cursos.');result=await db.from('courses').insert({title:String(d.title).trim().slice(0,140),category:String(d.category).trim().slice(0,60),summary:String(d.summary).trim().slice(0,500),price_cents:Math.round(Number(d.price)*100),published:!!d.published,is_free:!!d.is_free});break;
         case 'newLesson':if(!staffRole)throw Error('Somente o professor pode cadastrar aulas.');result=await db.from('lessons').insert({course_id:f.dataset.course,title:String(d.title).trim().slice(0,140),description:String(d.description||'').trim().slice(0,300),published:!!d.published,video_provider:d.video_reference?'public_link':null,video_reference:d.video_reference||null});break;
         case 'newAssignment':if(!staffRole)throw Error('Somente o professor pode criar atividades.');result=await db.from('assignments').insert({course_id:d.course_id,title:String(d.title).trim().slice(0,150),instructions:String(d.instructions).trim().slice(0,5000),due_at:d.due_at?new Date(d.due_at).toISOString():null,max_points:Number(d.max_points),published:false});break;
-        case 'sendEssay':result=await db.from('submissions').insert({assignment_id:f.dataset.assignment,user_id:user.id,body:String(d.body).trim().slice(0,20000),status:'submitted'});break;
+        case 'sendEssay': {
+          if(d.essay_mode==='pdf'){
+            const pdf=f.querySelector('input[name="essay_pdf"]')?.files?.[0];
+            if(!pdf)throw Error('Escolha um arquivo PDF antes de enviar.');
+            if(pdf.size<30||pdf.size>5*1024*1024)throw Error('O PDF deve ter entre 30 bytes e 5 MB.');
+            if(!/\.pdf$/i.test(pdf.name))throw Error('Selecione um arquivo com extensão .pdf.');
+            const signature=new TextDecoder().decode(new Uint8Array(await pdf.slice(0,5).arrayBuffer()));
+            if(signature!=='%PDF-')throw Error('O arquivo escolhido não parece ser um PDF válido.');
+            const path=`${user.id}/${f.dataset.assignment}/${crypto.randomUUID()}.pdf`;
+            const {error:uploadError}=await db.storage.from('boniverso-essays').upload(path,pdf,{contentType:'application/pdf',upsert:false,cacheControl:'0'});
+            if(uploadError)throw uploadError;
+            result=await db.from('submissions').insert({assignment_id:f.dataset.assignment,user_id:user.id,body:'Redação entregue como documento PDF. O conteúdo original está no arquivo privado anexado, sem transcrição obrigatória.',attachment_path:path,attachment_name:pdf.name.slice(0,150),status:'submitted'});
+            if(result.error)await db.storage.from('boniverso-essays').remove([path]);
+          }else{
+            const body=String(d.body||'').trim();
+            if(body.length<100)throw Error('A redação digitada deve ter pelo menos 100 caracteres.');
+            result=await db.from('submissions').insert({assignment_id:f.dataset.assignment,user_id:user.id,body:body.slice(0,20000),status:'submitted'});
+          }
+          break;
+        }
         case 'gradeEssay':if(!staffRole)throw Error('Sem permissão para corrigir.');result=await db.from('submissions').update({status:'graded',score:Number(d.score),feedback:String(d.feedback).trim().slice(0,5000),graded_at:new Date().toISOString()}).eq('id',f.dataset.submission);break;
       }
       if(result?.error)throw result.error;
