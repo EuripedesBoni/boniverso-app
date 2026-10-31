@@ -7,7 +7,7 @@ export async function startBoniVerso(db) {
   const brDate = date => date ? new Date(date.includes('T')?date:date+'T12:00:00').toLocaleDateString('pt-BR') : 'Sem prazo';
   const svg = (name,size=19) => { const p={home:'<path d="m3 10 9-7 9 7v10H3z"/>',book:'<path d="M12 6c-3-2-6-2-10-2v15c4 0 7 0 10 2m0-15c3-2 6-2 10-2v15c-4 0-7 0-10 2m0-15v15"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/>',pen:'<path d="m4 20 4-1L20 7l-4-4L4 15zM14 5l4 4"/>',chart:'<path d="M4 20v-8m5 8V5m5 15v-5m5 5V8"/>',profile:'<circle cx="12" cy="8" r="4"/><path d="M4 22c0-5 3-8 8-8s8 3 8 8"/>',people:'<circle cx="8" cy="8" r="3"/><path d="M2 20v-2a6 6 0 0 1 12 0v2m3-13a3 3 0 0 1 0 6"/>',credit:'<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 11h20"/>',check:'<path d="m4 12 5 5L20 6"/>',plus:'<path d="M12 5v14M5 12h14"/>',play:'<path d="m8 5 11 7-11 7z"/>',lock:'<rect x="5" y="10" width="14" height="12" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',logout:'<path d="M10 4H4v16h6m5-3 5-5-5-5m5 5H8"/>',menu:'<path d="M4 6h16M4 12h16M4 18h16"/>'}[name]||'<circle cx="12" cy="12" r="9"/>'; return `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none">${p}</svg>`; };
   const originalShell = $('#app').innerHTML;
-  let user=null, profile=null, staffRole=null, screen='home', recovery=false;
+  let user=null, profile=null, staffRole=null, screen='home', recovery=false, avatarUrl=null;
   let courses=[],lessons=[],tasks=[],assignments=[],submissions=[],plans=[],enrollments=[],progress=[];
   const viewNames={home:'Início',courses:'Cursos',planner:'Plano de estudos',essays:'Redações',performance:'Desempenho',plans:'Planos',profile:'Meu perfil',admin:'Painel do professor',editor:'Editor de cursos',corrections:'Correções',roadmap:'Evolução do projeto'};
   const navStudent=[['home','Início','home'],['courses','Cursos','book'],['planner','Meu planejamento','calendar'],['essays','Redações','pen'],['performance','Desempenho','chart'],['plans','Assinaturas','credit'],['profile','Meu perfil','profile']];
@@ -26,7 +26,7 @@ export async function startBoniVerso(db) {
   async function fetchData(){
     const one = async(q) => { const {data,error}=await q; if(error)throw error; return data||[]; };
     const [p,role,c,l,t,a,s,pl,en,pr] = await Promise.all([
-      one(db.from('profiles').select('id,display_name').eq('id',user.id).maybeSingle()).then(x=>x||{display_name:'Estudante'}),
+      one(db.from('profiles').select('id,display_name,full_name,school_name,school_year,city,state,avatar_path').eq('id',user.id).maybeSingle()).then(x=>x||{display_name:'Estudante'}),
       db.rpc('current_staff_role').then(({data,error})=>{if(error)throw error;return data;}),
       one(db.from('courses').select('*').order('created_at',{ascending:false})),
       one(db.from('lessons').select('id,course_id,title,description,video_provider,video_reference,duration_seconds,position,published').order('position')),
@@ -37,7 +37,12 @@ export async function startBoniVerso(db) {
       one(db.from('enrollments').select('course_id,valid_until').eq('user_id',user.id)),
       one(db.from('lesson_progress').select('lesson_id,completed_at').eq('user_id',user.id))
     ]);
-    profile=p;staffRole=role||null; courses=c;lessons=l;tasks=t;assignments=a;submissions=s;plans=pl;enrollments=en;progress=pr;
+    profile=p;avatarUrl=null;
+    if(profile?.avatar_path){
+      const {data:avatarLink,error:avatarError}=await db.storage.from('boniverso-avatars').createSignedUrl(profile.avatar_path,3600);
+      if(!avatarError)avatarUrl=avatarLink?.signedUrl||null;
+    }
+    staffRole=role||null; courses=c;lessons=l;tasks=t;assignments=a;submissions=s;plans=pl;enrollments=en;progress=pr;
   }
   async function redraw(){
     $('#app').innerHTML=originalShell;
@@ -45,9 +50,10 @@ export async function startBoniVerso(db) {
     $('.demo-pill').innerHTML='<span class="pulse-dot"></span> Conta autenticada';
     $('.sidebar-note').textContent='BONIVERSO · CONECTADO';
     $('.top-greeting').innerHTML='Olá, '+esc((profile?.display_name||'estudante').split(' ')[0])+' <span>✦</span>';
-    $('#topAvatar').textContent=(profile?.display_name||'E')[0].toUpperCase();
+    if(avatarUrl){$('#topAvatar').innerHTML=`<img src="${esc(avatarUrl)}" alt="Foto do perfil" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`;}
+    else{$('#topAvatar').textContent=(profile?.display_name||'E')[0].toUpperCase();}
     $('.top-avatar').title='Meu perfil';
-    $('#profileSwitch').innerHTML=`<div class="online-identity">${svg('profile')} <div><b>${esc(profile?.display_name||'Estudante')}</b><small>${staffRole?'Professor / equipe':'Estudante'}</small></div></div>`;
+    $('#profileSwitch').innerHTML=`<div class="online-identity">${avatarUrl?`<img src="${esc(avatarUrl)}" alt="Foto do perfil" style="width:28px;height:28px;object-fit:cover;border-radius:50%"/>`:svg('profile')} <div><b>${esc(profile?.display_name||'Estudante')}</b><small>${staffRole?'Professor / equipe':'Estudante'}</small></div></div>`;
     const nav=staffRole?navStaff:navStudent;
     $('#sideNav').innerHTML=nav.map(([k,title,icon])=>`<button class="nav-link ${k===screen?'active':''}" data-online-action="nav" data-id="${k}">${svg(icon)}<span>${esc(title)}</span></button>`).join('');
     $('#mobileBottom').innerHTML=nav.slice(0,5).map(([k,title,icon])=>`<button class="mobile-nav-link ${k===screen?'active':''}" data-online-action="nav" data-id="${k}">${svg(icon)}<span>${esc(title)}</span></button>`).join('');
@@ -63,10 +69,37 @@ export async function startBoniVerso(db) {
   function essayPage(){const rows=assignments.map(a=>{const mine=submissions.find(x=>x.assignment_id===a.id&&x.user_id===user.id);return `<div class="task-row"><div class="stat-icon rose">${svg('pen')}</div><div class="task-detail"><strong>${esc(a.title)}</strong><small>${brDate(a.due_at)} · ${a.max_points} pontos ${mine?'· Enviada':''} ${staffRole?(a.published?'· Publicada':'· Rascunho'):''}</small></div>${staffRole?action(a.published?'Despublicar':'Publicar','publish-assignment',a.id,'btn-sm btn-outline'):''}${action('Abrir','assignment',a.id,'btn-sm')}</div>`;}).join('');return `${pageTitle('essays','Oficina de redação','Atividades, entregas, notas e devolutivas com registro na sua conta.')}<div class="panel"><h2 class="section-title">Propostas disponíveis</h2><div class="section">${rows||empty('Sem atividades','O professor ainda não publicou uma proposta.')}</div></div>${staffRole?`<div class="panel section"><h2 class="section-title">Publicar uma atividade</h2><form id="newAssignment">${formRow('Título','title','','text','required maxlength="150"')}<div class="form-field"><label>Curso</label><select name="course_id" required>${courses.map(c=>`<option value="${esc(c.id)}">${esc(c.title)}</option>`).join('')}</select></div><div class="form-field"><label>Orientações</label><textarea name="instructions" required maxlength="5000"></textarea></div>${formRow('Prazo','due_at','','datetime-local')}${formRow('Pontuação máxima','max_points','1000','number','min="1" max="1000" required')}<button class="btn" type="submit">Criar atividade (rascunho)</button></form></div>`:''}`;}
   function performance(){const mine=submissions.filter(s=>s.user_id===user.id),graded=mine.filter(x=>x.status==='graded'),avg=graded.length?Math.round(graded.reduce((t,x)=>t+x.score,0)/graded.length):'—';return `${pageTitle('performance','Seu desempenho','Acompanhe os resultados reais cadastrados na plataforma.')}<div class="stats-row">${cardStat('Aulas finalizadas',progress.length,'check')}${cardStat('Tarefas concluídas',tasks.filter(t=>t.completed).length,'calendar')}${cardStat('Redações entregues',mine.length,'pen')}${cardStat('Média nas redações',avg,'chart')}</div><div class="panel"><h2 class="section-title">Últimas devolutivas</h2><div class="section">${graded.map(s=>`<div class="submission-card"><strong>Nota: ${s.score}</strong><p>${esc(s.feedback||'Sem comentários adicionais.')}</p></div>`).join('')||empty('Sem notas ainda','As devolutivas aparecerão após a correção das atividades.')}</div></div>`;}
   function planPage(){return `${pageTitle('plans','Planos BoniVerso','Escolha seu caminho de aprendizagem quando as vendas forem disponibilizadas.')}<div class="callout gold">Assinaturas ainda não estão ativas. Nenhum pagamento ou cobrança será realizado.</div><div class="plan-grid section">${plans.map(p=>`<div class="plan-card ${p.id==='prime'?'highlight':''}"><div class="plan-label">BONIVERSO ${esc(p.id.toUpperCase())}</div><h2>${esc(p.name)}</h2><div class="plan-price">${brl(p.monthly_price_cents)}<small> / mês sugerido</small></div><p>Benefícios e disponibilidade serão confirmados antes do lançamento.</p><button class="btn btn-outline" type="button" disabled>Em preparação</button></div>`).join('')}</div>`;}
-  function profilePage(){return `${pageTitle('profile','Meu perfil','Seu cadastro, segurança e recuperação de acesso.')}<div class="two-cols">
-    <div class="panel"><h2 class="section-title">Dados da conta</h2><form id="profileUpdate">${formRow('Nome exibido','display_name',profile?.display_name||'','text','required maxlength="80"')}<div class="form-field"><label>E-mail cadastrado</label><input value="${esc(user.email)}" disabled autocomplete="off"/></div><button class="btn" type="submit">Salvar perfil</button></form><p class="muted section">Na próxima etapa, teremos foto, informações complementares e privacidade do perfil.</p></div>
-    <div class="panel"><h2 class="section-title">Segurança da conta</h2><p class="muted">Altere sua senha com segurança ou solicite um link de recuperação por e-mail.</p><form id="changePassword" class="section">${formRow('Nova senha','password','','password','required minlength="10" maxlength="128" autocomplete="new-password"')}${formRow('Confirmar nova senha','password_confirm','','password','required minlength="10" maxlength="128" autocomplete="new-password"')}<button class="btn" type="submit">Trocar minha senha</button></form><div class="section"><p class="muted">Esqueceu a senha? Enviaremos um link para o e-mail cadastrado, sem compartilhar a senha com ninguém.</p>${action('Enviar link para recuperar acesso','send-password-recovery','','btn-outline')}</div><div class="section">${action('Sair da conta','signout','','btn-outline')}</div><div class="callout section">Nunca compartilhe sua senha. Não forneça dados de cartão enquanto o checkout oficial estiver indisponível.</div></div>
-    </div>`;}
+  function profilePage(){
+    const years=['','EJA','6º ano EF','7º ano EF','8º ano EF','9º ano EF','1º ano EM','2º ano EM','3º ano EM','Concluído','Outra'];
+    const ufs=['','AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'];
+    const yearOpts=years.map(y=>`<option value="${esc(y)}" ${profile?.school_year===y?'selected':''}>${y?esc(y):'Selecione (opcional)'}</option>`).join('');
+    const ufOpts=ufs.map(y=>`<option value="${esc(y)}" ${profile?.state===y?'selected':''}>${y||'Selecione (opcional)'}</option>`).join('');
+    const avatarPreview=avatarUrl?`<img src="${esc(avatarUrl)}" alt="Sua foto de perfil" style="width:108px;height:108px;object-fit:cover;border-radius:50%;border:3px solid #d9e5f6"/>`:`<div aria-label="Sem foto cadastrada" style="width:108px;height:108px;border-radius:50%;background:#edf2fb;display:flex;align-items:center;justify-content:center;color:#21375b">${svg('profile',58)}</div>`;
+    return `${pageTitle('profile','Meu perfil','Personalize sua conta com uma foto e os dados necessários para suas atividades.')}<div class="two-cols">
+    <div class="panel"><h2 class="section-title">Seu perfil de estudante</h2>
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:16px 0">${avatarPreview}<div><b>${esc(profile?.display_name||'Estudante')}</b><p class="muted">Sua foto fica em armazenamento privado.</p></div></div>
+      <form id="avatarUpload" class="section"><div class="form-field"><label for="studentAvatar">Escolher foto (JPG, PNG ou WebP, até 2 MB)</label><input id="studentAvatar" type="file" name="avatar" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" required /></div><button class="btn btn-outline" type="submit">Salvar foto</button></form>
+      ${profile?.avatar_path?`<div class="section">${action('Remover minha foto','remove-avatar','','btn-sm btn-outline')}</div>`:''}
+      <div class="callout section">Informações escolares opcionais. Evite fornecer CPF, endereço residencial ou outros dados que não sejam necessários. Sua foto não é pública.</div>
+      <form id="profileUpdate" class="section">
+        ${formRow('Nome exibido no aplicativo','display_name',profile?.display_name||'','text','required minlength="2" maxlength="80" autocomplete="nickname"')}
+        ${formRow('Nome completo (opcional)','full_name',profile?.full_name||'','text','maxlength="100" autocomplete="name"')}
+        ${formRow('Escola ou instituição (opcional)','school_name',profile?.school_name||'','text','maxlength="120"')}
+        <div class="form-field"><label for="f_school_year">Ano / etapa escolar (opcional)</label><select name="school_year" id="f_school_year">${yearOpts}</select></div>
+        ${formRow('Cidade (opcional)','city',profile?.city||'','text','maxlength="80"')}
+        <div class="form-field"><label for="f_state">UF (opcional)</label><select name="state" id="f_state">${ufOpts}</select></div>
+        <div class="form-field"><label>E-mail de acesso (não editável aqui)</label><input value="${esc(user.email)}" disabled autocomplete="off"/></div>
+        <button class="btn" type="submit">Salvar meus dados</button>
+      </form>
+      <p class="muted section">A escola informada no perfil não concede acesso automático a uma turma. As matrículas serão configuradas na Etapa 3.</p>
+    </div>
+    <div class="panel"><h2 class="section-title">Segurança da conta</h2><p class="muted">Altere sua senha com segurança ou solicite um link de recuperação por e-mail.</p>
+      <form id="changePassword" class="section">${formRow('Nova senha','password','','password','required minlength="10" maxlength="128" autocomplete="new-password"')}${formRow('Confirmar nova senha','password_confirm','','password','required minlength="10" maxlength="128" autocomplete="new-password"')}<button class="btn" type="submit">Trocar minha senha</button></form>
+      <div class="section"><p class="muted">Esqueceu a senha? Enviaremos um link para o e-mail cadastrado.</p>${action('Enviar link para recuperar acesso','send-password-recovery','','btn-outline')}</div>
+      <div class="section">${action('Sair da conta','signout','','btn-outline')}</div>
+      <div class="callout section">Nunca compartilhe sua senha. A recuperação acontece somente pelo e-mail de sua conta.</div>
+    </div></div>`;
+  }
   function roadmapPage(){
     if(!staffRole)return dashboard();
     const stages=[
@@ -125,6 +158,15 @@ export async function startBoniVerso(db) {
       if(act==='nav'){screen=id;await redraw();window.scrollTo(0,0);return;}
       if(act==='close')return close();
       if(act==='signout'){const {error}=await db.auth.signOut();if(error)throw error;return;}
+      if(act==='remove-avatar'){
+        if(!profile?.avatar_path)return;
+        if(!confirm('Remover sua foto do perfil?'))return;
+        const oldPath=profile.avatar_path;
+        const {error}=await db.from('profiles').update({avatar_path:null}).eq('id',user.id);
+        if(error)throw error;
+        await db.storage.from('boniverso-avatars').remove([oldPath]);
+        await refresh('profile');toast('Foto removida do perfil.');return;
+      }
       if(act==='send-password-recovery'){if(!user?.email)throw Error('E-mail não encontrado.');const {error}=await db.auth.resetPasswordForEmail(user.email,{redirectTo:location.origin+location.pathname});if(error)throw error;toast('Se o e-mail estiver habilitado, enviaremos um link para recuperar sua senha. Confira também o spam.');return;}
       if(act==='course')return openCourse(id);
       if(act==='publish-assignment'&&staffRole){const a=assignments.find(x=>x.id===id);if(!a)return;const {error}=await db.from('assignments').update({published:!a.published}).eq('id',id);if(error)throw error;await refresh();return;}
@@ -148,7 +190,7 @@ export async function startBoniVerso(db) {
     form.querySelector('input[name="essay_pdf"]').required=isPdf;
   });
   document.addEventListener('submit',async ev=>{
-    const f=ev.target;if(!['authForm','newTask','newCourse','newLesson','newAssignment','sendEssay','gradeEssay','profileUpdate','changePassword'].includes(f.id))return;
+    const f=ev.target;if(!['authForm','newTask','newCourse','newLesson','newAssignment','sendEssay','gradeEssay','profileUpdate','changePassword','avatarUpload'].includes(f.id))return;
     ev.preventDefault();setBusy(f,true);
     const d=Object.fromEntries(new FormData(f));
     try{
@@ -171,7 +213,40 @@ export async function startBoniVerso(db) {
           showAuth('login','Senha atualizada. Entre novamente com sua nova senha.');
           return;
         }
-        case 'profileUpdate':result=await db.from('profiles').update({display_name:String(d.display_name).trim().slice(0,80)}).eq('id',user.id);break;
+        case 'profileUpdate':{
+          const display_name=String(d.display_name||'').trim();
+          const full_name=String(d.full_name||'').trim()||null;
+          const school_name=String(d.school_name||'').trim()||null;
+          const school_year=String(d.school_year||'')||null;
+          const city=String(d.city||'').trim()||null;
+          const state=String(d.state||'')||null;
+          if(display_name.length<2||display_name.length>80)throw Error('O nome exibido deve ter entre 2 e 80 caracteres.');
+          if(full_name && (full_name.length<2||full_name.length>100))throw Error('Nome completo inválido.');
+          result=await db.from('profiles').update({display_name,full_name,school_name,school_year,city,state}).eq('id',user.id);
+          break;
+        }
+        case 'avatarUpload':{
+          const file=f.querySelector('input[name="avatar"]')?.files?.[0];
+          if(!file)throw Error('Selecione uma foto.');
+          if(file.size<50||file.size>2*1024*1024)throw Error('A foto deve ter até 2 MB.');
+          const exts={'image/jpeg':'jpg','image/png':'png','image/webp':'webp'};
+          const ext=exts[file.type];
+          if(!ext)throw Error('Escolha uma imagem JPG, PNG ou WebP.');
+          const firstBytes=new Uint8Array(await file.slice(0,12).arrayBuffer());
+          const signature=Array.from(firstBytes).map(x=>x.toString(16).padStart(2,'0')).join('');
+          const isJpeg=signature.startsWith('ffd8ff');
+          const isPng=signature.startsWith('89504e470d0a1a0a');
+          const isWebp=String.fromCharCode(...firstBytes.slice(0,4))==='RIFF' && String.fromCharCode(...firstBytes.slice(8,12))==='WEBP';
+          if(!(ext==='jpg'&&isJpeg||ext==='png'&&isPng||ext==='webp'&&isWebp))throw Error('Formato de imagem inválido.');
+          const path=`${user.id}/${crypto.randomUUID()}.${ext}`;
+          const prev=profile?.avatar_path||null;
+          const {error:uploadError}=await db.storage.from('boniverso-avatars').upload(path,file,{contentType:file.type,upsert:false,cacheControl:'0'});
+          if(uploadError)throw uploadError;
+          const {error:updateError}=await db.from('profiles').update({avatar_path:path}).eq('id',user.id);
+          if(updateError){await db.storage.from('boniverso-avatars').remove([path]);throw updateError;}
+          if(prev)await db.storage.from('boniverso-avatars').remove([prev]);
+          await refresh('profile');toast('Foto atualizada com segurança.');return;
+        }
         case 'newTask':result=await db.from('study_tasks').insert({user_id:user.id,title:String(d.title).trim().slice(0,150),due_date:d.due_date||null});break;
         case 'newCourse':if(!staffRole)throw Error('Somente o professor pode cadastrar cursos.');result=await db.from('courses').insert({title:String(d.title).trim().slice(0,140),category:String(d.category).trim().slice(0,60),summary:String(d.summary).trim().slice(0,500),price_cents:Math.round(Number(d.price)*100),published:!!d.published,is_free:!!d.is_free});break;
         case 'newLesson':if(!staffRole)throw Error('Somente o professor pode cadastrar aulas.');result=await db.from('lessons').insert({course_id:f.dataset.course,title:String(d.title).trim().slice(0,140),description:String(d.description||'').trim().slice(0,300),published:!!d.published,video_provider:d.video_reference?'public_link':null,video_reference:d.video_reference||null});break;
