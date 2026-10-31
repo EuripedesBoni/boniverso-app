@@ -1,6 +1,9 @@
-BoniVerso v0.7 — Duas formas de enviar redação: digitar ou anexar PDF (5 MB).
+BoniVerso v0.8 — Segurança + etapas de desenvolvimento
 
-No GitHub, substitua NA RAIZ do repositório estes 3 arquivos: online-app.js, boniverso-ai.html e sw.js.
-Não modifique config.js, ai-link.js, bootstrap.js nem o Supabase.
-A correção pelo Luna é prévia e precisa ser aprovada pelo professor.
-PDF pode conter texto digitado ou manuscrito legível; o custo por PDF pode ser maior pelo processamento das imagens.
+1. Abra github.com/EuripedesBoni/boniverso-app na pasta raiz.
+2. Em Add file > Upload files, envie online-app.js, sw.js e ROADMAP_BONIVERSO.md (estes três apenas).
+3. Confirme Commit changes. Não envie a pasta contendo os arquivos.
+4. Abra BoniVerso em aba privada e teste Meu perfil > Segurança da conta.
+5. Teste Esqueci a senha no login com um e-mail de teste próprio.
+6. Confirme em Supabase > Authentication > URL Configuration: Site URL e Redirect URLs incluam https://euripedesboni.github.io/boniverso-app/
+7. Não alterar config.js, boniverso-ai.html, segredos e banco.
