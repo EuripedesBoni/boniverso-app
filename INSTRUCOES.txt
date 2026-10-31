@@ -1,18 +1,25 @@
-BONIVERSO v1.0.1 — ATALHOS DAS TURMAS
+BONIVERSO — PLAYER INTERNO (ATUALIZAÇÃO INCREMENTAL)
+====================================================
 
-1. Descompacte este ZIP.
-2. Acesse github.com/EuripedesBoni/boniverso-app.
-3. Use Add file > Upload files.
-4. Envie estes quatro arquivos para a RAIZ do repositório, substituindo os existentes:
-   - index.html
-   - sw.js
-   - turmas-home.js
-   - turmas-home.css
-5. Use Commit changes.
-6. Abra https://euripedesboni.github.io/boniverso-app/?versao=101
+1. No GitHub, abra EuripedesBoni/boniverso-app.
+2. Clique em Add file > Upload files e envie boniverso-player.js para a raiz.
+3. Abra index.html no GitHub e clique no lápis (Edit this file).
+4. ANTES de </body>, logo após os demais scripts, acrescente:
+   <script defer src="boniverso-player.js"></script>
+5. Salve em Commit changes e aguarde o GitHub Pages concluir a publicação.
+6. Teste com uma aula de CURSO GRATUITO com vídeo PUBLICO do YouTube ou Vimeo.
 
-Na conta do aluno, após matriculado, o cartão mostra sua escola e série.
-Na conta do professor, mostra cartões para Jaó e Areião, com totais por série.
-Os cartões são atalhos para turmas.html. As permissões de acesso permanecem no Supabase.
+O QUE FAZ
+- Substitui o botão 'Assistir à videoaula pública' por um player responsivo.
+- Funciona no celular, tablet e computador sem sair do BoniVerso.
+- Mantém login, RLS, turmas, redações, aulas ao vivo e acesso pago inalterados.
 
-Atenção: este pacote NÃO deve ser enviado para o repositório do EstudNexa.
+LIMITES IMPORTANTES
+- Somente links públicos de YouTube e Vimeo já permitidos pelo app.
+- Vídeos privados/restritos e aulas pagas NÃO são liberados por esta atualização.
+- Alguns vídeos bloqueiam incorporação. Para vídeo exclusivo pago, será
+  necessária infraestrutura de vídeo protegida e integração com autorização.
+- Google Meet, Zoom e Teams não permitem transformar uma reunião completa
+  num iframe do app simplesmente adicionando o link.
+
+RECUPERAÇÃO: se necessário, remova apenas a linha de script do index.html.
