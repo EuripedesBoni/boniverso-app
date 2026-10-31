@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="robots" content="noindex,nofollow,noarchive"/>
+  <title>Recibo de envio · BoniVerso</title>
+  <link rel="icon" href="icon-192.png"/>
+  <style>
+    :root{color-scheme:light;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+    *{box-sizing:border-box}
+    body{background:#f2f5fa;color:#172742;margin:0;padding:20px}
+    .toolbar{max-width:790px;margin:0 auto 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .toolbar a,.toolbar button{border:1px solid #d0dbec;border-radius:10px;background:white;color:#183458;font:inherit;font-weight:650;padding:11px 18px;text-decoration:none;cursor:pointer}
+    .toolbar button{background:#3177ed;border-color:#3177ed;color:white}
+    .paper{max-width:790px;min-height:700px;margin:auto;background:white;border:1px solid #e2e8f1;box-shadow:0 12px 35px #1b305015;border-radius:16px;overflow:hidden}
+    .brand{background:#122543;color:white;padding:25px 35px;display:flex;gap:14px;align-items:center}
+    .brand img{width:57px;height:57px;border-radius:10px}
+    .brand b{font-size:24px}.brand span{color:#d8b875}.brand small{display:block;color:#c0cde2;letter-spacing:1px;margin-top:4px}
+    .content{padding:36px 39px}
+    h1{font-size:27px;letter-spacing:-.4px;margin:0 0 8px}
+    .subtitle{color:#637591;margin:0 0 26px}
+    .pill{background:#e9f5ed;color:#176a3b;font-weight:700;border-radius:22px;padding:9px 15px;display:inline-block;font-size:13px}
+    .receipt-label{color:#526781;font-size:13px;text-transform:uppercase;letter-spacing:1px;margin:25px 0 8px}
+    .receipt-id{font:600 16px ui-monospace,Consolas,monospace;overflow-wrap:anywhere;padding:17px;background:#f1f5fc;border:1px solid #dae3f1;border-radius:12px}
+    dl{margin:24px 0} .entry{display:grid;grid-template-columns:38% 62%;border-bottom:1px solid #e7edf5;padding:12px 0;gap:8px}dt{color:#657994}dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+    .foot{background:#f7f9fc;border-top:1px solid #e6ebf2;padding:20px 38px;font-size:12px;line-height:1.65;color:#647791}
+    .error{margin:25px;background:#fff2ee;border:1px solid #f2c2b7;border-radius:12px;padding:18px}
+    .loading{text-align:center;padding:90px 20px;color:#647791}
+    @media(max-width:560px){body{padding:10px}.content{padding:25px 20px}.brand{padding:19px 20px}.entry{grid-template-columns:1fr;gap:2px}.foot{padding:20px}.toolbar{justify-content:center}}
+    @media print{@page{size:A4;margin:14mm}body{padding:0;background:white;-webkit-print-color-adjust:exact;print-color-adjust:exact}.toolbar{display:none}.paper{border:none;box-shadow:none;border-radius:0;max-width:none;min-height:auto}.brand{-webkit-print-color-adjust:exact;print-color-adjust:exact}.content{padding:28px 32px}.foot{padding:20px 32px}}
+  </style>
+</head>
+<body>
+  <nav class="toolbar" aria-label="Ações do recibo"><a href="./?pagina=redacoes">← Voltar ao BoniVerso</a><button id="printReceipt" type="button" disabled>Imprimir / Salvar como PDF</button></nav>
+  <article class="paper" aria-label="Comprovante de envio de redação">
+    <header class="brand"><img src="icon-192.png" alt="Marca do BoniVerso"/><div><b>Boni<span>Verso</span></b><small>RSB EDUCAÇÃO · RECIBO ELETRÔNICO</small></div></header>
+    <div id="receiptContent" class="content"><p class="loading">Verificando a sua sessão e o registro de entrega…</p></div>
+    <footer class="foot">Este recibo comprova o registro de uma entrega no BoniVerso, de acordo com os dados salvos no sistema. Não é uma correção, nota ou certificado de autenticidade do conteúdo. Para conferir a entrega, acesse sua conta e utilize o identificador completo acima. Sua redação e seus dados de acesso não são públicos.</footer>
+  </article>
+  <script src="config.js"></script>
+  <script type="module">
+    const el=document.querySelector('#receiptContent');
+    const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const uuid=/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i;
+    const formatDate=d=>new Intl.DateTimeFormat('pt-BR',{dateStyle:'long',timeStyle:'medium',timeZone:'America/Cuiaba'}).format(new Date(d));
+    const entry=(label,value)=>`<div class="entry"><dt>${esc(label)}</dt><dd>${esc(value||'Não informado')}</dd></div>`;
+    const fail=msg=>{el.innerHTML=`<h1>Não foi possível abrir o comprovante</h1><p class="error">${esc(msg)}</p><p>Faça login na mesma conta que enviou a redação e abra novamente o recibo pela aba <b>Redações</b>.</p>`;};
+    const id=new URLSearchParams(location.search).get('entrega');
+    if(!uuid.test(id||'')){fail('Identificador de entrega inválido.');}
+    else {
+      try{
+        const cfg=window.BONIVERSO_CONFIG||{};
+        if(!cfg.supabaseUrl||!cfg.supabasePublishableKey)throw new Error('Serviço de autenticação indisponível.');
+        const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2.57.2');
+        const db=createClient(cfg.supabaseUrl,cfg.supabasePublishableKey, {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+        const {data:{user},error:authError}=await db.auth.getUser();
+        if(authError||!user)throw new Error('Faça login no BoniVerso antes de abrir o recibo.');
+        const {data:record,error}=await db.from('submissions').select('id,user_id,assignment_id,status,attachment_name,submitted_at').eq('id',id).eq('user_id',user.id).maybeSingle();
+        if(error)throw error;
+        if(!record)throw new Error('Entrega não encontrada nesta conta.');
+        const [a,p]=await Promise.all([
+          db.from('assignments').select('title,section_id,classroom_id').eq('id',record.assignment_id).maybeSingle(),
+          db.from('profiles').select('display_name,full_name').eq('id',user.id).maybeSingle()
+        ]);
+        const activity=a.data;const profile=p.data;
+        let classroom='—';
+        if(activity?.section_id){
+          const {data:sec}=await db.from('classroom_sections').select('label,classroom_id').eq('id',activity.section_id).maybeSingle();
+          if(sec){const {data:cls}=await db.from('classrooms').select('name').eq('id',sec.classroom_id).maybeSingle();classroom=[cls?.name,sec.label].filter(Boolean).join(' · ');}
+        }
+        const mode=record.attachment_name?'Arquivo PDF anexado':'Redação digitada no aplicativo';
+        const status=record.status==='graded'?'Recebida e corrigida':'Recebida — aguardando correção';
+        el.innerHTML=`<h1>Comprovante de envio de redação</h1><p class="subtitle">Registro eletrônico individual e verificável na conta do estudante.</p><span class="pill">✓ ${esc(status)}</span><p class="receipt-label">Protocolo completo da entrega</p><div class="receipt-id">BV-${esc(record.id.toUpperCase())}</div><dl>
+          ${entry('Aluno(a)',profile?.full_name||profile?.display_name||user.email)}
+          ${entry('E-mail da conta',user.email)}
+          ${entry('Atividade',activity?.title||'Redação cadastrada')}
+          ${entry('Turma',classroom)}
+          ${entry('Data e hora do envio',formatDate(record.submitted_at)+' (MT)')}
+          ${entry('Modalidade',mode)}
+          ${record.attachment_name?entry('Arquivo recebido',record.attachment_name):''}
+          ${entry('Situação',status)}
+        </dl><p class="subtitle">Identificador no banco: ${esc(record.id)}</p>`;
+        document.querySelector('#printReceipt').disabled=false;
+      }catch(err){fail(err.message||'Não foi possível conferir o registro.');}
+    }
+    document.querySelector('#printReceipt').addEventListener('click',()=>window.print());
+  </script>
+</body>
+</html>

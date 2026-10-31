@@ -10,11 +10,14 @@ if (!ready) {
   document.body.appendChild(tag);
 } else {
   try {
-    // Versão EXATA da dependência. Não expor segredos no navegador.
+    // Biblioteca com versão fixa. Nunca compartilhar chave secreta no navegador.
     const lib = await import('https://esm.sh/@supabase/supabase-js@2.57.2');
     const sb = lib.createClient(conf.supabaseUrl.replace(/\/$/, ''), conf.supabasePublishableKey, {
       auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
     });
+    // Compartilhar somente o cliente autenticado (sem service_role) com os módulos da interface.
+    window.BONIVERSO_DB = sb;
+    window.dispatchEvent(new Event('boniverso-db-ready'));
     const online = await import('./online-app.js');
     await online.startBoniVerso(sb);
   } catch (err) {

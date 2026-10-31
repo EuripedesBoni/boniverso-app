@@ -1,0 +1,41 @@
+BONIVERSO v1.0.3 — RECIBOS E CENTRAL DE NOTIFICACOES
+=====================================================
+
+IMPORTANTE: O SQL do Supabase ja foi instalado e testado pela equipe via ChatGPT.
+Nao execute outros SQL nem altere chaves ou senhas para esta atualizacao.
+
+INSTALACAO NO GITHUB (EuripedesBoni/boniverso-app):
+1. Extraia o ZIP.
+2. GitHub > boniverso-app > Add file > Upload files.
+3. Envie APENAS estes 6 arquivos da pasta de atualizacao:
+   - index.html (substitui a versao antiga)
+   - bootstrap.js (substitui a versao antiga)
+   - sw.js (substitui a versao antiga)
+   - boniverso-avisos.js (novo)
+   - boniverso-avisos.css (novo)
+   - recibo.html (novo)
+4. Clique em Commit changes e espere GitHub Pages concluir a publicacao.
+5. Abra o BoniVerso e atualize o navegador para limpar a versao antiga.
+
+FUNCIONALIDADES:
+- Sininho e aba de Notificacoes; indicador de avisos nao lidos.
+- Notificacoes de propostas gerais gratuitas, de propostas de turmas
+  especificas, alteracoes de propostas e devolutivas de redacoes corrigidas.
+- Marcacao individual de avisos lidos salva no Supabase.
+- Com professor autorizado: formulario de aviso geral para alunos.
+- Em Redacoes: painel "Meus comprovantes de envio", inclusive entregas antigas.
+- Recibo em recibo.html?entrega=<id> com identificador UUID real do envio,
+  horario de Mato Grosso, arquivo anexado e status da redacao.
+- Botao "Imprimir / Salvar como PDF" usa a opcao de impressao do navegador.
+
+SEGURANCA:
+- O recibo exige login na MESMA conta que entregou a redacao.
+- Comprovantes e avisos sao protegidos pelas politicas RLS do Supabase.
+- Codigos e dados pessoais nao devem ser compartilhados publicamente.
+- Nao incluir senhas, chaves secretas OpenAI ou Supabase no GitHub.
+
+LIMITACOES:
+- Notificacoes no aplicativo: verificacao a cada minuto enquanto aberto.
+- Sem push externo quando o site estiver fechado nesta versao.
+- A funcionalidade depende de teste real no navegador depois da publicacao.
+- Recibos comprovam o registro do envio, nao a correcao nem autenticidade do texto.
