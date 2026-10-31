@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+ <meta charset="utf-8"/>
+ <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+ <meta name="theme-color" content="#101d38"/>
+ <meta name="referrer" content="strict-origin-when-cross-origin"/>
+ <link rel="icon" href="icon-192.png"/>
+ <title>Turmas e séries | BoniVerso</title>
+ <style>
+ :root{font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:#f5f7fb;color:#142544;font-size:15px}
+ *{box-sizing:border-box}body{margin:0;min-height:100vh}header{background:linear-gradient(120deg,#101d38,#203d70);color:#fff;padding:22px clamp(18px,4vw,50px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+ header .identity{display:flex;gap:12px;align-items:center}header img{height:48px;width:48px;border-radius:12px;object-fit:cover}header b{font-size:22px}header small{display:block;color:#b6c8e0;margin-top:3px}a{color:#3978e8}header a{color:#e9f0ff;text-decoration:none;border:1px solid #7285a5;border-radius:12px;padding:12px 16px;font-weight:600}
+ main{max-width:1220px;padding:26px 20px 68px;margin:auto}h1{font-size:clamp(26px,3vw,36px);margin:6px 0}h2{font-size:20px;margin:0 0 14px}h3{font-size:17px;margin:0 0 12px}p{line-height:1.6}small,.muted{color:#70829c}.eyebrow{font-weight:800;color:#3978e8;font-size:12px;letter-spacing:1.5px}.intro{margin-bottom:26px}.intro p{color:#667891;margin-top:4px}
+ .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}.card{background:#fff;border:1px solid #e5eaf4;border-radius:20px;padding:23px;box-shadow:0 9px 24px rgba(17,38,72,.04);min-width:0}.card.accent{border-left:4px solid #d6b16f}
+ .section{padding:15px 0;border-bottom:1px solid #e9edf5}.section:last-child{border-bottom:0}.section-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.section-top strong{font-size:15px}.pills{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}.pill{padding:5px 9px;border-radius:999px;background:#eaf0fe;color:#3159ab;font-size:12px;font-weight:700}.pill.off{background:#fff1e8;color:#99631a}
+ .btn{background:#3978e8;color:white;border:1px solid #3978e8;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:700;cursor:pointer;line-height:1.25}.btn:hover{filter:brightness(.95)}.btn:disabled{opacity:.53;cursor:not-allowed}.btn.secondary{background:#fff;border-color:#d6deec;color:#1d3155}.btn.warn{color:#96521b;background:#fff;border-color:#e6cba6}.btn.sm{font-size:12px;padding:8px 11px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:13px}label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}input,select,textarea{width:100%;border:1px solid #d6dfed;border-radius:10px;padding:11px 12px;background:#fbfcff;font:inherit;color:#1b2b4a}input:focus,select:focus,textarea:focus{outline:2px solid #bcd1ff}textarea{min-height:115px;resize:vertical}.field{margin-bottom:12px}.hint{font-size:12px;color:#75829a;margin:7px 0}.code-output{background:#edf4ff;padding:13px;border-radius:10px;word-break:break-word;font-family:ui-monospace,monospace;font-size:15px;border:1px solid #d1e2fd;margin:12px 0}
+ .notice{border:1px solid #d8e2f2;background:#eef3fd;border-radius:14px;padding:14px 16px;margin:16px 0;color:#294a76}.notice.warning{background:#fff8e9;border-color:#ead6ad;color:#906b2a}.notice.success{background:#e9f8ef;border-color:#c1e6ce;color:#237349}.notice.error{background:#fff0ee;border-color:#f3c6bc;color:#a33d34}.hidden{display:none!important}table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}th,td{padding:11px;border-bottom:1px solid #e9eef7;text-align:left;vertical-align:top}th{font-size:11px;color:#647897;text-transform:uppercase;letter-spacing:.4px;background:#f4f7fc}.scroll{overflow:auto;max-width:100%}.statline{display:flex;gap:12px;flex-wrap:wrap;color:#728199;font-size:13px;margin:8px 0 16px}.statline b{color:#162b4d}.spaced{margin:20px 0}.schoolcard{margin-bottom:18px}.bigtitle{font-size:16px;font-weight:800}.smalllink{font-size:13px}.report-sheet{margin-top:14px}.icon{color:#b89558}
+ @media(max-width:600px){main{padding:17px 12px 60px}.card{padding:17px}.grid{grid-template-columns:1fr}header{padding:14px}header b{font-size:18px}.btn{padding:11px}}
+ @media print{header,.no-print,.notice,.report-toolbar,#staff-view > :not(#report-panel){display:none!important}body{background:white}main{max-width:none;padding:0}.card{box-shadow:none;border:0;padding:0}.report-sheet{display:block!important}.report-sheet table{min-width:0}th,td{font-size:10px}h1{font-size:18px}}
+ </style>
+</head>
+<body>
+<header>
+ <div class="identity"><img src="icon-192.png" alt="BoniVerso"/><div><b>Boni<span style="color:#d6b16f">Verso</span></b><small>Turmas e séries · RSB Educação</small></div></div>
+ <a href="./">← Voltar ao aplicativo</a>
+</header>
+<main>
+ <div class="intro"><div class="eyebrow">GESTÃO EDUCACIONAL</div><h1 id="page-title">Minhas turmas</h1><p id="page-desc">Acesse sua escola e sua série com o código fornecido pelo professor.</p></div>
+ <div id="status" class="notice" role="status">Conectando ao BoniVerso…</div>
+ <section id="login-required" class="card hidden"><h2>Entre na sua conta</h2><p>Você precisa estar autenticado para acessar turmas e inscrições.</p><a class="btn" href="./">Ir para o login</a></section>
+ <div id="student-view" class="hidden">
+  <div class="grid">
+   <div class="card accent"><h2>Entrar em uma série</h2><p class="muted">Peça ao professor o código de sua escola e série. A matrícula é gratuita nas turmas Jaó e Areião.</p>
+    <form id="join-form"><div class="field"><label for="join-code">Código de matrícula</label><input id="join-code" maxlength="24" required autocapitalize="characters" autocomplete="off" placeholder="Ex.: A1B2C3…"/></div><button class="btn" type="submit">Confirmar matrícula</button></form>
+    <div class="notice warning">Cada código é específico para uma série. Ao ingressar em outra série da mesma escola, sua matrícula anterior nessa escola será atualizada.</div>
+   </div>
+   <div class="card"><h2>Minhas matrículas</h2><div id="my-classes">Carregando…</div></div>
+  </div>
+  <div class="card spaced"><h2>Atividades das minhas séries</h2><p class="muted">Após a matrícula, as propostas aparecerão na página Redações do BoniVerso.</p><div id="my-tasks"></div><div class="actions"><a class="btn" href="./">Abrir Redações no aplicativo</a></div></div>
+ </div>
+ <div id="staff-view" class="hidden">
+  <div class="notice success">Professor autorizado. Códigos de inscrição são confidenciais e devem ser entregues aos alunos da série correta.</div>
+  <div class="grid">
+   <div class="card accent"><h2>Escolas e séries</h2><p class="muted">6º ao 9º ano do Ensino Fundamental; 1ª à 3ª série do Ensino Médio.</p><div id="schools"></div></div>
+   <div class="card"><h2>Publicar proposta por série</h2><form id="assignment-form">
+    <div class="field"><label for="assignment-section">Série de destino</label><select id="assignment-section" required></select></div>
+    <div class="field"><label for="assignment-course">Curso gratuito relacionado</label><select id="assignment-course" required></select></div>
+    <div class="field"><label for="assignment-title">Título da proposta</label><input id="assignment-title" maxlength="150" required placeholder="Ex.: Redação semanal — 7º ano"/></div>
+    <div class="field"><label for="assignment-genre">Gênero textual</label><select id="assignment-genre" required><option value="enem">Dissertação ENEM</option><option value="carta">Carta argumentativa</option><option value="resenha">Resenha crítica</option><option value="artigo">Artigo de opinião</option><option value="outro">Outro gênero</option></select></div>
+    <div class="field"><label for="assignment-instructions">Tema, coletânea e critérios para avaliação</label><textarea id="assignment-instructions" required maxlength="8500" placeholder="Escreva aqui o tema e as orientações para a turma."></textarea></div>
+    <div class="field"><label for="assignment-due">Prazo de entrega (opcional)</label><input id="assignment-due" type="datetime-local"/></div>
+    <div class="notice warning">A pré-correção atual da Luna é específica para a matriz ENEM. Para outros gêneros, utilize avaliação humana do Rafael até calibrarmos uma rubrica apropriada.</div>
+    <button class="btn" type="submit">Publicar proposta</button>
+   </form></div>
+  </div>
+  <div class="card spaced" id="report-panel"><div class="section-top"><h2>Relatório de participantes e notas</h2></div>
+   <div class="formgrid report-toolbar no-print"><div><label for="report-section">Selecionar escola e série</label><select id="report-section"></select></div><div><label for="report-status">Notas</label><select id="report-status"><option value="all">Todos os alunos</option><option value="graded">Somente com redações corrigidas</option></select></div></div>
+   <div class="actions report-toolbar no-print"><button class="btn secondary" id="report-refresh" type="button">Atualizar relatório</button><button class="btn" id="report-csv" type="button">Exportar CSV</button><button class="btn secondary" id="report-print" type="button">Imprimir / salvar PDF</button></div>
+   <div id="report" class="report-sheet">Escolha uma série para visualizar o relatório.</div>
+  </div>
+  <div class="card spaced"><h2>Nova escola ou grupo (opcional)</h2><p class="muted">Jaó e Areião já estão cadastrados com sete séries cada. Crie outras escolas somente quando necessário. Encerrar uma turma preserva os registros históricos.</p><form id="new-school" class="actions" style="align-items:end"><div style="flex:1;min-width:225px"><label for="new-school-name">Nome da escola ou grupo</label><input id="new-school-name" maxlength="140" required placeholder="Ex.: Integrado Centro"/></div><button class="btn secondary" type="submit">Criar escola e 7 séries</button></form></div>
+ </div>
+</main>
+<script src="config.js"></script>
+<script type="module">
+const conf=window.BONIVERSO_CONFIG||{};
+const esc=v=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
+const $=s=>document.querySelector(s);
+const fmtDate=v=>v?new Date(v).toLocaleString('pt-BR'):'Sem prazo';
+const grades=['6EF','7EF','8EF','9EF','1EM','2EM','3EM'];
+const gradeNames={'6EF':'6º ano EF','7EF':'7º ano EF','8EF':'8º ano EF','9EF':'9º ano EF','1EM':'1ª série EM','2EM':'2ª série EM','3EM':'3ª série EM'};
+const genreNames={enem:'Dissertação ENEM',carta:'Carta',resenha:'Resenha',artigo:'Artigo de opinião',outro:'Outro'};
+let db,user,role,classes=[],sections=[],memberships=[],assignments=[],courses=[],profiles=[],submissions=[],lastReport=[];
+function announce(msg,kind='info'){$('#status').textContent=msg;$('#status').className='notice '+(kind==='info'?'':kind);}
+function check(r){if(r.error)throw r.error;return r.data||[];}
+function btnBusy(form,busy){const button=form.querySelector('button[type="submit"]');if(button)button.disabled=busy;}
+async function loadData(){
+ const base=[db.from('classrooms').select('id,name,school_code,description,enrollment_type,is_active,created_at').order('name'),db.from('classroom_sections').select('id,classroom_id,label,grade_code,is_active').order('grade_code'),db.from('classroom_memberships').select('id,user_id,classroom_id,section_id,status,joined_at').order('joined_at',{ascending:false}),db.from('assignments').select('id,title,course_id,classroom_id,section_id,writing_genre,published,due_at').order('created_at',{ascending:false}),db.from('courses').select('id,title,is_free,published').order('title')];
+ const [c,s,m,a,k]=await Promise.all(base);classes=check(c);sections=check(s);memberships=check(m);assignments=check(a);courses=check(k);
+ if(role){const [p,subs]=await Promise.all([db.from('profiles').select('id,display_name,full_name,school_name,school_year'),db.from('submissions').select('id,user_id,assignment_id,submitted_at,status,score,competencies,graded_at')]);profiles=check(p);submissions=check(subs);}
+}
+const schoolName=id=>classes.find(c=>c.id===id)?.name||'Escola';
+const sectionName=id=>{const s=sections.find(x=>x.id===id);return s?schoolName(s.classroom_id)+' · '+(gradeNames[s.grade_code]||s.label):'Série';};
+function myStudentView(){
+ $('#student-view').classList.remove('hidden');
+ const own=memberships.filter(x=>x.user_id===user.id&&x.status==='active');
+ $('#my-classes').innerHTML=own.length?own.map(m=>`<div class="section"><strong>${esc(sectionName(m.section_id))}</strong><p class="muted">Matrícula ativa desde ${esc(fmtDate(m.joined_at))}</p></div>`).join(''):'<p class="muted">Você ainda não tem matrícula nas turmas escolares.</p>';
+ const ownedSections=new Set(own.map(m=>m.section_id));
+ const tasks=assignments.filter(a=>a.published&&a.section_id&&ownedSections.has(a.section_id));
+ $('#my-tasks').innerHTML=tasks.length?tasks.map(a=>`<div class="section"><strong>${esc(a.title)}</strong><div class="statline"><span>${esc(sectionName(a.section_id))}</span><span>${esc(genreNames[a.writing_genre]||'Redação')}</span><span>Prazo: ${esc(fmtDate(a.due_at))}</span></div></div>`).join(''):'<p class="muted">Nenhuma proposta específica da sua série ainda. Confira a página Redações para outras atividades disponíveis.</p>';
+}
+function staffView(){
+ $('#staff-view').classList.remove('hidden');
+ const groups=classes.filter(c=>c.school_code==='jao'||c.school_code==='areiao'||c.school_code==='outros');
+ $('#schools').innerHTML=groups.map(c=>{
+  const ss=grades.map(g=>sections.find(s=>s.classroom_id===c.id&&s.grade_code===g)).filter(Boolean);
+  return `<div class="section schoolcard"><div class="section-top"><strong>${esc(c.name)}</strong><span class="pill ${c.is_active?'':'off'}">${c.is_active?'Ativa':'Arquivada'}</span></div><div class="actions"><button class="btn sm ${c.is_active?'warn':'secondary'}" data-op="school-toggle" data-id="${esc(c.id)}" type="button">${c.is_active?'Arquivar escola':'Reativar escola'}</button></div>${ss.map(s=>{const n=memberships.filter(m=>m.section_id===s.id&&m.status==='active').length;return `<div class="section"><div class="section-top"><strong>${esc(gradeNames[s.grade_code]||s.label)}</strong><span class="pill ${s.is_active?'':'off'}">${n} aluno(s) · ${s.is_active?'Ativa':'Pausada'}</span></div><div class="actions"><button class="btn sm" data-op="gen-code" data-id="${esc(s.id)}" type="button" ${(!c.is_active||!s.is_active||c.enrollment_type!=='free_code')?'disabled':''}>Gerar código</button><button class="btn sm secondary" data-op="select-report" data-id="${esc(s.id)}" type="button">Relatório</button><button class="btn sm ${s.is_active?'warn':'secondary'}" data-op="section-toggle" data-id="${esc(s.id)}" type="button">${s.is_active?'Pausar série':'Reativar série'}</button></div><div class="code-slot" id="code-${esc(s.id)}"></div></div>`}).join('')}</div>`;}).join('');
+ const options=sections.filter(s=>classes.some(c=>c.id===s.classroom_id&&c.enrollment_type==='free_code')).sort((a,b)=>sectionName(a.id).localeCompare(sectionName(b.id),'pt-BR'));
+ for(const id of ['#assignment-section','#report-section']){$(id).innerHTML=options.map(s=>`<option value="${esc(s.id)}">${esc(sectionName(s.id))}</option>`).join('');}
+ const avail=courses.filter(c=>c.published&&c.is_free);$('#assignment-course').innerHTML=avail.map(c=>`<option value="${esc(c.id)}">${esc(c.title)}</option>`).join('');
+ if(!avail.length)announce('Nenhum curso gratuito publicado. Cadastre um curso gratuito antes de criar propostas.','warning');
+ renderReport();
+}
+function csvValue(value){let v=String(value??'');if(/^[\s]*[=+\-@]/.test(v))v="'"+v;return '"'+v.replaceAll('"','""')+'"';}
+function reportRows(){const id=$('#report-section').value;const section=sections.find(s=>s.id===id);if(!section)return [];
+ const list=memberships.filter(m=>m.section_id===id&&m.status==='active');const eligible=new Set(assignments.filter(a=>a.section_id===id||a.section_id===null&&a.classroom_id===section.classroom_id).map(a=>a.id));
+ const rows=[];for(const m of list){const p=profiles.find(x=>x.id===m.user_id);const sub=submissions.filter(x=>x.user_id===m.user_id&&eligible.has(x.assignment_id));
+ if(!sub.length){rows.push({name:p?.full_name||p?.display_name||'Estudante',userId:m.user_id,assignment:'Sem entrega',date:'',status:'Sem envio',score:'',c1:'',c2:'',c3:'',c4:'',c5:''});continue;}
+ for(const s of sub){const a=assignments.find(t=>t.id===s.assignment_id);const comp=s.competencies||{};const v=n=>{const o=comp['c'+n];return typeof o==='number'?o:(o?.score??'');};rows.push({name:p?.full_name||p?.display_name||'Estudante',userId:m.user_id,assignment:a?.title||'Atividade',date:fmtDate(s.submitted_at),status:s.status==='graded'?'Corrigida':'Aguardando',score:s.status==='graded'?(s.score??''):'',c1:s.status==='graded'?v(1):'',c2:s.status==='graded'?v(2):'',c3:s.status==='graded'?v(3):'',c4:s.status==='graded'?v(4):'',c5:s.status==='graded'?v(5):''});}
+ }
+ return $('#report-status').value==='graded'?rows.filter(x=>x.status==='Corrigida'):rows;
+}
+function renderReport(){const select=$('#report-section');if(!select?.value){$('#report').textContent='Selecione uma série.';return;}
+ lastReport=reportRows();const classId=select.value;const totalStudents=memberships.filter(x=>x.section_id===classId&&x.status==='active').length;const allGraded=lastReport.filter(r=>r.status==='Corrigida');const avg=allGraded.length?Math.round(allGraded.reduce((sum,x)=>sum+Number(x.score||0),0)/allGraded.length):null;
+ $('#report').innerHTML=`<h3>${esc(sectionName(classId))}</h3><div class="statline"><span>Alunos matriculados: <b>${totalStudents}</b></span><span>Redações corrigidas (filtro): <b>${allGraded.length}</b></span><span>Média das notas disponíveis: <b>${avg??'—'}</b></span></div><div class="scroll"><table><thead><tr><th>Estudante</th><th>Proposta</th><th>Data</th><th>Situação</th><th>Nota</th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th></tr></thead><tbody>${lastReport.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.assignment)}</td><td>${esc(x.date)}</td><td>${esc(x.status)}</td><td>${esc(x.score)}</td><td>${esc(x.c1)}</td><td>${esc(x.c2)}</td><td>${esc(x.c3)}</td><td>${esc(x.c4)}</td><td>${esc(x.c5)}</td></tr>`).join('')||'<tr><td colspan="10">Nenhum registro encontrado para esta seleção.</td></tr>'}</tbody></table></div><p class="hint">Relatório reservado ao professor. Notas só são mostradas após aprovação da correção. Não compartilhe esse arquivo em grupos públicos.</p>`;
+}
+function exportCsv(){const cols=[['name','Aluno'],['assignment','Proposta'],['date','Enviado em'],['status','Situação'],['score','Nota'],['c1','C1'],['c2','C2'],['c3','C3'],['c4','C4'],['c5','C5']];const lines=[cols.map(x=>csvValue(x[1])).join(';')];for(const r of lastReport)lines.push(cols.map(x=>csvValue(r[x[0]])).join(';'));const blob=new Blob(['\ufeff',lines.join('\r\n')],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='BoniVerso_'+(sections.find(x=>x.id===$('#report-section').value)?.grade_code||'serie')+'_relatorio.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+async function init(){
+ if(!conf.supabaseUrl||!conf.supabasePublishableKey){announce('BoniVerso não configurado.','error');return;}
+ try{
+ const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2.57.2');
+ db=createClient(conf.supabaseUrl,conf.supabasePublishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+ const response=await db.auth.getUser();user=response.data?.user;if(response.error||!user){$('#login-required').classList.remove('hidden');announce('Faça login no BoniVerso para continuar.','warning');return;}
+ const rr=await db.rpc('current_staff_role');if(rr.error)throw rr.error;role=rr.data;
+ $('#page-title').textContent=role?'Turmas e séries · Prof. Rafa Boni':'Minhas turmas';
+ $('#page-desc').textContent=role?'Gerencie Jaó e Areião, gere códigos por série, publique propostas e consulte notas.':'Matrículas gratuitas por escola e série, com código do professor.';
+ await loadData();role?staffView():myStudentView();announce(role?'Painel de turmas carregado.':'Turmas disponíveis após sua matrícula.','success');
+ }catch(e){announce('Não foi possível carregar as turmas: '+String(e.message||e),'error');console.error('BoniVerso turmas:',e);}
+}
+$('#join-form').addEventListener('submit',async e=>{e.preventDefault();const form=e.currentTarget;btnBusy(form,true);try{const code=$('#join-code').value.replaceAll(' ','').trim().toUpperCase();if(!/^[A-F0-9]{20}$/.test(code))throw Error('O código precisa ter 20 caracteres hexadecimais.');const r=await db.rpc('join_classroom_section',{p_code:code});check(r);await loadData();myStudentView();$('#join-code').value='';announce('Matrícula registrada! Agora acesse Redações no aplicativo.','success');}catch(err){announce(String(err.message||err),'error');}finally{btnBusy(form,false)}});
+$('#schools').addEventListener('click',async ev=>{const b=ev.target.closest('button[data-op]');if(!b||!role)return;const op=b.dataset.op,id=b.dataset.id; b.disabled=true;try{
+ if(op==='gen-code'){if(!window.confirm('Gerar um novo código para esta série? Um código anterior deixará de funcionar, mas as matrículas existentes serão preservadas.'))return;const r=await db.rpc('generate_section_code',{p_section_id:id});const code=check(r);const box=document.getElementById('code-'+id);box.innerHTML=`<p class="hint">Copie agora: o código não poderá ser consultado depois, apenas substituído.</p><div class="code-output">${esc(code)}</div><button type="button" class="btn sm secondary" data-op="copy-code" data-code="${esc(code)}">Copiar código</button>`;announce('Novo código criado. Entregue somente aos alunos desta série.','success');return;}
+ if(op==='copy-code'){await navigator.clipboard.writeText(b.dataset.code);announce('Código copiado.','success');return;}
+ if(op==='select-report'){$('#report-section').value=id;renderReport();$('#report').scrollIntoView({behavior:'smooth',block:'start'});return;}
+ if(op==='school-toggle'){const c=classes.find(x=>x.id===id);if(!c)return;if(!confirm(c.is_active?'Arquivar esta escola? Novos envios serão bloqueados e registros mantidos.':'Reativar esta escola?'))return;check(await db.from('classrooms').update({is_active:!c.is_active}).eq('id',id));}
+ if(op==='section-toggle'){const s=sections.find(x=>x.id===id);if(!s)return;if(!confirm(s.is_active?'Pausar esta série? Matrículas e histórico serão preservados.':'Reativar esta série?'))return;check(await db.from('classroom_sections').update({is_active:!s.is_active}).eq('id',id));}
+ await loadData();staffView();announce('Alteração salva.','success');
+ }catch(err){announce('Não foi possível concluir: '+String(err.message||err),'error');}finally{b.disabled=false}});
+$('#assignment-form').addEventListener('submit',async e=>{e.preventDefault();const f=e.currentTarget;btnBusy(f,true);try{
+ const s=sections.find(x=>x.id===$('#assignment-section').value);if(!s||!s.is_active||!classes.find(x=>x.id===s.classroom_id)?.is_active)throw Error('Escolha uma série ativa.');
+ const courseId=$('#assignment-course').value;if(!courses.some(x=>x.id===courseId&&x.is_free&&x.published))throw Error('Escolha um curso gratuito e publicado.');
+ const title=$('#assignment-title').value.trim(),instructions=$('#assignment-instructions').value.trim(),genre=$('#assignment-genre').value;
+ if(title.length<5||instructions.length<20)throw Error('Informe um título e orientações com pelo menos 20 caracteres.');
+ const dueInput=$('#assignment-due').value;const due_at=dueInput?new Date(dueInput).toISOString():null;
+ if(due_at&&new Date(due_at)<=new Date())throw Error('O prazo não pode estar no passado.');
+ check(await db.from('assignments').insert({course_id:courseId,classroom_id:s.classroom_id,section_id:s.id,title,instructions,due_at,writing_genre:genre,max_points:1000,published:true}));
+ f.reset();await loadData();staffView();announce('Proposta publicada somente para '+sectionName(s.id)+'.','success');
+ }catch(err){announce('Falha ao publicar: '+String(err.message||err),'error');}finally{btnBusy(f,false)}});
+$('#new-school').addEventListener('submit',async e=>{e.preventDefault();const f=e.currentTarget;btnBusy(f,true);try{
+ const name=$('#new-school-name').value.trim();if(name.length<4)throw Error('Digite um nome de escola com pelo menos 4 caracteres.');
+ if(classes.some(c=>c.name.toLocaleLowerCase('pt-BR')===name.toLocaleLowerCase('pt-BR')))throw Error('Já existe uma escola com esse nome.');
+ check(await db.rpc('create_classroom_with_sections',{p_name:name}));
+ $('#new-school-name').value='';await loadData();staffView();announce('Escola cadastrada com sete séries.','success');
+ }catch(err){announce(String(err.message||err),'error');}finally{btnBusy(f,false)}});
+$('#report-section').addEventListener('change',renderReport);$('#report-status').addEventListener('change',renderReport);
+$('#report-refresh').addEventListener('click',async()=>{try{await loadData();renderReport();announce('Relatório atualizado.','success');}catch(e){announce(String(e.message||e),'error')}});
+$('#report-csv').addEventListener('click',exportCsv);$('#report-print').addEventListener('click',()=>window.print());
+init();
+</script>
+</body>
+</html>

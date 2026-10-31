@@ -1,0 +1,20 @@
+BONIVERSO — Atualização v1.0: turmas Jaó/Areião e 6º–9º EF, 1ª–3ª EM
+
+1. DESCOMPACTE o ZIP.
+2. GitHub > EuripedesBoni/boniverso-app > Add file > Upload files.
+3. Selecione SOMENTE estes cinco arquivos:
+   - index.html
+   - sw.js
+   - turmas.html
+   - turmas-link.js
+   - ROADMAP_BONIVERSO.md
+4. Faça Commit changes para main (raiz do repositório).
+5. Confirme a publicação na aba Actions.
+6. Abra https://euripedesboni.github.io/boniverso-app/?versao=10
+   Entre como professor e clique em Turmas e séries.
+7. Teste matrícula e proposta com uma conta de estudante.
+
+BANCO SUPABASE: já configurado. Não execute SQL de novo.
+NÃO altere config.js, online-app.js, boniverso-ai.html nem o Medatlas.
+Somente o professor autorizado vê relatórios e gera códigos. Não poste códigos publicamente.
+O PDF de redação continua no fluxo existente e será testado depois.
