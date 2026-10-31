@@ -1,10 +1,10 @@
-BoniVerso Live — ajuste de áudio v1.1.5
+BoniVerso Live — Biblioteca de videoaulas (base v1.1.7)
 
-1. Acesse GitHub > EuripedesBoni/boniverso-app > live-room.html.
-2. Substitua o arquivo live-room.html pelo arquivo deste pacote, na raiz da branch main.
-3. Aguarde a publicação do GitHub Pages e recarregue a sala.
-4. Clique em Ativar microfone; observe o status Microfone ligado e enviado ao LiveKit.
-5. Para ouvir, conecte-se de outro dispositivo com UMA SEGUNDA CONTA matriculada, para evitar colisão de identidade LiveKit.
-6. No dispositivo do ouvinte, clique Ativar som dos participantes e aumente o volume.
+1. Envie biblioteca-live.html à raiz de EuripedesBoni/boniverso-app (Add file > Upload files > Commit changes).
+2. Abra https://euripedesboni.github.io/boniverso-app/biblioteca-live.html
+3. Opcional: adicione um atalho na Central, apontando para ./biblioteca-live.html.
 
-Não foram alteradas matrículas ou segredos do Supabase.
+Supabase BoniVerso-RSB: a tabela boniverso_live_recordings e suas políticas RLS JÁ FORAM CRIADAS.
+A biblioteca listará somente gravações marcadas ready e visíveis para o usuário.
+
+IMPORTANTE: este é o catálogo seguro, NÃO o motor de gravação. Ainda não há gravação nem reprodução de arquivo nesta versão. O LiveKit Egress requer destino privado (S3/R2 ou equivalente), credenciais no servidor, gatilho de iniciar/parar, processamento e endpoint de reprodução com autorização a cada solicitação. Não carregar links públicos ou segredos no navegador. Gravar alunos exige aviso/consentimentos apropriados e política de retenção.
