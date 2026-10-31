@@ -1,0 +1,38 @@
+BONIVERSO 1.1.1 — NAVEGAÇÃO DAS TURMAS — 31/10/2026
+
+OBJETIVO
+- No painel do professor, tocar/clicar em Jaó, Areião ou Aparecida abre a escola/sala.
+- Para Jaó, Areião e outras escolas gratuitas: escolher a série abre a sala com suas propostas.
+- Em Aparecida de Goiânia: abrir a sala privada com aulas ao vivo e chat.
+- Na página inicial do estudante: abrir diretamente a série matriculada.
+- Na página inicial do professor: apresentar as escolas, inclusive Aparecida.
+- Funcionar em celular, tablet e computador.
+
+INSTALAÇÃO — GITHUB
+1. Extrair este ZIP; enviar os cinco arquivos deste pacote (não precisa enviar este LEIA-ME):
+   config.js
+   sw.js
+   turmas-navegacao.js
+   turmas-navegacao.css
+   sala.html
+2. Abrir https://github.com/EuripedesBoni/boniverso-app
+3. Add file > Upload files > selecionar os cinco arquivos.
+4. Confirmar substituição dos arquivos existentes config.js e sw.js.
+5. Commit changes; aguardar o GitHub Pages marcar sucesso.
+6. Recarregar https://euripedesboni.github.io/boniverso-app/?versao=111
+7. Testar também https://euripedesboni.github.io/boniverso-app/turmas.html
+
+VALIDAÇÃO
+PROFESSOR: em Turmas e séries, clicar no nome de Jaó ou Areião; deve abrir a escola e listar as sete séries. Clicar 6º ano EF; deve abrir a sala da série. Voltar à lista e clicar em Aparecida; deve abrir a página de aula ao vivo.
+ALUNO: abrir Minhas turmas; somente sua série matriculada deve ter acesso. Testar o botão de proposta de redação, que abre a tela de texto/PDF.
+ALUNO PAGO: somente com acesso aprovado pelo professor a turma Aparecida aparece; clicá-la abre a sala privada.
+
+SEGURANÇA
+- As permissões são validadas pelo Supabase Auth, RLS e matrículas existentes.
+- Nunca coloque senhas ou chaves secretas no GitHub.
+- Este pacote não muda nem apaga nenhuma matrícula, redação ou tabela do Supabase.
+- Não altera o EstudNexa.
+- Nenhuma aula ao vivo é iniciada automaticamente.
+
+OBSERVAÇÃO
+A instalação atualiza navegação e páginas públicas. O funcionamento completo deve ser verificado no navegador após a publicação. Se a versão antiga persistir, fechar e reabrir o aplicativo ou usar a Central de Atualizações.

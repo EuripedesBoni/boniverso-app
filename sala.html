@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#142448" />
+<title>Minha sala · BoniVerso</title>
+<link rel="icon" href="./icon-192.png" type="image/png" />
+<link rel="stylesheet" href="./turmas-navegacao.css" />
+<style>
+:root{font:15px/1.55 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:#f4f6fc;color:#192847}*{box-sizing:border-box}body{margin:0}a{color:#3168c9}button{font:inherit;cursor:pointer}.top{background:#12213e;color:#fff;padding:16px clamp(15px,4vw,45px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:12px}.brand img{width:46px;height:46px;border-radius:12px}.brand strong{font-size:22px}.brand small{display:block;color:#c1d0ea}.back{color:#eef4ff;text-decoration:none;padding:10px 13px;border:1px solid #53678d;border-radius:11px;font-weight:700}main{max-width:1100px;margin:auto;padding:23px 16px 72px}.hero{background:linear-gradient(120deg,#132443,#2c4e85);color:#fff;border-radius:22px;padding:clamp(22px,5vw,38px);margin:0 0 22px}.hero h1{font-size:clamp(26px,5vw,37px);margin:7px 0}.hero p{color:#dae4f4;margin:6px 0}.eyebrow{font-size:11px;letter-spacing:2px;color:#f3d397;font-weight:900}.badge{display:inline-block;border-radius:99px;padding:5px 10px;background:#eaf0ff;color:#30549b;font-size:12px;font-weight:750}.card{background:white;border:1px solid #e3eaf5;border-radius:19px;box-shadow:0 10px 25px rgba(15,31,68,.045);padding:clamp(17px,3vw,27px);margin:16px 0}h2{font-size:22px;margin:0 0 10px}h3{font-size:17px;margin:0 0 5px}.muted{color:#71819b}.notice{border-radius:14px;border:1px solid #d1e0f9;background:#ebf3ff;padding:14px 16px;color:#2d5386;margin:16px 0}.notice.error{background:#fff0ed;color:#9b332c;border-color:#eec6c0}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:11px;border:1px solid #3978e8;background:#3978e8;color:#fff;text-decoration:none;padding:11px 15px;font-weight:750;min-height:43px}.btn.secondary{background:#fff;color:#24426e;border-color:#d6e0ee}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}.room{border:1px solid #e3eaf5;border-left:3px solid #d1ad6a;border-radius:15px;padding:17px;min-width:0;background:#fff}.room p{margin:4px 0}.room.inactive{opacity:.7}.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px}.message{font-size:13px}.footer{text-align:center;color:#8393a8;padding:26px 14px 38px;font-size:12px}@media(max-width:620px){.top{padding:13px 15px}.brand strong{font-size:18px}.brand img{height:39px;width:39px}.hero{border-radius:17px}.room{padding:15px}main{padding:16px 13px 55px}}[hidden]{display:none!important}
+</style>
+<script src="./config.js"></script>
+</head>
+<body>
+<header class="top"><div class="brand"><img src="./icon-192.png" alt="BoniVerso"/><div><strong>Boni<span style="color:#dfbb78">Verso</span></strong><small>Turmas e salas · RSB Educação</small></div></div><a class="back" href="./turmas.html">← Voltar às turmas</a></header>
+<main>
+<section class="hero"><div class="eyebrow">SALA DE AULA · BONIVERSO</div><h1 id="name">Abrindo sua turma…</h1><p id="description">Materiais e propostas do Prof. Rafa Boni, organizados por escola e série.</p></section>
+<div class="notice" id="status" role="status" aria-live="polite">Verificando sua matrícula e buscando as atividades…</div>
+<div id="denied" class="card" hidden><h2>Turma com acesso restrito</h2><p class="muted">Verifique se você entrou com a conta cadastrada e se sua matrícula está ativa. Se ainda não estiver matriculado, solicite o código de sua série ao professor.</p><div class="actions"><a class="btn" href="./turmas.html">Voltar e verificar matrícula</a><a class="btn secondary" href="./">Página inicial</a></div></div>
+<div id="content" hidden>
+ <div class="card"><h2 id="list-title">Séries e salas</h2><p class="muted" id="list-hint">Selecione a série para abrir as atividades correspondentes.</p><div class="grid" id="rooms"></div></div>
+ <div class="card"><h2>Propostas de redação e atividades</h2><p class="muted">Abra uma proposta para escrever no BoniVerso ou anexar um PDF, quando a atividade permitir.</p><div class="grid" id="tasks"></div></div>
+ <div class="card"><h2>Ferramentas da turma</h2><div class="actions" id="tools"><a class="btn secondary" href="./turmas.html">Minhas turmas</a><a class="btn secondary" href="./?pagina=redacoes">Minhas redações</a></div></div>
+</div>
+</main>
+<footer class="footer">© 2026 BoniVerso · RSB Educação · Acesso autenticado e restrito por matrícula</footer>
+<script type="module">
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.2';
+const $=id=>document.getElementById(id);
+const params=new URLSearchParams(location.search);
+const uuid=/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i;
+const classId=params.get('turma')||'';const sectionId=params.get('serie')||'';
+const grades={'6EF':'6º ano EF','7EF':'7º ano EF','8EF':'8º ano EF','9EF':'9º ano EF','1EM':'1ª série EM','2EM':'2ª série EM','3EM':'3ª série EM'};
+function node(tag,text,cls){const e=document.createElement(tag);if(text!=null)e.textContent=String(text);if(cls)e.className=cls;return e}
+function link(label,url,cls='btn'){const e=node('a',label,cls);e.href=url;return e}
+function notice(text,error=false){$('status').textContent=text;$('status').className='notice'+(error?' error':'')}
+function date(v){if(!v)return 'Sem prazo';const d=new Date(v);return Number.isNaN(+d)?'Data indisponível':d.toLocaleString('pt-BR',{dateStyle:'medium',timeStyle:'short'})}
+const route=(cls,sec)=>'./sala.html?turma='+encodeURIComponent(cls)+(sec?'&serie='+encodeURIComponent(sec):'');
+async function start(){try{
+ if(!uuid.test(classId)||(sectionId&&!uuid.test(sectionId)))throw Error('O link da turma está incompleto. Volte à lista e selecione sua escola.');
+ const cfg=window.BONIVERSO_CONFIG;
+ if(!cfg?.supabaseUrl||!cfg?.supabasePublishableKey)throw Error('Conexão com o BoniVerso indisponível.');
+ const db=createClient(cfg.supabaseUrl,cfg.supabasePublishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+ const auth=await db.auth.getUser();const user=auth.data?.user;
+ if(!user){$('denied').hidden=false;throw Error('Entre na sua conta do BoniVerso para visualizar a sala.');}
+ const staffResult=await db.rpc('current_staff_role');if(staffResult.error)throw staffResult.error;
+ const staff=['teacher','admin'].includes(staffResult.data);
+ const [schoolRes,membersRes]=await Promise.all([
+  db.from('classrooms').select('id,name,description,enrollment_type,is_active').eq('id',classId).maybeSingle(),
+  db.from('classroom_memberships').select('classroom_id,section_id,status').eq('classroom_id',classId).eq('user_id',user.id).eq('status','active')
+ ]);
+ if(schoolRes.error||membersRes.error)throw (schoolRes.error||membersRes.error);
+ const school=schoolRes.data;const members=membersRes.data||[];
+ if(!school || (!staff && (!school.is_active || !members.length))){$('denied').hidden=false;notice('Esta sala ainda não foi liberada para sua conta.',true);return;}
+ if(school.enrollment_type==='paid_invite'){location.replace('./aparecida.html');return;}
+ $('name').textContent=school.name;document.title=school.name+' · BoniVerso';
+ $('description').textContent=school.description||'Redações, propostas e acompanhamentos da sua escola.';
+ const sectionsRes=await db.from('classroom_sections').select('id,classroom_id,label,grade_code,is_active').eq('classroom_id',classId).order('grade_code');
+ if(sectionsRes.error)throw sectionsRes.error;
+ const allowed=new Set(members.map(m=>m.section_id));
+ const gradeOrder=['6EF','7EF','8EF','9EF','1EM','2EM','3EM'];
+ const allSections=(sectionsRes.data||[]).sort((a,b)=>gradeOrder.indexOf(a.grade_code)-gradeOrder.indexOf(b.grade_code));
+ const visible=staff?allSections:allSections.filter(s=>allowed.has(s.id));
+ const current=sectionId?visible.find(s=>s.id===sectionId):null;
+ if(sectionId&&!current){$('denied').hidden=false;notice('Esta série não está disponível para a sua matrícula.',true);return;}
+ $('content').hidden=false;notice(staff?'Área do professor autorizada.':'Matrícula ativa. Bem-vindo à sua sala!');
+ $('list-title').textContent=current?(grades[current.grade_code]||current.label):'Séries e salas';
+ $('list-hint').textContent=current?'Esta é a sala selecionada. Você pode voltar à escola para ver as demais séries.':staff?'Selecione uma série para conferir atividades e relatórios.':'Abra sua série para ver as propostas.';
+ const rooms=$('rooms');rooms.replaceChildren();
+ const roomSections=current?[current]:visible;
+ for(const s of roomSections){
+  const card=node('article',null,'room'+(!s.is_active?' inactive':''));const h=node('h3',grades[s.grade_code]||s.label);const p=node('p',s.is_active?'Ativa':'Série pausada','muted');
+  const acts=node('div',null,'actions');acts.append(link('Abrir sala desta série',route(classId,s.id), 'btn'));
+  if(staff)acts.append(link('Relatórios e gestão','./turmas.html?relatorio='+encodeURIComponent(s.id)+'#report-panel','btn secondary'));
+  card.append(h,p,acts);rooms.append(card);
+ }
+ if(current){$('rooms').prepend(link('← Ver todas as séries',route(classId),'btn secondary'));}
+ if(!roomSections.length)$('rooms').append(node('p','Não há séries disponíveis para sua matrícula.','muted'));
+ const tasksResult=await db.from('assignments').select('id,title,instructions,due_at,writing_genre,section_id,classroom_id,published').eq('classroom_id',classId).order('created_at',{ascending:false});
+ if(tasksResult.error)throw tasksResult.error;
+ const tasks=(tasksResult.data||[]).filter(t=>(staff||t.published) && (!current||t.section_id===null||t.section_id===current.id) && (staff||t.section_id===null||allowed.has(t.section_id)));
+ const list=$('tasks');list.replaceChildren();
+ if(!tasks.length)list.append(node('p','Nenhuma proposta disponível nesta sala por enquanto.','muted'));
+ for(const a of tasks){const card=node('article',null,'room');card.append(node('h3',a.title),node('p','Prazo: '+date(a.due_at),'muted'));
+  const related=allSections.find(s=>s.id===a.section_id);if(related)card.append(node('span',grades[related.grade_code]||related.label,'badge'));
+  const acts=node('div',null,'actions');acts.append(link(staff?'Ver proposta no aplicativo':'Escrever ou anexar PDF','./?pagina=redacoes&atividade='+encodeURIComponent(a.id)));
+  card.append(acts);list.append(card);
+ }
+ if(staff){$('tools').append(link('Gerenciar turmas e relatórios','./turmas.html#report-panel','btn secondary'));}
+}catch(err){notice(err.message||'Não foi possível abrir esta sala.',true);$('denied').hidden=false;console.warn('Sala BoniVerso:',err)}}
+start();
+</script>
+</body>
+</html>

@@ -135,3 +135,12 @@ window.BONIVERSO_CONFIG = Object.freeze({
   observer.observe(app,{subtree:true,childList:true});
   syncRoute();
 })();
+
+/* v1.1.1 — atalhos das salas integrados em index.html e turmas.html.
+   Não altera autorização, dados de turmas ou sessões. */
+(() => {
+  const page=location.pathname.split('/').pop()||'index.html';
+  if(page!=='index.html' && page!=='turmas.html')return;
+  const css=document.createElement('link');css.rel='stylesheet';css.href='./turmas-navegacao.css';document.head.append(css);
+  const script=document.createElement('script');script.src='./turmas-navegacao.js';script.defer=true;document.head.append(script);
+})();
