@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Participantes e presença | BoniVerso Live</title>
+<style>
+:root{font:15px/1.55 system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#20324f;background:#f2f5fa}*{box-sizing:border-box}body{margin:0}a{color:#245cad}header{background:#132848;color:#fff;padding:16px clamp(15px,4vw,45px);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}header strong{font-size:21px}header b{color:#e9c888}header a{color:#f0d7a9;text-decoration:none}header nav{display:flex;gap:16px;flex-wrap:wrap}main{max-width:1260px;margin:auto;padding:24px 15px 60px}.hero{border-radius:19px;padding:25px 28px;background:linear-gradient(115deg,#152b50,#315d98);color:#fff}.hero h1{font-size:clamp(25px,4vw,34px);margin:6px 0}.hero p{color:#d9e7f8;margin:0}.status{border:1px solid #ceddf1;background:#e6effd;color:#254b86;padding:12px 16px;margin:17px 0;border-radius:13px;white-space:pre-wrap}.status.error{background:#fff0ee;color:#9b3333;border-color:#f6c5bd}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:17px 0}.stat{background:white;border:1px solid #dbe4f0;border-radius:14px;padding:16px}.stat strong{font-size:27px;color:#153e75;display:block}.stat span{color:#697c94;font-size:13px}.grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(290px,.7fr);gap:16px}section{background:#fff;border:1px solid #dce4ef;border-radius:17px;padding:20px;margin:16px 0;min-width:0}h2{font-size:19px;margin:0 0 10px}.muted{color:#647991;font-size:13px}.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between}.entry{border:1px solid #e0e8f2;background:#fafdff;border-radius:13px;padding:13px;margin:10px 0;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.entry .who{min-width:120px;flex:1}.entry strong{display:block}.entry small{display:block;color:#617791}.actions{display:flex;gap:7px;flex-wrap:wrap}button{font:inherit;border:0;border-radius:10px;background:#2c61b1;color:#fff;padding:9px 12px;min-height:39px;cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}.secondary{background:#e9f0fb;color:#224e87}.danger{background:#ad4050}.requested{border-left:4px solid #caa35e}input{font:inherit;border:1px solid #cbd9e8;padding:10px;border-radius:9px;max-width:100%}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:700px}th,td{border-bottom:1px solid #e4eaf2;padding:12px 10px;text-align:left;vertical-align:middle;font-size:13px}th{font-weight:700;color:#405e81;background:#f4f7fc}td small{display:block;color:#6a7c90}.pill{display:inline-block;background:#e3f4eb;color:#176a48;border-radius:20px;padding:3px 9px;font-size:12px;font-weight:700}.warn{background:#fff1df;color:#86560c}.empty{padding:24px;text-align:center;border:1px dashed #ccd8e8;border-radius:12px;color:#657b97}footer{font-size:12px;color:#687a91;padding:12px 0;line-height:1.6}[hidden]{display:none!important}@media(max-width:800px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:500px){section{padding:14px}.hero{padding:19px}.stats{gap:7px}.stat{padding:12px}.stat strong{font-size:23px}.stat span{font-size:11px}.entry{align-items:flex-start}.actions{width:100%}.actions button{flex:1}.bar{align-items:stretch}}
+</style>
+</head>
+<body>
+<header><strong>Boni<b>Verso</b> · Live</strong><nav><a id="back" href="./live-central.html">← Sala de aula</a><a href="./live-central.html">Central de aulas</a><a href="./painel-gravacoes.html">Gravações</a></nav></header>
+<main>
+<div class="hero"><small>RSB EDUCAÇÃO · ACESSO DO PROFESSOR</small><h1>Participantes e lista de presença</h1><p id="lesson">Consultando a aula…</p></div>
+<div id="status" class="status" role="status">Verificando permissão do professor…</div>
+<div class="stats"><div class="stat"><strong id="online">—</strong><span>Na sala agora</span></div><div class="stat"><strong id="total">—</strong><span>Alunos registrados</span></div><div class="stat"><strong id="requests">—</strong><span>Pedidos de palavra</span></div></div>
+<div class="grid"><section><div class="bar"><h2>Presença ao vivo</h2><button id="reload" class="secondary">↻ Atualizar</button></div><p class="muted">Conexões confirmadas pela consulta ao LiveKit. A lista atualiza automaticamente a cada 12 segundos enquanto a página estiver aberta.</p><div id="roster"><div class="empty">Aguardando consulta aos participantes…</div></div></section><section><h2>✋ Pedidos de palavra</h2><p class="muted">O estudante precisa clicar em “Atualizar minha permissão” depois de aprovado.</p><div id="pending"><div class="empty">Nenhuma solicitação pendente.</div></div></section></div>
+<section><div class="bar"><h2>Relatório de frequência</h2><button id="export" disabled>Baixar CSV</button></div><p class="muted">Registro das entradas e saídas confirmadas por eventos assinados do LiveKit. A configuração do webhook é obrigatória para o histórico; conexões anteriores não são recuperadas retroativamente. Se o evento de saída atrasar, uma sessão poderá permanecer aberta até a confirmação.</p><div id="attendance" class="table-wrap"><div class="empty">Nenhuma presença registrada ainda.</div></div></section>
+<footer>O relatório registra conexões técnicas, não comprova atenção ou participação acadêmica. O professor deve revisar eventuais reconexões e a política de frequência. O controle de remoção desconecta um aluno, mas não revoga sua matrícula nem impede uma nova entrada.</footer>
+</main>
+<script src="./config.js"></script>
+<script type="module">
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.2';
+const $=id=>document.getElementById(id),evtId=new URLSearchParams(location.search).get('sessao');
+const uuid=/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i;
+const cfg=window.BONIVERSO_CONFIG;
+const status=(v,err=false)=>{$('status').textContent=v;$('status').classList.toggle('error',err)};
+const node=(tag,text,className)=>{const e=document.createElement(tag);if(text!==undefined&&text!==null)e.textContent=String(text);if(className)e.className=className;return e};
+let db=null,loading=false,current=null,lastSuccess=0;
+if(uuid.test(evtId||''))$('back').href='./live-room.html?sessao='+encodeURIComponent(evtId);
+function date(v){if(!v)return '—';const d=new Date(v);return Number.isNaN(d.valueOf())?'—':d.toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'});}
+function dur(sec){const m=Math.round(sec/60);return m>=60?Math.floor(m/60)+'h '+String(m%60).padStart(2,'0')+'min':m+' min';}
+function button(text,cls,click){const b=node('button',text,cls);b.type='button';b.addEventListener('click',click);return b}
+function csvSafe(value){let s=String(value??'');if(/^[=+@\-\t\r]/.test(s.trimStart()))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+async function call(action,extra={}){
+ const {data,error}=await db.functions.invoke('boniverso-live-participants',{body:{event_id:evtId,action,...extra}});
+ if(error){let msg=error.message||'Erro no servidor';try{msg=(await error.context?.json?.())?.error||msg}catch{}throw Error(msg)}
+ if(data?.error)throw Error(data.error);return data;
+}
+async function action(type,userId,display){
+ const verb=type==='mute'?'silenciar o microfone de':type==='camera'?'desligar a câmera de':type==='remove'?'desconectar':type==='approve'?'aprovar a participação de':'recusar o pedido de';
+ if(!window.confirm('Deseja '+verb+' '+display+'?'))return;
+ status('Aplicando ação…');
+ try{const v=await call(type,{user_id:userId});status(v.message||'Ação concluída');await load(true)}catch(e){status(e.message,true)}
+}
+function renderRoster(data){const box=$('roster');box.replaceChildren();const people=data.roster||[];if(!people.length){box.append(node('div','Nenhum participante conectado no momento.','empty'));return}
+ for(const p of people){const card=node('div',null,'entry'),who=node('div',null,'who');who.append(node('strong',p.name||'Estudante'));const audio=p.audio_tracks||[];who.append(node('small',[audio.length?(audio.some(t=>!t.muted)?'🎤 Microfone ativo':'🔇 Microfone silenciado'):'Microfone não publicado',p.video_on?'📷 Vídeo ativo':'Câmera desligada'].join(' · ')));card.append(who);
+ const actions=node('div',null,'actions');const mute=button('Silenciar','secondary',()=>action('mute',p.user_id,p.name));mute.disabled=!audio.some(t=>!t.muted);actions.append(mute);const camera=button('Desligar câmera','secondary',()=>action('camera',p.user_id,p.name));camera.disabled=!p.video_on;actions.append(camera,button('Remover','danger',()=>action('remove',p.user_id,p.name)));card.append(actions);box.append(card)}
+}
+function renderRequests(data){const box=$('pending');box.replaceChildren();const list=data.pending||[];if(!list.length){box.append(node('div','Nenhum pedido pendente.','empty'));return}
+ for(const p of list){const card=node('div',null,'entry requested');card.append(node('strong',p.name));const acts=node('div',null,'actions');acts.append(button('Autorizar','',()=>action('approve',p.user_id,p.name)),button('Recusar','danger',()=>action('deny',p.user_id,p.name)));card.append(acts);box.append(card)}
+}
+function aggregate(data){const attendance=data.attendance||[],byUser=new Map(),connected=new Set((data.roster||[]).map(x=>x.participant_sid));const now=Date.now();
+ for(const s of attendance){const id=s.user_id;let a=byUser.get(id);if(!a){a={id,name:s.name||'Estudante',first:Infinity,last:0,seconds:0,sessions:0,open:0,sources:new Set()};byUser.set(id,a)}const join=Date.parse(s.joined_at),leave=s.left_at?Date.parse(s.left_at):null;const live=!leave&&connected.has(s.participant_sid);if(Number.isFinite(join)){a.first=Math.min(a.first,join);a.last=Math.max(a.last,leave||0);a.seconds+=Math.max(0,((leave|| (live?now:join))-join)/1000);}a.sessions++;if(live)a.open++;a.sources.add(s.source||'webhook');}
+ return [...byUser.values()].sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+}
+function renderAttendance(data){const list=aggregate(data);const box=$('attendance');box.replaceChildren();$('total').textContent=list.length;$('export').disabled=!list.length;
+ if(!list.length){box.append(node('div','Ainda não há entradas registradas. Configure o webhook no LiveKit para iniciar o histórico de frequência.','empty'));return}
+ const table=node('table'),head=node('thead'),tr=node('tr');for(const v of ['Estudante','Entradas','Primeiro acesso','Última saída','Tempo conectado','Situação'])tr.append(node('th',v));head.append(tr);table.append(head);const body=node('tbody');for(const p of list){const row=node('tr');const cells=[p.name,p.sessions,date(Number.isFinite(p.first)?p.first:null),date(p.last||null),dur(p.seconds)];for(const c of cells)row.append(node('td',c));const state=node('td');state.append(node('span',p.open?'Conectado':'Fora da sala','pill'+(p.open?'':' warn')));row.append(state);body.append(row)}table.append(body);box.append(table);
+}
+async function load(silent=false){if(loading||!db||document.hidden)return;loading=true;if(!silent)status('Atualizando participantes…');try{
+ const data=await call('list');current=data;lastSuccess=Date.now();$('lesson').textContent=data.event?.title||'Aula ao vivo';$('online').textContent=(data.roster||[]).length;$('requests').textContent=(data.pending||[]).length;renderRoster(data);renderRequests(data);renderAttendance(data);if(!silent)status('Painel atualizado às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}));
+ }catch(e){status('Falha ao consultar: '+e.message,true)}finally{loading=false}}
+$('export').onclick=()=>{if(!current)return;const rows=aggregate(current);const lines=[['Aluno','ID de usuário','Entradas','Primeira entrada','Última saída','Duração (segundos)','Conectado agora','Origem']];for(const r of rows)lines.push([r.name,r.id,r.sessions,date(Number.isFinite(r.first)?r.first:null),date(r.last||null),Math.round(r.seconds),r.open?'Sim':'Não',[...r.sources].join(', ')]);const csv='\ufeff'+lines.map(r=>r.map(csvSafe).join(';')).join('\r\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=node('a');a.href=url;a.download='boniverso-presenca-'+evtId+'.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+$('reload').onclick=()=>load();
+try{if(!uuid.test(evtId||''))throw Error('Link da aula inválido. Abra o painel pelo BoniVerso Live.');if(!cfg?.supabaseUrl||!cfg?.supabasePublishableKey)throw Error('Configuração ausente.');db=createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);const {data:{user},error}=await db.auth.getUser();if(error||!user)throw Error('Entre na sua conta do BoniVerso como professor.');await load();setInterval(()=>{if(Date.now()-lastSuccess>=11000)load(true)},12000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)load(true)})}catch(e){status(e.message,true)}
+</script>
+</body>
+</html>
