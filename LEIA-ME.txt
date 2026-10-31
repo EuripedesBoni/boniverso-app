@@ -1,12 +1,19 @@
-BoniVerso v1.0.4 — Corrigir símbolo de notificações
+BONIVERSO 1.0.7 — MELHORIAS NA CENTRAL DE ATUALIZAÇÕES
 
-1. Extraia este ZIP.
-2. Abra https://github.com/EuripedesBoni/boniverso-app
-3. Clique Add file > Upload files.
-4. Envie APENAS boniverso-avisos.css e sw.js na raiz, substituindo os existentes.
-5. Clique Commit changes, aguarde o GitHub Pages concluir.
-6. Abra o BoniVerso no navegador e recarregue duas vezes caso apareça o cache antigo.
+1. Extraia o ZIP.
+2. No GitHub EuripedesBoni/boniverso-app (ramificação main), clique Add file → Upload files.
+3. Envie APENAS os arquivos app-updates.js e sw.js que estão neste ZIP.
+4. Clique Commit changes e aguarde GitHub Pages / Actions finalizar com Success.
+5. Abra https://euripedesboni.github.io/boniverso-app/?versao=107 no mesmo navegador do aluno.
+6. Abra Central de Atualizações → Verificar agora. O painel informará a hora exata da verificação.
+7. Se estiver em dia, a opção de instalar nova revisão estará DESABILITADA.
+8. Quando uma revisão nova for detectada, o botão 'Instalar nova revisão' ficará habilitado.
+9. Um aviso de confirmação só será mostrado se houver campos editados ainda presentes na tela.
 
-Novidade: sino 🔔 sempre visível no topo, inclusive em smartphones e iPads. Em telas largas também aparece a palavra Notificações. O contador dos avisos e a central já existentes permanecem intactos.
+Não foi necessária nenhuma alteração no banco de dados. Turmas, redações, notas,
+recibos e notificações continuam armazenados no Supabase.
 
-Não é preciso alterar Supabase, GitHub Settings, dados de contas, chaves, nem outras aplicações.
+OBSERVAÇÃO: O sistema usa a API pública do GitHub para checar mudanças no repositório.
+Se houver falha de rede ou limite de consultas, ela será informada em tela;
+não ocorrerá atualização forçada. Mudanças publicadas no GitHub ainda dependem
+do término da publicação do GitHub Pages.
