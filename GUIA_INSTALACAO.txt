@@ -1,0 +1,30 @@
+BoniVerso Live 2.0 | Relatórios de Presença v1.2.4
+
+1. No GitHub, repositório EuripedesBoni/boniverso-app, branch main,
+   envie boniverso-presenca-pdf.js para a RAIZ, ao lado de painel-participantes.html.
+2. Edite painel-participantes.html.
+3. Imediatamente ANTES de </body>, adicione:
+
+   <script defer src="./boniverso-presenca-pdf.js"></script>
+
+4. Faça Commit changes. Aguarde o deploy do GitHub Pages concluir.
+5. Entre no BoniVerso com a conta de professor e abra Participantes e presença.
+   Ao lado de Baixar CSV aparecerá Baixar PDF.
+6. Clique Baixar PDF. No iPad, consulte Downloads/Arquivos se o Safari não
+   abrir o PDF automaticamente.
+
+RECURSOS:
+- Relatório por aula com nome dos participantes e horários no fuso de Cuiabá.
+- Sumário por aluno, número de conexões, tempo total e situação.
+- Detalhamento de cada entrada/saída.
+- Reconexões do mesmo aluno são agrupadas e períodos sobrepostos não duplicam tempo.
+- Intervalos com saída pendente são identificados.
+- Autorização é verificada no Supabase para cada exportação; não inclui segredos no JS.
+- Exportação PDF é feita no navegador com jsPDF carregado de esm.sh.
+- O botão existente de Baixar CSV permanece funcionando.
+
+LIMITES:
+- A função de participantes devolve até 1000 conexões por aula. Acima disso,
+  a exportação PDF é bloqueada até implementar paginação segura no servidor.
+- Testar em computador e iPad com conta do professor antes de uso em produção.
+- Registro técnico de conexão não equivale a frequência acadêmica homologada.
