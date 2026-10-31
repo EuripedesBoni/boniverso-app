@@ -5,8 +5,8 @@
  */
 (() => {
   'use strict';
-  const BUNDLED_VERSION = '1.0.9';
-  const BUNDLED_RELEASE = 'boniverso-v109-updates-published';
+  const BUNDLED_VERSION = '1.1.2';
+  const BUNDLED_RELEASE = 'boniverso-v112-rooms-search-sidebar';
   const RELEASE_STORAGE = 'boniverso-update-release-applied';
   const MAX_CHECK_AGE = 15 * 60 * 1000;
   const UPDATE_ICON = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.7 9A7 7 0 0 1 18.3 7L20 12M4 12l1.7 5A7 7 0 0 0 18.3 15"/></svg>';

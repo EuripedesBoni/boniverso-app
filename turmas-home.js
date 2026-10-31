@@ -37,37 +37,49 @@
   };
   const title = text => `<div class="bv-class-head"><div><div class="bv-class-eyebrow">BONIVERSO · TURMAS</div><h2>${esc(text)}</h2></div><a class="bv-class-all" href="${classPage()}">Abrir turmas <span aria-hidden="true">↗</span></a></div>`;
   const studentEmpty = () => `${title('Sua turma, sempre por perto')}<div class="bv-class-empty"><div><strong>Você ainda não entrou em uma turma.</strong><p>Peça ao professor seu código de matrícula e participe das atividades da sua série.</p></div><a class="bv-class-btn" href="${classPage()}">Entrar em uma turma</a></div>`;
+  const roomLink = (school, section) => school.enrollment_type === 'paid_invite'
+    ? './aparecida.html'
+    : './sala.html?turma=' + encodeURIComponent(school.id) +
+      (section ? '&serie=' + encodeURIComponent(section.id) : '');
   const studentCards = (memberships, sectionRows, classroomRows) => {
     const sectionById = new Map(sectionRows.map(s => [s.id, s]));
     const schoolById = new Map(classroomRows.map(c => [c.id, c]));
     const cards = memberships.map(m => {
-      const section = sectionById.get(m.section_id);
-      if (!section) return '';
-      const school = schoolById.get(section.classroom_id);
+      const school = schoolById.get(m.classroom_id);
       if (!school) return '';
+      const section = m.section_id ? sectionById.get(m.section_id) : null;
+      const paid = school.enrollment_type === 'paid_invite';
+      if (!paid && !section) return '';
+      const active = school.is_active !== false && (paid || section?.is_active !== false);
       const schoolName = school.name.replace(/\s*[—–-]\s*Redaç[aã]o\s*$/iu, '');
-      const active = school.is_active !== false && section.is_active !== false;
-      return `<article class="bv-class-card"><div class="bv-class-card-top"><span class="bv-class-school-icon" aria-hidden="true">▦</span><span class="bv-class-tag">${active ? 'Matrícula ativa' : 'Temporariamente pausada'}</span></div><h3>${esc(schoolName)}</h3><p class="bv-class-grade">${esc(gradeNames[section.grade_code] || section.label)}</p><p class="bv-class-note">Sua sala de atividades e redações do professor Rafael.</p><a class="bv-class-btn" href="${classPage()}">Abrir minha turma <span aria-hidden="true">↗</span></a></article>`;
+      const href=roomLink(school,section);
+      const grade = paid ? 'Turma exclusiva · aulas ao vivo' : (gradeNames[section.grade_code] || section.label);
+      return `<article class="bv-class-card"><div class="bv-class-card-top"><span class="bv-class-school-icon" aria-hidden="true">${paid?'🎥':'▦'}</span><span class="bv-class-tag">${active ? 'Matrícula ativa' : 'Temporariamente pausada'}</span></div><h3><a href="${href}" class="bv-title-inline">${esc(schoolName)}</a></h3><p class="bv-class-grade">${esc(grade)}</p><p class="bv-class-note">${paid?'Assista às aulas e participe do chat com o Prof. Rafa Boni.':'Sua sala de atividades e redações do professor Rafael.'}</p><a class="bv-class-btn" href="${href}">${paid?'Entrar na sala ao vivo':'Abrir minha turma'} <span aria-hidden="true">↗</span></a></article>`;
     }).filter(Boolean);
-    return cards.length ? `${title('Minhas turmas')}<div class="bv-class-grid">${cards.join('')}</div>` : studentEmpty();
+    return cards.length ? `${title('Minhas salas e turmas')}<div class="bv-class-grid">${cards.join('')}</div>` : studentEmpty();
   };
   const teacherCards = (classroomRows, sectionRows, memberships) => {
     const counts = new Map();
+    const schoolCounts = new Map();
     for (const m of memberships) {
-      if (m.status === 'active' && m.section_id) counts.set(m.section_id, (counts.get(m.section_id) || 0) + 1);
+      if (m.status !== 'active') continue;
+      schoolCounts.set(m.classroom_id, (schoolCounts.get(m.classroom_id) || 0) + 1);
+      if (m.section_id) counts.set(m.section_id, (counts.get(m.section_id) || 0) + 1);
     }
     const cards = classroomRows.map(school => {
+      const paid=school.enrollment_type === 'paid_invite';
       const sections = sectionRows.filter(s => s.classroom_id === school.id);
-      const total = sections.reduce((sum, s) => sum + (counts.get(s.id) || 0), 0);
+      const total = schoolCounts.get(school.id) || 0;
       const schoolName = school.name.replace(/\s*[—–-]\s*Redaç[aã]o\s*$/iu, '');
-      return `<article class="bv-class-card"><div class="bv-class-card-top"><span class="bv-class-school-icon" aria-hidden="true">▦</span><span class="bv-class-tag">${total} aluno${total === 1 ? '' : 's'} matriculado${total === 1 ? '' : 's'}</span></div><h3>${esc(schoolName)}</h3><p class="bv-class-note">${school.is_active ? 'Turma ativa' : 'Turma arquivada'} · 6º ao 9º EF e 1ª à 3ª série EM</p><div class="bv-class-grades">${grades.map(code => {
+      const href=roomLink(school);
+      return `<article class="bv-class-card"><div class="bv-class-card-top"><span class="bv-class-school-icon" aria-hidden="true">${paid?'🎥':'▦'}</span><span class="bv-class-tag">${total} aluno${total === 1 ? '' : 's'} matriculado${total === 1 ? '' : 's'}</span></div><h3><a class="bv-title-inline" href="${href}">${esc(schoolName)}</a></h3><p class="bv-class-note">${paid?'Turma exclusiva · aulas ao vivo e controle de matrículas':school.is_active?'Turma ativa · séries do Fundamental e Ensino Médio':'Turma arquivada'}</p>${paid?'':`<div class="bv-class-grades">${grades.map(code => {
         const sec = sections.find(s => s.grade_code === code);
         if (!sec) return '';
         const n = counts.get(sec.id) || 0;
-        return `<span class="bv-class-grade-chip" title="${esc(gradeNames[code])}">${esc(gradeNames[code])} <b>${n}</b></span>`;
-      }).join('')}</div><a class="bv-class-btn" href="${classPage()}">Gerenciar escola <span aria-hidden="true">↗</span></a></article>`;
+        return `<a href="${roomLink(school,sec)}" class="bv-class-grade-chip" title="${esc(gradeNames[code])}">${esc(gradeNames[code])} <b>${n}</b></a>`;
+      }).join('')}</div>`}<a class="bv-class-btn" href="${href}">${paid?'🎥 Gerenciar aula ao vivo':'Abrir escola e séries'} <span aria-hidden="true">↗</span></a></article>`;
     });
-    return `${title('Acesso rápido às turmas')}<div class="bv-class-grid">${cards.join('') || '<p>Cadastre as escolas em Turmas e séries.</p>'}</div>`;
+    return `${title('Acesso rápido às salas e turmas')}<div class="bv-class-grid">${cards.join('') || '<p>Cadastre as escolas em Turmas e séries.</p>'}</div>`;
   };
 
   async function fillPanel(panel, mode) {
@@ -82,12 +94,11 @@
         if (!panel.isConnected) return;
         if (!memberships.length) { panel.innerHTML = studentEmpty(); return; }
         const sectionIds = [...new Set(memberships.map(x => x.section_id).filter(Boolean))];
-        if (!sectionIds.length) { panel.innerHTML = studentEmpty(); return; }
-        const sectionRows = check(await db.from('classroom_sections')
-          .select('id,classroom_id,grade_code,label,is_active').in('id', sectionIds));
-        const schoolIds = [...new Set(sectionRows.map(x => x.classroom_id))];
+        const sectionRows = sectionIds.length ? check(await db.from('classroom_sections')
+          .select('id,classroom_id,grade_code,label,is_active').in('id', sectionIds)) : [];
+        const schoolIds = [...new Set(memberships.map(x => x.classroom_id).filter(Boolean))];
         const classroomRows = schoolIds.length ? check(await db.from('classrooms')
-          .select('id,name,is_active').in('id', schoolIds)) : [];
+          .select('id,name,is_active,enrollment_type').in('id', schoolIds)) : [];
         if (panel.isConnected) panel.innerHTML = studentCards(memberships, sectionRows, classroomRows);
       } else {
         // The server's RLS policies, not this UI, authorize teacher access.
@@ -95,7 +106,7 @@
         if (result.error) throw result.error;
         if (!result.data) throw new Error('Área restrita ao professor.');
         const classroomRows = check(await db.from('classrooms')
-          .select('id,name,school_code,is_active').in('school_code',['jao','areiao']).order('name'));
+          .select('id,name,school_code,is_active,enrollment_type').order('name'));
         const schoolIds = classroomRows.map(x => x.id);
         if (!schoolIds.length) {
           if (panel.isConnected) panel.innerHTML = teacherCards([],[],[]);
@@ -103,7 +114,7 @@
         }
         const [sectionsResult, membersResult] = await Promise.all([
           db.from('classroom_sections').select('id,classroom_id,grade_code,label').in('classroom_id', schoolIds),
-          db.from('classroom_memberships').select('section_id,status').in('classroom_id', schoolIds).eq('status','active')
+          db.from('classroom_memberships').select('classroom_id,section_id,status').in('classroom_id', schoolIds).eq('status','active')
         ]);
         if (panel.isConnected) panel.innerHTML = teacherCards(classroomRows,check(sectionsResult),check(membersResult));
       }
@@ -125,8 +136,8 @@
     const panel = document.createElement('section');
     panel.id = 'boniverso-home-classrooms';
     panel.className = 'bv-class-section';
-    panel.setAttribute('aria-label', mode === 'student' ? 'Minhas turmas' : 'Acesso rápido às turmas');
-    panel.innerHTML = `${title(mode === 'student' ? 'Minhas turmas' : 'Acesso rápido às turmas')}<p class="bv-class-loading" role="status">Carregando suas turmas…</p>`;
+    panel.setAttribute('aria-label', mode === 'student' ? 'Minhas salas e turmas' : 'Acesso rápido às salas e turmas');
+    panel.innerHTML = `${title(mode === 'student' ? 'Minhas salas e turmas' : 'Acesso rápido às salas e turmas')}<p class="bv-class-loading" role="status">Carregando suas turmas…</p>`;
     stats.insertAdjacentElement('afterend', panel);
     currentPanel = panel;
     fillPanel(panel, mode);

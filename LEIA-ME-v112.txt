@@ -1,0 +1,51 @@
+BONIVERSO 1.1.2 — SALAS DE AULA + BUSCA GERAL + MENU ROLÁVEL
+=========================================================
+
+INSTALAÇÃO
+1. Descompacte este ZIP.
+2. Entre em https://github.com/EuripedesBoni/boniverso-app
+3. Selecione Add file > Upload files.
+4. Envie APENAS estes 6 arquivos à RAIZ do repositório:
+   - index.html
+   - turmas-home.js
+   - boniverso-busca.js (novo)
+   - boniverso-busca.css (novo)
+   - app-updates.js
+   - sw.js
+5. Confirme Commit changes em main. Espere a ação Pages ficar verde.
+6. Abra https://euripedesboni.github.io/boniverso-app/?versao=112
+   ou use a Central de Atualizações já existente no aplicativo.
+
+MELHORIAS
+- Sala Aparecida de Goiânia no painel inicial do professor.
+- Para o estudante, a sala paga aparece apenas após autorização/matrícula.
+- Aluno de escola gratuita: atalho abre a respectiva série, sem confundir escolas.
+- Professor: cards com escolas, séries e turma paga; todos com links.
+- Pesquisa geral por turmas, séries, cursos, aulas gravadas,
+  aulas ao vivo e propostas de redação.
+- Lupa no topo (adaptada a telas pequenas), menu lateral e início.
+- Rolagem do menu lateral azul no desktop, tablet e celular.
+- Central de Atualizações com identificador de versão 1.1.2.
+
+SEGURANÇA
+- Não foram alterados os cadastros, pagamentos, senhas ou regras RLS.
+- A busca exibe apenas resultados autorizados pelo Supabase Auth + RLS.
+- As turmas pagas NÃO são liberadas pelo simples acesso ao endereço.
+- A versão atual não cria conta nem matrícula automaticamente.
+- Não colocar segredo SMTP, OpenAI API key, service_role ou sb_secret_
+  no repositório público. Nenhum desses segredos é necessário aqui.
+
+TESTES APÓS PUBLICAÇÃO
+A. Conta do Prof. Rafa: Início / Painel do professor > Acesso rápido
+   às salas e turmas > Aparecida de Goiânia > Gerenciar aula ao vivo.
+B. Aluno autenticado matriculado em Areião/Jaó: abrir escola+série.
+C. Aluno confirmado na turma paga: ver card de Aparecida e entrar.
+D. Sem matrícula paga: Aparecida NÃO deve constar como sala própria.
+E. Computador: rolar menu lateral com mouse/trackpad.
+F. Lupa: buscar 'Aparecida' e 'redação'; verificar resultados permitidos.
+G. Central de Atualizações: verificar a revisão boniverso-v112-rooms-search-sidebar.
+
+VALIDAÇÃO
+Sintaxe JS verificada com node --check. Teste de interface simulada
+em Chromium para contas professor/aluno e desktop/celular: passou.
+Os testes em dados reais dependem da publicação e login do usuário.

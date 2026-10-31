@@ -1,0 +1,69 @@
+/* BoniVerso 1.1.2 — desktop sidebar com rolagem, busca geral acessível */
+#sidebar.sidebar {
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+  max-height:100vh !important;
+  max-height:100dvh !important;
+  overscroll-behavior-y:contain;
+  scrollbar-width:thin;
+  scrollbar-color:#59739A transparent;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
+}
+#sidebar.sidebar .brand,
+#sidebar.sidebar .workspace-label,
+#sidebar.sidebar .side-nav,
+#sidebar.sidebar .side-bottom {flex-shrink:0 !important;}
+#sidebar.sidebar .side-nav {flex:0 0 auto !important;overflow:visible !important;}
+#sidebar.sidebar .side-bottom {margin-top:auto;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));}
+#sidebar.sidebar::-webkit-scrollbar{width:6px}
+#sidebar.sidebar::-webkit-scrollbar-thumb{background:#526B93;border-radius:10px}
+.bv-global-nav svg {width:20px;height:20px;flex:0 0 auto}
+.bv-search-top{display:none;align-items:center;justify-content:center;flex:0 0 40px;width:40px;height:40px;border-radius:12px;border:1px solid #d7e4f9;background:#f1f6ff;color:#2868c5;box-shadow:0 2px 8px #1b37601c}
+.bv-search-top:hover,.bv-search-top:focus-visible{background:#e7f0ff;outline-offset:3px}
+.bv-home-search{margin-top:20px;margin-bottom:22px;padding:22px 24px;border:1px solid #d8e2f1;border-left:4px solid #D6B16F;border-radius:19px;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:0 8px 22px #1e406a0b}
+.bv-home-search>div{min-width:0}
+.bv-home-search>div>span{font-size:11px;font-weight:800;letter-spacing:1.3px;color:#3169c5}
+.bv-home-search h2{font-size:clamp(17px,2vw,22px);margin:5px 0 5px;color:#15274a}
+.bv-home-search p{font-size:13px;color:#64758e;line-height:1.5}
+.bv-home-search button{display:inline-flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;border:0;border-radius:12px;padding:14px 20px;background:#3978e8;color:white;font-weight:750;font-size:13px;min-height:48px}
+.bv-home-search button:hover{background:#245fc8}
+.bv-search-dialog{border:0;padding:0;max-width:min(700px,calc(100vw - 24px));width:700px;max-height:min(85vh,800px);max-height:min(85dvh,800px);background:#fff;border-radius:22px;box-shadow:0 24px 95px #07193166;color:#142541;overflow:hidden}
+.bv-search-dialog::backdrop{background:#071b3dbb;backdrop-filter:blur(3px)}
+.bv-search-box{display:flex;flex-direction:column;min-height:230px;max-height:min(85vh,800px);max-height:min(85dvh,800px)}
+.bv-search-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding:25px 26px 15px;background:linear-gradient(120deg,#122447,#234b86);color:white}
+.bv-search-heading small{color:#e9c47a;letter-spacing:1.4px;font-weight:800;font-size:10px}
+.bv-search-heading h2{font-size:24px;line-height:1.2;margin:7px 0;color:white}
+.bv-search-heading p{font-size:13px;color:#dbe5f4;line-height:1.4}
+.bv-search-close{width:38px;height:38px;flex:0 0 38px;border:1px solid #7184a7;border-radius:12px;background:transparent;color:#fff;font-size:27px;line-height:1}
+.bv-search-input-wrap{margin:18px 23px 5px;display:flex;align-items:center;gap:12px;padding:0 14px;border:2px solid #c8d9f3;border-radius:14px;color:#3978e8;background:#f9fbff;flex-shrink:0}
+.bv-search-input-wrap:focus-within{border-color:#3978e8;box-shadow:0 0 0 3px #3978e81c}
+.bv-search-input-wrap input{width:100%;height:49px;border:0;outline:0;background:transparent;color:#182a48;font-size:15px;min-width:0}
+.bv-search-status{font-size:11px;color:#657991;line-height:1.4;margin:7px 26px 8px;flex-shrink:0}
+.bv-search-results{padding:0 16px 16px;flex:1 1 auto;overflow:auto;overscroll-behavior:contain;min-height:0}
+.bv-search-result{display:flex;align-items:center;gap:13px;padding:12px 10px;color:#152949;text-decoration:none!important;border-radius:12px;border-bottom:1px solid #eff3f8;min-height:78px}
+.bv-search-result:hover,.bv-search-result:focus-visible{background:#eef5ff}
+.bv-search-result-icon{width:40px;height:40px;display:grid;place-items:center;font-size:20px;border-radius:12px;background:#ebf2ff;flex:0 0 40px}
+.bv-search-result-text{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.bv-search-result-text small{color:#366fce;font-weight:800;font-size:10px;text-transform:uppercase;letter-spacing:.7px}
+.bv-search-result-text strong{font-size:14px;line-height:1.3;color:#183055}
+.bv-search-result-text>span{font-size:12px;line-height:1.4;color:#71829d;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.bv-search-result>span:last-child{color:#4879c9;font-weight:900}
+.bv-search-empty{padding:32px 15px;text-align:center;color:#6c7c93}
+.bv-search-foot{display:flex;gap:12px;justify-content:space-between;align-items:center;padding:13px 25px;border-top:1px solid #e7edf7;background:#f7f9fd;color:#75839a;font-size:11px}
+.bv-search-foot button{background:transparent;color:#3167b7;border:0;text-decoration:underline;font-size:12px}
+@media(max-width:1030px){.bv-search-top{display:inline-flex}}
+@media(max-width:740px){
+ #sidebar.sidebar{height:100dvh!important;max-height:100dvh!important}
+ .bv-home-search{padding:18px;margin-top:15px;flex-direction:column;align-items:stretch;gap:13px}
+ .bv-home-search button{width:100%}
+ .bv-search-dialog{width:calc(100vw - 20px);max-width:calc(100vw - 20px);border-radius:18px;max-height:86dvh}
+ .bv-search-box{max-height:86dvh}
+ .bv-search-heading{padding:22px 17px 16px}.bv-search-heading h2{font-size:20px}.bv-search-heading p{font-size:12px}
+ .bv-search-input-wrap{margin:14px 13px 5px}.bv-search-input-wrap input{font-size:14px}
+ .bv-search-status{margin:7px 16px 8px}.bv-search-results{padding:0 9px 12px}
+ .bv-search-foot{padding:11px 14px}.bv-search-foot span{font-size:10px}
+ .top-actions{gap:4px}
+ .bv-search-top{width:34px;height:38px;flex-basis:34px;border-radius:11px}
+}
+@media(max-width:390px){.bv-search-top{position:fixed;bottom:calc(79px + env(safe-area-inset-bottom,0px));right:14px;width:46px;height:46px;z-index:25;box-shadow:0 6px 20px #12304c55;background:#3978e8;color:#fff;border:2px solid white}}
