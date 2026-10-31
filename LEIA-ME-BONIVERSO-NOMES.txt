@@ -1,0 +1,19 @@
+BONIVERSO LIVE 2.0 — IDENTIFICAÇÃO POR NOMES | v1.2.2
+
+Concluído no Supabase:
+- O token do LiveKit passa a usar o nome do próprio perfil como Participant.name.
+- O chat salva o nome do autor no envio, de forma atribuída pelo servidor.
+- Mensagens anteriores (quando vinculadas a um perfil existente) receberam nomes.
+
+INSTALAÇÃO NO GITHUB:
+1. Envie boniverso-nomes-chat.js para a raiz da branch main.
+2. Abra live-room.html e, imediatamente antes de </body>, DEPOIS de boniverso-live-2.js, adicione:
+   <script defer src="./boniverso-nomes-chat.js"></script>
+3. Salve com Commit changes e confira a publicação em GitHub Actions.
+4. Tanto professor quanto aluno devem atualizar a página e clicar em "Entrar na aula" para receber um novo token LiveKit com nome.
+5. Teste envio de mensagem com a conta do aluno; o nome do perfil deve aparecer no cartão do vídeo e acima da mensagem.
+
+Atenção:
+- O nome do perfil fica visível aos participantes autorizados da aula. Não é exibido email.
+- Caso ainda apareça "Estudante", atualize o nome de exibição no perfil dessa conta e entre novamente na sala.
+- Não altere os arquivos live-room-media-fix.js, live-recording-controls.js ou boniverso-live-2.js.
