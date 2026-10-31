@@ -1,0 +1,12 @@
+BONIVERSO v1.0.2 — Correção do botão Abrir Redações
+
+1. Extraia o ZIP.
+2. Em github.com/EuripedesBoni/boniverso-app clique Add file > Upload files.
+3. Envie SOMENTE o arquivo config.js (substitui o existente).
+4. Clique Commit changes.
+5. Depois do deploy, abra a turma em uma aba do navegador em que o aluno esteja conectado.
+6. Clique em Escrever ou anexar PDF abaixo da proposta da turma.
+   O atalho geral também passa a abrir a aba Redações.
+
+Esta alteração não toca em nenhum banco, conta, senha, matrícula ou chave privada.
+Verificar em sessão autenticada antes de considerar a etapa concluída.
