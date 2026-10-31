@@ -1,9 +1,21 @@
-BoniVerso v0.8 — Segurança + etapas de desenvolvimento
+BONIVERSO v0.8.1 — Correção da recuperação de senha
 
-1. Abra github.com/EuripedesBoni/boniverso-app na pasta raiz.
-2. Em Add file > Upload files, envie online-app.js, sw.js e ROADMAP_BONIVERSO.md (estes três apenas).
-3. Confirme Commit changes. Não envie a pasta contendo os arquivos.
-4. Abra BoniVerso em aba privada e teste Meu perfil > Segurança da conta.
-5. Teste Esqueci a senha no login com um e-mail de teste próprio.
-6. Confirme em Supabase > Authentication > URL Configuration: Site URL e Redirect URLs incluam https://euripedesboni.github.io/boniverso-app/
-7. Não alterar config.js, boniverso-ai.html, segredos e banco.
+O que muda:
+- O botão "Esqueci a senha" abre uma URL própria: ?recuperar=1.
+- Ao solicitar o envio, aparece uma confirmação explícita; nenhuma nova senha é solicitada até abrir o link enviado por e-mail.
+- A volta do e-mail conserva o fluxo já existente de definir e confirmar senha.
+- O cache é atualizado para v0.8.1.
+
+Como instalar:
+1. No GitHub EuripedesBoni/boniverso-app (branch main), clique Add file > Upload files.
+2. Envie online-app.js e sw.js da raiz deste pacote; substitua os anteriores.
+3. Clique Commit changes e confira Actions: sucesso.
+4. Abra o site em uma janela privada do Safari e clique "Esqueci a senha".
+5. Confirme que a URL termina em ?recuperar=1 e que aparece um formulário para informar o e-mail.
+6. Clique "Enviar instruções". Verifique se aparece "Confira seu e-mail" e abra o link recebido para atualizar a senha.
+
+ATENÇÃO: O Supabase do projeto BoniVerso-RSB deve ter em Authentication > URL Configuration:
+Site URL: https://euripedesboni.github.io/boniverso-app/
+Redirect URL: https://euripedesboni.github.io/boniverso-app/
+
+Não inclua tokens ou senhas no GitHub. Não atualize config.js.
