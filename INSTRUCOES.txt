@@ -1,13 +1,18 @@
-BONIVERSO v0.9 — ETAPA 2, PERFIL DE ESTUDANTE
+BONIVERSO v1.0.1 — ATALHOS DAS TURMAS
 
-1. Extraia este ZIP.
-2. Abra https://github.com/EuripedesBoni/boniverso-app
-3. Add file > Upload files, carregue SOMENTE online-app.js, sw.js, ROADMAP_BONIVERSO.md na raiz do repositório.
-4. Commit changes. Acompanhe a publicação em Actions.
-5. Abra o BoniVerso em aba privada (?versao=9), entre como estudante e abra Meu perfil.
-6. Preencha nome, escola e cidade, escolha imagem JPG/PNG/WebP até 2 MB e clique Salvar foto.
-7. Saia, entre novamente, confirme persistência; teste também Remover minha foto.
+1. Descompacte este ZIP.
+2. Acesse github.com/EuripedesBoni/boniverso-app.
+3. Use Add file > Upload files.
+4. Envie estes quatro arquivos para a RAIZ do repositório, substituindo os existentes:
+   - index.html
+   - sw.js
+   - turmas-home.js
+   - turmas-home.css
+5. Use Commit changes.
+6. Abra https://euripedesboni.github.io/boniverso-app/?versao=101
 
-NÃO envie SQL, senhas, tokens ou outras credenciais para o GitHub. A base Supabase já foi atualizada separadamente.
+Na conta do aluno, após matriculado, o cartão mostra sua escola e série.
+Na conta do professor, mostra cartões para Jaó e Areião, com totais por série.
+Os cartões são atalhos para turmas.html. As permissões de acesso permanecem no Supabase.
 
-Etapa 1 concluída, Etapa 2 em teste; aula de Aparecida (31/10) tem prioridade operacional.
+Atenção: este pacote NÃO deve ser enviado para o repositório do EstudNexa.

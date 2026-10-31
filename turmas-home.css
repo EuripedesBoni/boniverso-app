@@ -1,0 +1,24 @@
+/* BoniVerso v1.0.1 — atalhos nas páginas iniciais, sem alterar outros componentes */
+.bv-class-section { margin: 24px 0 28px; }
+.bv-class-head { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; }
+.bv-class-eyebrow { font-size:11px; font-weight:800; letter-spacing:1.7px; color:#386dd9; margin-bottom:5px; }
+.bv-class-head h2 { font-size:clamp(20px,2vw,26px); margin:0; color:#10203e; font-weight:800; }
+.bv-class-all { border:1px solid #dce3ed; color:#24436f; padding:9px 13px; border-radius:12px; font-size:13px; font-weight:700; text-decoration:none; background:#fff; }
+.bv-class-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:16px; }
+.bv-class-card { background:#fff; border:1px solid #e2e8f3; border-top:3px solid #cfaa6c; border-radius:19px; padding:22px; box-shadow:0 9px 24px rgba(13,32,71,.055); display:flex; flex-direction:column; align-items:flex-start; }
+.bv-class-card-top { width:100%; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; }
+.bv-class-school-icon { background:#ecf2ff; color:#3574e6; border-radius:12px; height:41px; width:41px; display:inline-flex; justify-content:center; align-items:center; font-size:24px; }
+.bv-class-tag { background:#eff4ff; color:#3661a6; font-size:11px; font-weight:800; padding:6px 11px; border-radius:99px; }
+.bv-class-card h3 { color:#142446; font-size:20px; margin:16px 0 3px; line-height:1.25; }
+.bv-class-grade { color:#b2863e; font-size:15px; margin:0; font-weight:800; }
+.bv-class-note { color:#667793; line-height:1.5; font-size:13px; margin:12px 0 16px; }
+.bv-class-btn { background:#3978e8; color:#fff !important; display:inline-flex; gap:8px; justify-content:center; align-items:center; text-decoration:none; font-size:13px; font-weight:800; border-radius:11px; padding:12px 17px; margin-top:auto; }
+.bv-class-btn:hover { background:#225fc9; }
+.bv-class-grades { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:19px; }
+.bv-class-grade-chip { display:inline-flex; gap:7px; align-items:center; background:#f4f7fc; border-radius:8px; font-size:11px; padding:7px 8px; color:#405779; }
+.bv-class-grade-chip b { color:#1b4b9b; }
+.bv-class-empty { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; background:#fff; border:1px dashed #c9d5e9; border-radius:17px; padding:24px; }
+.bv-class-empty strong { font-size:16px; color:#152548; }
+.bv-class-empty p { font-size:13px; color:#697b96; margin:7px 0 0; }
+.bv-class-loading { color:#71809b; margin:14px 0; font-size:13px; }
+@media (max-width:620px) { .bv-class-section { margin:17px 0 24px; } .bv-class-card { padding:18px; } .bv-class-head h2 { font-size:20px; } }
