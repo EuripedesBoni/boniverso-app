@@ -1,0 +1,22 @@
+BoniVerso Live — Central por curso ou turma (versão beta)
+
+1) Descompacte o ZIP e envie os três arquivos HTML/JS a seguir para a RAIZ do seu repositório GitHub (não sobrescreva arquivos antigos):
+- live-central.html
+- live-room.html
+- live-menu.js
+
+2) No arquivo index.html, imediatamente antes de </body>, acrescente:
+<script defer src="live-menu.js"></script>
+
+3) Clique em Commit changes na branch main. Abra https://euripedesboni.github.io/boniverso-app/live-central.html
+
+4) Como professor, faça login pelo início e acesse Aulas online. Escolha uma turma ou curso e cadastre uma aula. Depois clique em Iniciar e abrir sala.
+
+5) Antes de chamar alunos, teste com uma conta do professor e outra matrícula controlada.
+
+Atenção:
+- As tabelas e políticas da Central já foram aplicadas ao Supabase BoniVerso-RSB.
+- A função boniverso-live-token foi atualizada no Supabase para receber event_id, preservando session_id do módulo antigo. A conexão real ainda precisa ser testada com contas autenticadas.
+- O menu não altera o site para visitantes desconectados que ainda estejam na tela de login.
+- Gravação ainda não implementada. Troca dinâmica de permissões requer reconectar clicando em Atualizar minha permissão.
+- Em produção é necessária atualização/revogação imediata de permissões para menores, logging e testes de capacidade e custos.
