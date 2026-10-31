@@ -1,93 +1,48 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Biblioteca de aulas gravadas | BoniVerso</title>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Biblioteca de aulas | BoniVerso</title>
 <style>
-:root{font:15px/1.55 system-ui,-apple-system,Segoe UI,Arial;color:#172943;background:#f3f6fc}*{box-sizing:border-box}body{margin:0}header{background:#142748;color:#fff;padding:18px 5vw;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}header strong{font-size:22px}header span{color:#e8c88c}a{color:#2b62b6}header a{color:#f2d9a8}main{max-width:1150px;margin:auto;padding:20px 16px 70px}.hero{background:linear-gradient(115deg,#142648,#325b99);color:#fff;border-radius:20px;padding:24px 28px}.hero h1{margin:6px 0;font-size:clamp(26px,5vw,37px)}.hero p{color:#d8e5f9}section{background:#fff;border:1px solid #dce4f1;border-radius:17px;padding:20px;margin:16px 0}h2{margin:0 0 12px;font-size:21px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:14px}.tile{border:1px solid #dce5f2;border-radius:14px;padding:17px;background:#fbfcff}.tile h3{margin:4px 0 8px}.muted{color:#627896}.pill{display:inline-block;background:#e9effb;color:#355893;font-size:12px;border-radius:99px;padding:4px 9px;font-weight:bold}.status{background:#eaf2ff;border-radius:12px;padding:12px;color:#315b95}button{cursor:pointer;border:0;background:#316bd6;color:#fff;border-radius:10px;padding:10px 15px;font:inherit;font-weight:700}button:disabled{opacity:.5}select{padding:11px;border:1px solid #cdd9ea;border-radius:10px;font:inherit;width:100%;max-width:450px}.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.bar button{margin-left:auto}.tile video{width:100%;max-height:450px;border-radius:10px;background:#0c1930;margin-top:10px}.playback-info{font-size:13px;margin:8px 0 0;color:#627896}[hidden]{display:none!important}@media(max-width:650px){section{padding:15px}.hero{padding:20px}}
-</style>
-</head>
-<body>
-<header><strong>Boni<span>Verso</span> · Biblioteca Live</strong><a href="./live-central.html">← Central de aulas</a></header>
-<main>
-<div class="hero"><small>RSB EDUCAÇÃO · ACESSO POR MATRÍCULA</small><h1>Biblioteca de aulas gravadas</h1><p>Assista às gravações liberadas pelo professor para os seus cursos e turmas.</p></div>
-<p id="status" class="status" role="status">Verificando acesso…</p>
-<section><div class="bar"><h2>Filtrar por curso ou turma</h2><button id="refresh" type="button">Atualizar</button></div><select id="filter" aria-label="Filtrar por curso"><option value="all">Todas as minhas aulas</option></select></section>
-<section><h2>Videoaulas disponíveis</h2><div id="library" class="grid"></div></section>
-<section id="staff" hidden><h2>Administração de gravações</h2><p class="muted">A gravação e a publicação são controladas pelo servidor. Apenas gravações finalizadas e autorizadas são exibidas aos estudantes.</p><div id="staffList"></div></section>
-<p class="muted" style="font-size:12px">As gravações só podem ser reproduzidas após validação de acesso. O link temporário não impede cópias por captura de tela.</p>
+:root{font:15px/1.5 system-ui,-apple-system,'Segoe UI',Arial;color:#19314f;background:#eef3fa}*{box-sizing:border-box}body{margin:0}header{background:#142646;color:#fff;padding:17px clamp(16px,5vw,60px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}header strong{font-size:21px}header span{color:#edc993}nav{display:flex;gap:18px;flex-wrap:wrap}nav a{color:#f0d5aa;text-decoration:none;font-size:14px}main{max-width:1200px;margin:auto;padding:24px 16px 60px}.hero{background:linear-gradient(120deg,#15294d,#3164a0);padding:28px;color:#fff;border-radius:21px}.hero h1{font-size:clamp(26px,4vw,38px);margin:6px 0}.hero p{color:#e1eaf9}.panel{background:#fff;border:1px solid #dbe4f1;border-radius:16px;padding:18px;margin:16px 0}.toolbar{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}label{display:block;font-weight:650;margin:0 0 6px;font-size:13px}input,select{font:inherit;padding:11px;border:1px solid #c9d5e5;border-radius:10px;background:#fff;color:#19314f;min-height:43px;width:100%}button{font:inherit;background:#2a60cb;color:white;border:0;border-radius:11px;cursor:pointer;padding:11px 16px;min-height:44px;font-weight:650}button:disabled{opacity:.55}.status{padding:12px 15px;border-radius:11px;background:#e8f0fe;color:#2f5493;margin:15px 0}.status.error{color:#a44234;background:#fff0ec}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));gap:15px}.tile{background:#fff;border:1px solid #dce5f2;border-radius:16px;padding:18px;min-width:0;box-shadow:0 6px 20px #1c365c0c}.tile h2{font-size:19px;margin:10px 0 5px}.tile p{color:#60758e;font-size:13px}.tile video{width:100%;border-radius:10px;margin-top:14px;background:#0e1d36;max-height:460px}.pill{display:inline-block;font-weight:700;font-size:12px;background:#e6f4e8;color:#215f3f;border-radius:99px;padding:5px 10px}.pill.hidden{background:#fff2df;color:#895522}.empty{text-align:center;color:#657993;background:#fff;border:1px dashed #c4d4e8;padding:28px;border-radius:16px}.note{font-size:12px;color:#60748c}@media(max-width:650px){main{padding:15px 10px 55px}.hero{padding:20px}.toolbar{grid-template-columns:1fr}.panel{padding:14px}}
+</style></head><body>
+<header><strong>Boni<span>Verso</span> · Biblioteca Live</strong><nav><a href="./live-central.html">🎥 Central de aulas</a><a id="manage" href="./painel-gravacoes.html" hidden>⚙️ Gerenciar gravações</a><a href="./">Início</a></nav></header>
+<main><div class="hero"><small>RSB EDUCAÇÃO · CONTEÚDO POR MATRÍCULA</small><h1>Biblioteca de aulas gravadas</h1><p>Assista aos vídeos disponibilizados para seus cursos e turmas dentro do próprio BoniVerso.</p></div>
+<p class="status" role="status" id="status">Verificando acesso…</p><section class="panel"><div class="toolbar">
+<div><label for="target">Curso ou turma</label><select id="target"><option value="all">Todos os meus cursos e turmas</option></select></div>
+<div><label for="search">Pesquisar videoaula</label><input id="search" type="search" placeholder="Digite o título da gravação"></div><button id="refresh" type="button">↻ Atualizar</button>
+</div></section>
+<div id="list" class="grid"></div><p class="note">Somente pessoas autorizadas por matrícula podem solicitar o link temporário de reprodução. Links temporários não impedem captura de tela. Acesso e publicação são controlados pelo servidor.</p>
 </main>
-<script src="./config.js"></script>
-<script type="module">
+<script src="./config.js"></script><script type="module">
 import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.2';
-const $=id=>document.getElementById(id);
-const cfg=window.BONIVERSO_CONFIG;
-const db=createClient(cfg.supabaseUrl,cfg.supabasePublishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
-const elem=(tag,value,klass)=>{const el=document.createElement(tag);if(value!==undefined&&value!==null)el.textContent=String(value);if(klass)el.className=klass;return el};
-let recordings=[],events=[],targets=new Map(),isStaff=false;
-async function playRecording(recording,card,button){
- if(button.disabled)return;
- button.disabled=true;button.textContent='Verificando matrícula…';
- try{
-  const {data,error}=await db.functions.invoke('boniverso-recording-playback',{body:{recording_id:recording.id}});
-  if(error)throw Error('Não foi possível liberar este vídeo. Verifique sua conta e matrícula.');
-  if(!data?.url||typeof data.url!=='string')throw Error(data?.error||'Gravação ainda indisponível.');
-  const old=card.querySelector('video');if(old){old.pause();old.removeAttribute('src');old.load();old.remove()}
-  const player=document.createElement('video');player.controls=true;player.playsInline=true;player.preload='metadata';player.setAttribute('aria-label','Reproduzir '+recording.title);
-  player.src=data.url;
-  const note=elem('p','Link temporário. Se o vídeo parar após um longo período, clique novamente em Assistir.','playback-info');
-  const previous=card.querySelector('.playback-info');previous?.remove();
-  card.append(player,note);
-  player.play().catch(()=>{ /* Safari pode exigir novo gesto no controle do player. */ });
-  button.textContent='Renovar acesso ao vídeo';
- }catch(err){
-  $('status').textContent=err?.message||'Não foi possível abrir a gravação.';
-  button.textContent='Tentar novamente';
- }finally{button.disabled=false}
-}
-function card(r){
- const event=events.find(e=>e.id===r.event_id);if(!event)return null;
- const box=elem('article',null,'tile');
- box.append(elem('span','Gravação disponível','pill'),elem('h3',r.title),elem('p',event.title,'muted'));
- const group=targets.get('course:'+event.course_id)||targets.get('class:'+event.classroom_id)||'Curso ou turma autorizada';
- box.append(elem('p',group,'muted'));
- if(Number.isFinite(r.duration_seconds)&&r.duration_seconds>0)box.append(elem('p','Duração: '+Math.ceil(r.duration_seconds/60)+' minutos','muted'));
- const button=elem('button','▶ Assistir');button.type='button';button.addEventListener('click',()=>playRecording(r,box,button));box.append(button);
- return box;
-}
-function render(){
- const filterValue=$('filter').value;
- const visible=recordings.filter(r=>{const e=events.find(e=>e.id===r.event_id);return e&&(filterValue==='all'||(e.course_id?'course:'+e.course_id:'class:'+e.classroom_id)===filterValue)});
- $('library').replaceChildren();
- if(!visible.length)$('library').append(elem('p','Ainda não há gravações disponíveis para esta seleção.','muted'));
- else visible.forEach(r=>{const result=card(r);if(result)$('library').append(result)});
- if(isStaff)$('staffList').replaceChildren(elem('p',recordings.length+' gravação(ões) pronta(s).','muted'));
-}
-async function load(){
- try{
-  $('status').textContent='Carregando gravações…';
-  const {data:{user},error:authError}=await db.auth.getUser();
-  if(authError||!user)throw Error('Entre com sua conta do BoniVerso para acessar a biblioteca.');
-  const role=await db.rpc('current_staff_role');if(role.error)throw role.error;
-  isStaff=['teacher','admin'].includes(role.data);$('staff').hidden=!isStaff;
-  const [er,rr,cr,cl]=await Promise.all([
-   db.from('boniverso_live_events').select('id,title,course_id,classroom_id'),
-   db.from('boniverso_live_recordings').select('id,event_id,title,state,duration_seconds').eq('state','ready'),
-   db.from('courses').select('id,title'),
-   db.from('classrooms').select('id,name')
-  ]);
-  for(const result of [er,rr,cr,cl])if(result.error)throw result.error;
-  events=er.data||[];recordings=rr.data||[];
-  targets=new Map([...(cr.data||[]).map(c=>['course:'+c.id,c.title]),...(cl.data||[]).map(c=>['class:'+c.id,c.name])]);
-  const f=$('filter');const selected=f.value;f.replaceChildren(new Option('Todas as minhas aulas','all'));
-  for(const e of events){const value=e.course_id?'course:'+e.course_id:'class:'+e.classroom_id;if(![...f.options].some(opt=>opt.value===value))f.append(new Option(targets.get(value)||'Curso ou turma',value))}
-  if([...f.options].some(opt=>opt.value===selected))f.value=selected;
-  render();
-  $('status').textContent=isStaff?'Biblioteca do professor carregada.':'Exibindo somente gravações de cursos ou turmas autorizadas.';
- }catch(err){$('status').textContent='Não foi possível carregar: '+(err?.message||err);$('library').replaceChildren()}
-}
-$('filter').addEventListener('change',render);$('refresh').addEventListener('click',load);load();
-</script>
-</body>
-</html>
+const $=s=>document.getElementById(s),cfg=window.BONIVERSO_CONFIG,db=createClient(cfg.supabaseUrl,cfg.supabasePublishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+const el=(tag,t,klass)=>{const n=document.createElement(tag);if(t!==null&&t!==undefined)n.textContent=String(t);if(klass)n.className=klass;return n};
+let recordings=[],events=new Map(),courses=new Map(),classes=new Map(),staff=false;
+const status=(msg,error=false)=>{$('status').textContent=msg;$('status').classList.toggle('error',error)};
+function targetId(r){const evt=events.get(r.event_id)||{};return r.library_course_id?'course:'+r.library_course_id:r.library_classroom_id?'class:'+r.library_classroom_id:evt.course_id?'course:'+evt.course_id:evt.classroom_id?'class:'+evt.classroom_id:'original:'+r.event_id}
+function targetLabel(key){if(key.startsWith('course:'))return 'Curso · '+(courses.get(key.slice(7))||'Curso autorizado');if(key.startsWith('class:'))return 'Turma · '+(classes.get(key.slice(6))||'Turma autorizada');return 'Aula autorizada'}
+async function watch(r,box,btn){btn.disabled=true;btn.textContent='Verificando matrícula…';try{
+ const {data,error}=await db.functions.invoke('boniverso-recording-playback',{body:{recording_id:r.id}});
+ if(error){let why=error.message||'Falha de autorização';try{why=(await error.context?.json())?.error||why}catch{}throw Error(why)}
+ if(!data?.url||typeof data.url!=='string')throw Error(data?.error||'Vídeo indisponível');
+ const old=box.querySelector('video');if(old){old.pause();old.removeAttribute('src');old.load();old.remove()}
+ const player=el('video');player.controls=true;player.playsInline=true;player.preload='metadata';player.src=data.url;player.setAttribute('aria-label','Gravação: '+r.title);box.append(player);
+ btn.textContent='↻ Renovar acesso';player.play().catch(()=>{});
+ }catch(e){status('Não foi possível reproduzir: '+e.message,true);btn.textContent='Tentar novamente'}finally{btn.disabled=false}}
+function card(r){const box=el('article',null,'tile');const badge=el('span',r.is_published?'Vídeo disponível':'Prévia do professor',r.is_published?'pill':'pill hidden');box.append(badge,el('h2',r.title));box.append(el('p',targetLabel(targetId(r))));
+ if(r.duration_seconds!=null)box.append(el('p','Duração: '+Math.max(0,Math.round(r.duration_seconds))+' segundos'));
+ const b=el('button','▶ Assistir');b.type='button';b.addEventListener('click',()=>watch(r,box,b));box.append(b);return box}
+function render(){const value=$('target').value,term=$('search').value.toLocaleLowerCase('pt-BR').trim();const filtered=recordings.filter(r=>(value==='all'||targetId(r)===value)&&(!term||r.title.toLocaleLowerCase('pt-BR').includes(term)));$('list').replaceChildren();if(!filtered.length)$('list').append(el('p','Ainda não há gravações disponíveis para esta seleção.','empty'));else for(const r of filtered)$('list').append(card(r));}
+async function load(){try{
+ status('Carregando sua biblioteca…');const {data:{user},error:errAuth}=await db.auth.getUser();if(errAuth||!user)throw Error('Entre na sua conta do BoniVerso para acessar a biblioteca.');
+ const role=await db.rpc('current_staff_role');if(role.error)throw role.error;staff=['teacher','admin'].includes(role.data);$('manage').hidden=!staff;
+ const [rr,er,cr,cl]=await Promise.all([
+  db.from('boniverso_live_recordings').select('id,event_id,title,state,is_published,library_course_id,library_classroom_id,duration_seconds,deleted_at').eq('state','ready').is('deleted_at',null).order('created_at',{ascending:false}),
+  db.from('boniverso_live_events').select('id,course_id,classroom_id,title'),
+  db.from('courses').select('id,title'),db.from('classrooms').select('id,name')
+ ]);
+ for(const item of [rr,er,cr,cl])if(item.error)throw item.error;
+ recordings=rr.data||[];events=new Map((er.data||[]).map(x=>[x.id,x]));courses=new Map((cr.data||[]).map(x=>[x.id,x.title]));classes=new Map((cl.data||[]).map(x=>[x.id,x.name]));
+ const sel=$('target'),current=sel.value;sel.replaceChildren(new Option('Todos os meus cursos e turmas','all'));
+ const added=new Set();for(const r of recordings){const key=targetId(r);if(!added.has(key)){sel.append(new Option(targetLabel(key),key));added.add(key)}}if([...sel.options].some(x=>x.value===current))sel.value=current;
+ render();status(staff?'Biblioteca do professor carregada. Você pode visualizar prévias não publicadas.':'Exibindo gravações autorizadas pela sua matrícula.');
+ }catch(e){status('Erro ao carregar biblioteca: '+e.message,true);$('list').replaceChildren()}}
+$('target').addEventListener('change',render);$('search').addEventListener('input',render);$('refresh').addEventListener('click',load);load();
+</script></body></html>

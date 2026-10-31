@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gestão de gravações | BoniVerso</title>
+<style>
+:root{font:15px/1.5 system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#152b49;background:#eef3fa}
+*{box-sizing:border-box}body{margin:0}a{color:inherit}button,input,select{font:inherit}button{cursor:pointer}
+header{background:#142646;color:#fff;padding:17px clamp(16px,5vw,60px);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}header strong{font-size:21px}header strong span{color:#edc993}nav{display:flex;gap:16px;flex-wrap:wrap}nav a{color:#e7d3ab;text-decoration:none;font-size:14px}
+main{max-width:1250px;margin:auto;padding:25px 16px 75px}.hero{background:linear-gradient(115deg,#142646,#2f5e9e);border-radius:22px;color:#fff;padding:28px;box-shadow:0 15px 45px #14264623}.hero h1{font-size:clamp(26px,4vw,39px);margin:7px 0}.hero p{color:#e3ecff;margin:4px 0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:20px 0}.metric{border:1px solid #dbe4f1;border-radius:15px;background:#fff;padding:17px}.metric b{display:block;font-size:30px;color:#1e4a8a}.metric small{color:#5e7089}
+.panel{background:white;border:1px solid #dce5f1;border-radius:17px;padding:18px;margin-bottom:18px}.panel h2{margin:0 0 12px;font-size:20px}.filters{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end}label{font-weight:650;font-size:13px;display:block;margin-bottom:6px}input[type=search],input[type=text],select{border:1px solid #c5d2e6;padding:11px 12px;border-radius:10px;background:#fff;color:#233956;width:100%;min-height:44px}.btn{background:#245ac3;color:#fff;border:1px solid #245ac3;border-radius:10px;padding:10px 15px;min-height:43px;font-weight:650}.btn.alt{background:#eef4ff;color:#2456a0;border-color:#d6e2f7}.btn.warn{background:#fff3ee;color:#a83d2b;border-color:#f0c8bf}.btn:disabled{opacity:.42;cursor:not-allowed}.btn.ink{background:#173759;border-color:#173759}
+.message{padding:12px 16px;border-radius:12px;background:#e6f0fe;color:#244b83;margin:12px 0;min-height:46px}.message.error{background:#fff2ee;color:#ab3d2c}.list{display:grid;gap:16px}.record{background:#fff;border:1px solid #dce5f1;border-radius:17px;padding:19px;box-shadow:0 8px 28px #1929430d}.record-top{display:flex;justify-content:space-between;gap:12px;align-items:start;flex-wrap:wrap}.record-top h3{margin:5px 0;font-size:19px}.subtle{font-size:13px;color:#66778d}.pill{font-size:12px;font-weight:750;padding:5px 11px;border-radius:99px;background:#e9effa;color:#315582;white-space:nowrap}.pill.live{background:#fff0df;color:#97501b}.pill.done{background:#dff6e8;color:#1b6740}.pill.bad{background:#fbe4df;color:#923c2e}.pill.ghost{background:#e9edf5;color:#485b74}
+.record-body{display:grid;grid-template-columns:minmax(240px,1fr) minmax(240px,1fr);gap:16px;margin:15px 0 12px}.record-body p{margin:5px 0}.labelled{display:grid;grid-template-columns:1fr auto;align-items:end;gap:9px}.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px;border-top:1px solid #e4ebf4;padding-top:15px}.hide{display:none!important}.empty{background:white;border:1px dashed #bed0e7;border-radius:15px;padding:30px;text-align:center;color:#627794}.note{font-size:13px;color:#637895;margin:14px 2px}
+@media(max-width:900px){.filters{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){main{padding:15px 10px 60px}.hero{padding:22px}.record-body,.filters{grid-template-columns:1fr}.metric b{font-size:25px}.record{padding:14px}header{padding:15px}.btn{padding:10px 12px}}
+</style></head><body>
+<header><strong>Boni<span>Verso</span> · Gestão Live</strong><nav><a href="./live-central.html">🎥 Aulas online</a><a href="./biblioteca-live.html">📚 Biblioteca</a><a href="./">Início</a></nav></header>
+<main>
+<section class="hero"><small>RSB EDUCAÇÃO · ACESSO EXCLUSIVO À EQUIPE</small><h1>Gerenciamento de gravações</h1><p>Organize videoaulas por curso ou turma, controle publicações e acompanhe o processamento com segurança.</p></section>
+<div class="stats" role="group" aria-label="Indicadores"><div class="metric"><b id="n-total">—</b><small>Gravações ativas</small></div><div class="metric"><b id="n-ready">—</b><small>Concluídas</small></div><div class="metric"><b id="n-published">—</b><small>Publicadas</small></div><div class="metric"><b id="n-processing">—</b><small>Em processamento</small></div></div>
+<p id="message" class="message" role="status">Verificando sua conta e carregando gravações…</p>
+<section class="panel" id="main-panel" hidden>
+<h2>Pesquisar e organizar</h2><div class="filters">
+<div><label for="q">Buscar gravação</label><input id="q" type="search" placeholder="Título da aula ou nome do curso"></div>
+<div><label for="target-filter">Curso / turma</label><select id="target-filter"><option value="all">Todos os destinos</option></select></div>
+<div><label for="state-filter">Situação</label><select id="state-filter"><option value="all">Todas (exceto lixeira)</option><option value="published">Publicadas</option><option value="hidden">Ocultas / em revisão</option><option value="processing">Em processamento</option><option value="failed">Com falha</option><option value="trash">Lixeira</option></select></div>
+<button class="btn alt" id="reload" type="button">↻ Atualizar</button>
+</div></section>
+<div id="items" class="list"></div>
+<p class="note">O acompanhamento automático verifica gravações em processamento aproximadamente a cada 30 segundos enquanto esta página estiver aberta. Mover uma gravação para outro curso a oculta até nova publicação. A lixeira é reversível; exclusão definitiva remove também o MP4 privado e não pode ser desfeita. Gravações em processamento não podem ser apagadas.</p>
+</main>
+<script src="./config.js"></script>
+<script type="module">
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.2';
+const $=s=>document.getElementById(s),config=window.BONIVERSO_CONFIG;
+const el=(tag,text,klass)=>{const e=document.createElement(tag);if(text!==undefined&&text!==null)e.textContent=String(text);if(klass)e.className=klass;return e};
+const db=createClient(config.supabaseUrl,config.supabasePublishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+let recordings=[],events=new Map(),targets=[],courses=new Map(),classes=new Map(),busy=false,syncing=false;
+const message=(text,error=false)=>{$('message').textContent=text;$('message').classList.toggle('error',error)};
+const date=v=>v?new Date(v).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'—';
+const eventOf=r=>events.get(r.event_id)||{};
+function targetOf(r){const original=eventOf(r);if(r.library_course_id)return 'course:'+r.library_course_id;if(r.library_classroom_id)return 'class:'+r.library_classroom_id;if(original.course_id)return 'course:'+original.course_id;if(original.classroom_id)return 'class:'+original.classroom_id;return 'original'}
+function targetTitle(target){if(target.startsWith('course:'))return courses.get(target.slice(7))||'Curso';if(target.startsWith('class:'))return classes.get(target.slice(6))||'Turma';return 'Destino original da aula'}
+function pill(r){if(r.deleted_at)return ['Na lixeira','ghost'];if(r.state==='ready')return r.is_published?['Publicada','done']:['Concluída · oculta','ghost'];if(r.state==='failed')return ['Falha','bad'];if(r.state==='recording')return ['Gravando','live'];if(r.state==='processing')return ['Processando','live'];return ['Preparando','live']}
+async function api(action,extra={}){const {data,error}=await db.functions.invoke('boniverso-recording-manager',{body:{action,...extra}});if(error){let reason=error.message||'Erro na solicitação';try{reason=(await error.context?.json())?.error||reason}catch{}throw Error(reason)}if(data?.error)throw Error(data.error);return data}
+async function manage(action,r,more={},description=''){
+ if(busy)return;
+ if(action==='trash'&&!confirm('Mover esta gravação para a lixeira? Ela ficará imediatamente invisível para os alunos.'))return;
+ if(action==='delete_forever'){
+  if(!confirm('ATENÇÃO: a exclusão definitiva apagará o vídeo privado e o registro. Não será possível recuperar. Continuar?'))return;
+  const answer=prompt('Para confirmar a exclusão irreversível, digite EXCLUIR:');if(answer!=='EXCLUIR')return;
+ }
+ if(action==='publish'&&!confirm('Publicar esta gravação para estudantes autorizados do destino selecionado?'))return;
+ if(action==='move'&&!confirm('Alterar a biblioteca de destino? O vídeo será ocultado até que você publique novamente.'))return;
+ busy=true;message(description||'Salvando alteração…');$('reload').disabled=true;
+ try{const ret=await api(action,{recording_id:r.id,...more});await load(false);message(ret.message||'Alteração realizada.')}catch(e){message(e.message,true)}
+ finally{busy=false;$('reload').disabled=false}
+}
+function button(name,klass,fn,disabled=false){const b=el('button',name,'btn '+klass);b.type='button';b.disabled=disabled;b.addEventListener('click',fn);return b}
+function makeCard(r){
+ const outer=el('article',null,'record');const top=el('div',null,'record-top');const head=el('div');head.append(el('div','Aula de origem: '+(eventOf(r).title||r.event_id),'subtle'),el('h3',r.title));top.append(head);
+ const [status,style]=pill(r);top.append(el('span',status,'pill '+style));outer.append(top);
+ const body=el('div',null,'record-body');const left=el('div');
+ left.append(el('p','Biblioteca atual: '+targetTitle(targetOf(r))));left.append(el('p','Criada: '+date(r.created_at),'subtle'));left.append(el('p','Gravação: '+date(r.recording_started_at)+(r.recording_ended_at?' até '+date(r.recording_ended_at):''),'subtle'));
+ if(r.duration_seconds!=null)left.append(el('p','Duração: '+Math.max(0,Math.round(r.duration_seconds))+' segundos','subtle'));
+ if(r.error_message)left.append(el('p','Diagnóstico: '+r.error_message,'subtle'));
+ const right=el('div');const titleLabel=el('label','Título da gravação');const edit=el('div',null,'labelled');const titleInput=el('input');titleInput.type='text';titleInput.maxLength=180;titleInput.value=r.title;titleInput.setAttribute('aria-label','Novo título para '+r.title);
+ edit.append(titleInput,button('Salvar título','alt',()=>manage('rename',r,{title:titleInput.value},'Renomeando gravação…'),!!r.deleted_at));
+ const placeLabel=el('label','Organizar por curso ou turma');placeLabel.style.marginTop='13px';const dest=el('div',null,'labelled');const sel=el('select');sel.setAttribute('aria-label','Destino na biblioteca');
+ sel.append(new Option('Destino original da aula','original'));
+ for(const t of targets)sel.append(new Option(t.label,t.value));
+ sel.value=(r.library_course_id?'course:'+r.library_course_id:r.library_classroom_id?'class:'+r.library_classroom_id:'original');
+ dest.append(sel,button('Mover','alt',()=>manage('move',r,{target:sel.value},'Movendo para a biblioteca selecionada…'),!!r.deleted_at||!['ready','failed'].includes(r.state)));
+ right.append(titleLabel,edit,placeLabel,dest);body.append(left,right);outer.append(body);
+ const actions=el('div',null,'action-row');
+ if(r.deleted_at){actions.append(button('↩ Restaurar','alt',()=>manage('restore',r)),button('Excluir definitivamente','warn',()=>manage('delete_forever',r)));}
+ else{
+  if(r.state==='ready'){
+   actions.append(r.is_published?button('🔒 Ocultar dos alunos','alt',()=>manage('hide',r)):button('📚 Publicar para alunos','ink',()=>manage('publish',r)));
+   actions.append(button('▶ Abrir biblioteca','alt',()=>location.assign('./biblioteca-live.html')));
+  }
+  if(['processing','recording'].includes(r.state))actions.append(el('span','Acompanhamento automático ativo · em andamento','subtle'));
+  actions.append(button('🗑 Lixeira','warn',()=>manage('trash',r),['pending','recording','processing'].includes(r.state)));
+ }
+ outer.append(actions);return outer;
+}
+function render(){const q=$('q').value.trim().toLocaleLowerCase('pt-BR'),t=$('target-filter').value,s=$('state-filter').value;const visible=recordings.filter(r=>{
+ const matchesTrash=s==='trash'?!!r.deleted_at:!r.deleted_at;if(!matchesTrash)return false;
+ if(s==='published'&&!r.is_published)return false;
+ if(s==='hidden'&&(r.is_published||r.state!=='ready'))return false;
+ if(s==='processing'&&!['pending','processing','recording'].includes(r.state))return false;
+ if(s==='failed'&&r.state!=='failed')return false;
+ if(t!=='all'&&targetOf(r)!==t)return false;
+ return !q||(r.title+' '+(eventOf(r).title||'')+' '+targetTitle(targetOf(r))).toLocaleLowerCase('pt-BR').includes(q);
+ });
+ $('items').replaceChildren();if(!visible.length)$('items').append(el('div','Nenhuma gravação encontrada nesta seleção.','empty'));else visible.forEach(r=>$('items').append(makeCard(r)));
+ const active=recordings.filter(r=>!r.deleted_at);$('n-total').textContent=active.length;$('n-ready').textContent=active.filter(r=>r.state==='ready').length;$('n-published').textContent=active.filter(r=>r.is_published).length;$('n-processing').textContent=active.filter(r=>['pending','processing','recording'].includes(r.state)).length;
+}
+async function load(showMsg=true){if(showMsg)message('Carregando gravações…');const data=await api('list');recordings=data.recordings||[];events=new Map((data.events||[]).map(x=>[x.id,x]));courses=new Map((data.courses||[]).map(x=>[x.id,x.title]));classes=new Map((data.classrooms||[]).map(x=>[x.id,x.name]));
+ targets=[...(data.courses||[]).filter(c=>c.published).map(c=>({value:'course:'+c.id,label:'Curso · '+c.title})),...(data.classrooms||[]).filter(c=>c.is_active).map(c=>({value:'class:'+c.id,label:'Turma · '+c.name}))];
+ const filter=$('target-filter'),selected=filter.value;filter.replaceChildren(new Option('Todos os destinos','all'));for(const t of targets)filter.append(new Option(t.label,t.value));if([...filter.options].some(x=>x.value===selected))filter.value=selected;
+ $('main-panel').hidden=false;render();if(showMsg)message('Gerenciamento disponível. Informações atualizadas em '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+'.');}
+async function sync(){if(syncing||busy||document.hidden||!recordings.some(r=>!r.deleted_at&&['recording','processing'].includes(r.state)))return;syncing=true;
+ try{const r=await api('sync');if(r.changes?.some(x=>x.changed)){await load(false);message('Processamento atualizado automaticamente.')}else message('Acompanhamento ativo. Aguardando finalização do LiveKit/R2…');}
+ catch(e){message('Falha na verificação automática: '+e.message,true)}finally{syncing=false}
+}
+$('q').addEventListener('input',render);$('target-filter').addEventListener('change',render);$('state-filter').addEventListener('change',render);
+$('reload').addEventListener('click',async()=>{try{await sync();await load()}catch(e){message(e.message,true)}});
+try{const {data:{user}}=await db.auth.getUser();if(!user)throw Error('Entre na sua conta do BoniVerso para gerenciar gravações.');await load();await sync();setInterval(sync,30000);}catch(e){message('Acesso não disponível: '+e.message,true);$('items').replaceChildren(el('div','O painel é exclusivo para professores e administradores autorizados.','empty'))}
+</script>
+</body></html>

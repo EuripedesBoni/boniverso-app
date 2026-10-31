@@ -1,10 +1,9 @@
-BoniVerso Live — Biblioteca de videoaulas (base v1.1.7)
-
-1. Envie biblioteca-live.html à raiz de EuripedesBoni/boniverso-app (Add file > Upload files > Commit changes).
-2. Abra https://euripedesboni.github.io/boniverso-app/biblioteca-live.html
-3. Opcional: adicione um atalho na Central, apontando para ./biblioteca-live.html.
-
-Supabase BoniVerso-RSB: a tabela boniverso_live_recordings e suas políticas RLS JÁ FORAM CRIADAS.
-A biblioteca listará somente gravações marcadas ready e visíveis para o usuário.
-
-IMPORTANTE: este é o catálogo seguro, NÃO o motor de gravação. Ainda não há gravação nem reprodução de arquivo nesta versão. O LiveKit Egress requer destino privado (S3/R2 ou equivalente), credenciais no servidor, gatilho de iniciar/parar, processamento e endpoint de reprodução com autorização a cada solicitação. Não carregar links públicos ou segredos no navegador. Gravar alunos exige aviso/consentimentos apropriados e política de retenção.
+BoniVerso v1.2.0
+1. Descompacte o ZIP.
+2. No GitHub boniverso-app, envie painel-gravacoes.html (novo) e biblioteca-live.html (substitua o antigo) na RAIZ do repositorio, branch main.
+3. Confirme Commit changes e a publicacao no GitHub Pages.
+4. Abra a Biblioteca de gravacoes com a conta professor: ela exibira o link Gerenciar gravacoes no cabecalho.
+5. Nao apague arquivos de video por fora da lixeira do painel.
+Seguranca: professores e administradores autenticados podem gerenciar; alunos so veem videos concluidos e publicados associados a matricula.
+Reorganizacao de curso/turma oculta automaticamente ate republicacao.
+Exclusao definitiva e irreversivel. Use apenas apos testar.
