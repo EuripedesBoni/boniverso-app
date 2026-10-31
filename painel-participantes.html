@@ -65,5 +65,6 @@ $('export').onclick=()=>{if(!current)return;const rows=aggregate(current);const 
 $('reload').onclick=()=>load();
 try{if(!uuid.test(evtId||''))throw Error('Link da aula inválido. Abra o painel pelo BoniVerso Live.');if(!cfg?.supabaseUrl||!cfg?.supabasePublishableKey)throw Error('Configuração ausente.');db=createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);const {data:{user},error}=await db.auth.getUser();if(error||!user)throw Error('Entre na sua conta do BoniVerso como professor.');await load();setInterval(()=>{if(Date.now()-lastSuccess>=11000)load(true)},12000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)load(true)})}catch(e){status(e.message,true)}
 </script>
+<script defer src="./boniverso-presenca-pdf.js"></script>
 </body>
 </html>
