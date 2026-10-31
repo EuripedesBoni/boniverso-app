@@ -1,0 +1,35 @@
+BONIVERSO · ETAPA 4 — TURMA APARECIDA DE GOIÂNIA — versão 1.1.0
+
+O banco Supabase já foi preparado pela assistente: turma privada, curso protegido, matrícula manual aprovada pelo professor, aulas ao vivo e chat.
+
+INSTALAÇÃO (SEM CUSTO ADICIONAL)
+1. Extraia este ZIP.
+2. Acesse https://github.com/EuripedesBoni/boniverso-app
+3. Escolha Add file > Upload files.
+4. Envie apenas os arquivos `aparecida.html` e `sw.js` (na raiz, ao lado de index.html).
+5. Confirme com Commit changes. Depois aguarde a marca verde de GitHub Pages.
+6. Abra https://euripedesboni.github.io/boniverso-app/aparecida.html
+
+PROFESSOR — PRIMEIRO USO
+1. Entre na conta do professor no BoniVerso e abra /aparecida.html.
+2. O professor pode liberar uma conta existente: o aluno deve se cadastrar antes no BoniVerso e confirmar o e-mail.
+3. Verifique o pagamento fora do aplicativo, digite o e-mail e marque a confirmação.
+4. Cadastrar uma aula com data/horário e link HTTPS criado em Meet/Zoom/Teams.
+5. No horário, o professor clica em 'Iniciar ao vivo'; o botão de entrada aparece aos alunos autorizados.
+6. O chat da turma funciona no BoniVerso quando a aula estiver AO VIVO.
+
+ALUNO — PRIMEIRO USO
+1. Crie sua própria conta no BoniVerso e confirme o e-mail; o professor não precisa de sua senha.
+2. Informe ao Rafael o e-mail cadastrado para confirmação do pagamento e autorização.
+3. Abra /aparecida.html com a mesma conta; sem matrícula a plataforma bloqueia o acesso.
+4. Quando a aula estiver ao vivo, abra o link privado do provedor. O vídeo, áudio e chat da reunião funcionam no Meet/Zoom/Teams; o BoniVerso também tem chat da turma.
+
+SEGURANÇA
+- Não publique lista de alunos, senhas, códigos secretos nem link privado da reunião no GitHub.
+- O link é salvo no Supabase com políticas RLS, mas cada aluno autorizado pode copiá-lo; habilite sala de espera/admissão e limite o acesso no provedor.
+- A página não armazena cartões nem processa novas cobranças: valida pagamentos já realizados, informados pelo professor.
+- O link da aula e o horário real ainda precisam ser cadastrados pelo professor.
+- Ainda não é uma transmissão de vídeo hospedada pelo BoniVerso; a videochamada ocorre na plataforma escolhida (Meet/Zoom/Teams).
+- O chat usa consultas periódicas enquanto a aba está aberta. Teste o limite de alunos e mensagens antes da aula.
+- No momento, o acesso via /aparecida.html é direto; após validarmos, podemos incluir um atalho na página inicial.
+- Esta versão não altera os dados do projeto EstudNexa.
