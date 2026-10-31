@@ -1,9 +1,9 @@
-/* BoniVerso — central de notificações e comprovantes (1.0.3) */
+/* BoniVerso — central de notificações e comprovantes (1.0.4) */
 #notifications{position:relative}
 .bv-badge{position:absolute;top:-6px;right:-6px;background:#c65140;color:white;min-width:19px;height:19px;padding:2px 4px;border-radius:20px;font-size:11px;line-height:15px;text-align:center;font-weight:700;box-shadow:0 0 0 2px white}
 .bv-notice-nav{position:relative}
 .bv-count-small{margin-left:auto;background:#e9efff;color:#2a4e96;border-radius:20px;padding:3px 8px;font-size:12px;font-weight:700}
-.bv-overlay{position:fixed;inset:0;z-index:20000;background:rgba(10,23,47,.64);display:flex;justify-content:center;align-items:flex-start;padding: min(8vh,70px) 16px 16px}
+.bv-overlay{position:fixed;inset:0;z-index:20000;background:rgba(10,23,47,.64);display:flex;justify-content:center;align-items:flex-start;padding:min(8vh,70px) 16px 16px}
 .bv-overlay[hidden]{display:none}
 .bv-window{background:#f6f8fc;color:#152544;border:1px solid #dae2f0;border-radius:22px;width:min(760px,100%);max-height:85vh;overflow:auto;box-shadow:0 22px 70px #0004}
 .bv-notice-head{position:sticky;top:0;background:#fff;z-index:2;padding:22px 24px;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #e2e8f1}
@@ -32,3 +32,37 @@
 .bv-announce input,.bv-announce textarea{width:100%;box-sizing:border-box;border:1px solid #d2dfef;padding:12px;border-radius:9px;margin-bottom:10px;font:inherit}
 .bv-empty{color:#6d7d96;text-align:center;padding:24px}
 @media(max-width:600px){.bv-overlay{padding:12px}.bv-window{max-height:95vh;border-radius:14px}.bv-notice-head{padding:15px}.bv-notice-body{padding:15px}.bv-receipts{padding:16px}.bv-receipt-item{align-items:flex-start}.bv-notice-head h2{font-size:22px}}
+
+/* Correção 1.0.4 — sino sempre visível, incluindo Safari/iPad/celular.
+   O CSS original oculta .circle-button em telas com até 740px. */
+.top-actions #notifications {
+  display:inline-flex !important;
+  position:relative;
+  isolation:isolate;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  width:auto;
+  height:42px;
+  min-width:46px;
+  padding:0 12px;
+  flex:0 0 auto;
+  background:#edf3ff;
+  border:1px solid #bdd0f4;
+  border-radius:12px;
+  color:#17345f;
+  box-shadow:0 2px 7px rgba(24,52,98,.10);
+  font-size:14px;
+  font-weight:750;
+  white-space:nowrap;
+}
+.top-actions #notifications:hover,
+.top-actions #notifications:focus-visible {background:#dfeaff;border-color:#6e9de9}
+/* Exibimos um glifo confiável mesmo se o conjunto de ícones não carregar. */
+#notifications > [data-icon="bell"] {display:none !important}
+.top-actions #notifications::before {content:"🔔";display:block;font-size:22px;line-height:1}
+.top-actions #notifications::after {content:"Notificações";display:block;font-size:13px;font-weight:750}
+@media(max-width:1140px){.top-actions #notifications::after{display:none}}
+@media(max-width:740px){.top-actions #notifications{display:inline-flex !important;min-width:44px;height:42px;padding:0 9px}.top-actions #notifications::after{display:none}}
+/* O contador continua visível sobre o ícone, sem bloquear o clique. */
+.top-actions #notifications .bv-badge{pointer-events:none;right:-6px;top:-7px;z-index:2}

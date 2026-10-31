@@ -1,4 +1,4 @@
-const CACHE = 'boniverso-v103-avisos-recibos';
+const CACHE = 'boniverso-v104-sino-visivel';
 const ASSETS = ['./', './index.html', './styles.css', './turmas-home.css', './boniverso-avisos.css', './boniverso-avisos.js', './recibo.html', './app.js', './config.js', './bootstrap.js', './online-app.js', './ai-link.js', './boniverso-ai.html', './turmas-link.js', './turmas-home.js', './turmas.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './rafa-boni.jpg', './rafa-boni-cutout.png'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting())));
 self.addEventListener('activate', event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())));
