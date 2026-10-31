@@ -1,22 +1,29 @@
-BoniVerso Live — Central por curso ou turma (versão beta)
+BoniVerso Live v1.1.9 — controles de gravação
 
-1) Descompacte o ZIP e envie os três arquivos HTML/JS a seguir para a RAIZ do seu repositório GitHub (não sobrescreva arquivos antigos):
-- live-central.html
-- live-room.html
-- live-menu.js
+1) No GitHub EuripedesBoni/boniverso-app, branch main, clique Add file > Upload files.
+2) Envie o arquivo live-recording-controls.js para a RAIZ do repositório e confirme o commit.
+3) Abra live-room.html, clique no lápis (Edit), vá até o FINAL.
+4) Logo ANTES de </body>, mas DEPOIS do </script> do código atual, insira:
 
-2) No arquivo index.html, imediatamente antes de </body>, acrescente:
-<script defer src="live-menu.js"></script>
+<script defer src="live-recording-controls.js"></script>
 
-3) Clique em Commit changes na branch main. Abra https://euripedesboni.github.io/boniverso-app/live-central.html
+5) O final esperado é:
 
-4) Como professor, faça login pelo início e acesse Aulas online. Escolha uma turma ou curso e cadastre uma aula. Depois clique em Iniciar e abrir sala.
+</script>
+<script defer src="live-room-media-fix.js"></script>
+<script defer src="live-recording-controls.js"></script>
+</body>
+</html>
 
-5) Antes de chamar alunos, teste com uma conta do professor e outra matrícula controlada.
+6) Salve com Commit changes. Atualize a página da aula nos dois dispositivos.
 
-Atenção:
-- As tabelas e políticas da Central já foram aplicadas ao Supabase BoniVerso-RSB.
-- A função boniverso-live-token foi atualizada no Supabase para receber event_id, preservando session_id do módulo antigo. A conexão real ainda precisa ser testada com contas autenticadas.
-- O menu não altera o site para visitantes desconectados que ainda estejam na tela de login.
-- Gravação ainda não implementada. Troca dinâmica de permissões requer reconectar clicando em Atualizar minha permissão.
-- Em produção é necessária atualização/revogação imediata de permissões para menores, logging e testes de capacidade e custos.
+SEGURANÇA E USO
+- Não poste os valores das chaves R2 e LiveKit no GitHub ou na conversa.
+- Gravação só inicia com professor autenticado, aula ao vivo e confirmação explícita do aviso.
+- A página passa a mostrar o aviso de gravação a todos os participantes.
+- Faça o teste apenas com contas de teste ou pessoas adequadamente informadas e autorizadas.
+- Após encerrar, clique "Verificar processamento" até ficar pronto.
+- Só depois clique "Publicar para alunos".
+- Não é automático. O LiveKit Egress pode gerar cobrança após a franquia gratuita.
+- Os alunos veem somente gravações prontas e publicadas dos cursos/turmas autorizados.
+- A gravação é uma função experimental: ainda não foi testada ponta a ponta com upload para o R2.
