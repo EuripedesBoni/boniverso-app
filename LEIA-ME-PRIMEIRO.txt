@@ -1,0 +1,31 @@
+BONIVERSO v1.0.6 — CENTRAL DE ATUALIZAÇÕES
+==========================================
+
+1. Abra https://github.com/EuripedesBoni/boniverso-app
+2. Clique em Add file > Upload files.
+3. Selecione APENAS estes quatro arquivos DESTA pasta (sem a pasta):
+   - index.html
+   - sw.js
+   - app-updates.js
+   - app-updates.css
+4. Confirme a substituição dos dois arquivos existentes e clique em Commit changes.
+5. Aguarde GitHub Actions / GitHub Pages indicar 'Success'.
+6. Abra o site e procure o símbolo de atualização (duas setas circulares)
+   perto das notificações, ou a nova opção Atualizações no menu lateral.
+7. Clique Verificar agora e Atualizar aplicativo. Salve quaisquer redações antes de atualizar.
+
+O GitHub Pages continua hospedando o site. A Central procura uma nova revisão
+no repositório público GitHub a cada 30 minutos enquanto a aba estiver aberta
+(e também ao voltar à aba). Não é necessário publicar manualmente o arquivo
+de versão quando fizer futuras alterações no GitHub: cada commit é detectável.
+
+IMPORTANTE:
+- O sistema NÃO recarrega durante a escrita: pede confirmação.
+- Os dados e logins do Supabase NÃO são apagados.
+- Nenhum segredo de API é colocado no código.
+- A consulta pública ao GitHub tem limites de requisição; se ela falhar,
+  o botão Atualizar aplicativo permite renovar os arquivos diretamente.
+- O aviso sinaliza novos commits, mas o deploy pode demorar alguns instantes.
+- A identificação v1.0.6 é a versão da interface da Central; futuras
+  publicações são identificadas por revisão curta do GitHub.
+- Essa atualização não altera o outro aplicativo EstudNexa/Medatlas.
