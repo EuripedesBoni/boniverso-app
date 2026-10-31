@@ -1,19 +1,10 @@
-BONIVERSO 1.0.7 — MELHORIAS NA CENTRAL DE ATUALIZAÇÕES
+BoniVerso Live — ajuste de áudio v1.1.5
 
-1. Extraia o ZIP.
-2. No GitHub EuripedesBoni/boniverso-app (ramificação main), clique Add file → Upload files.
-3. Envie APENAS os arquivos app-updates.js e sw.js que estão neste ZIP.
-4. Clique Commit changes e aguarde GitHub Pages / Actions finalizar com Success.
-5. Abra https://euripedesboni.github.io/boniverso-app/?versao=107 no mesmo navegador do aluno.
-6. Abra Central de Atualizações → Verificar agora. O painel informará a hora exata da verificação.
-7. Se estiver em dia, a opção de instalar nova revisão estará DESABILITADA.
-8. Quando uma revisão nova for detectada, o botão 'Instalar nova revisão' ficará habilitado.
-9. Um aviso de confirmação só será mostrado se houver campos editados ainda presentes na tela.
+1. Acesse GitHub > EuripedesBoni/boniverso-app > live-room.html.
+2. Substitua o arquivo live-room.html pelo arquivo deste pacote, na raiz da branch main.
+3. Aguarde a publicação do GitHub Pages e recarregue a sala.
+4. Clique em Ativar microfone; observe o status Microfone ligado e enviado ao LiveKit.
+5. Para ouvir, conecte-se de outro dispositivo com UMA SEGUNDA CONTA matriculada, para evitar colisão de identidade LiveKit.
+6. No dispositivo do ouvinte, clique Ativar som dos participantes e aumente o volume.
 
-Não foi necessária nenhuma alteração no banco de dados. Turmas, redações, notas,
-recibos e notificações continuam armazenados no Supabase.
-
-OBSERVAÇÃO: O sistema usa a API pública do GitHub para checar mudanças no repositório.
-Se houver falha de rede ou limite de consultas, ela será informada em tela;
-não ocorrerá atualização forçada. Mudanças publicadas no GitHub ainda dependem
-do término da publicação do GitHub Pages.
+Não foram alteradas matrículas ou segredos do Supabase.
