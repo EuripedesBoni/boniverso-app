@@ -1,0 +1,17 @@
+BoniVerso v1.0.5 — Ícones da navegação do aluno
+
+Atualização VISUAL do aplicativo em funcionamento.
+
+Enviar ao GitHub (raiz do repositório boniverso-app) apenas:
+- index.html (atualizado)
+- nav-icons.css (novo)
+- sw.js (atualizado)
+
+A página index.html adiciona um atalho para Início com casinha azul/dourada e deixa um botão menor de menu lateral com três traços. A barra inferior tem cinco ícones aprimorados (Início, Cursos, Meu planejamento, Redações, Desempenho). Os botões preservam as rotas e as ações do app.
+
+Nenhuma alteração de Supabase, autenticação, IA, pagamento ou banco de dados.
+
+Depois do commit e da publicação do GitHub Pages, visitar:
+https://euripedesboni.github.io/boniverso-app/?v=105
+
+NOTA: não enviar o arquivo LEIA-ME-PARA-INSTALAR.txt se não quiser adicioná-lo ao repositório.

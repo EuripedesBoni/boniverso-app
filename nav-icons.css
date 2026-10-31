@@ -1,0 +1,141 @@
+/* BoniVerso 1.0.5 — Ícones visuais e navegação responsiva.
+   Mantém o menu de cinco itens, a conta e as notificações funcionais. */
+.bv-home-quick { display: none; text-decoration: none; }
+@media (max-width: 740px) {
+  .topbar {
+    gap: 7px;
+    padding-inline: 10px 12px;
+  }
+  .topbar-left {
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 7px;
+  }
+  .topbar-left > div { min-width: 0; }
+  .bv-home-quick {
+    display: grid;
+    place-items: center;
+    width: 43px;
+    height: 43px;
+    flex: 0 0 43px;
+    color: #f2d493;
+    border-radius: 15px;
+    border: 1px solid rgba(233,193,120,.65);
+    background: linear-gradient(145deg,#224982 0%,#101d38 75%);
+    box-shadow: 0 4px 12px rgba(22,49,99,.15), inset 0 1px rgba(255,255,255,.15);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .bv-home-quick:active { transform: scale(.95); }
+  .bv-home-quick:focus-visible { outline: 3px solid #70a8f7; outline-offset: 2px; }
+  /* Substitui o menu invisível por três traços reais, sem perder sua função. */
+  #menuToggle {
+    display: grid;
+    place-items: center;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 39px;
+    border: 0;
+    background: transparent;
+    color: #2b4b74;
+    border-radius: 9px;
+    padding: 0;
+  }
+  #menuToggle [data-icon="menu"] { display: none; }
+  #menuToggle::before {
+    content: "";
+    display: block;
+    height: 15px;
+    width: 19px;
+    border-radius: 2px;
+    background:
+      linear-gradient(#294c78 0 0) center top / 19px 2px no-repeat,
+      linear-gradient(#294c78 0 0) center center / 19px 2px no-repeat,
+      linear-gradient(#294c78 0 0) center bottom / 19px 2px no-repeat;
+  }
+  #menuToggle:hover, #menuToggle:focus-visible { background: #eaf1fb; }
+  .topbar-left .breadcrumb { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 8px; }
+  .topbar-left .top-greeting { font-size: clamp(12px, 3.9vw, 17px); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .top-actions { flex: 0 0 auto; gap: 5px; }
+
+  /* Os cinco botões continuam usando suas ações originais do BoniVerso. */
+  .mobile-bottom {
+    align-items: stretch;
+    justify-content: space-around;
+    gap: 2px;
+    height: calc(91px + env(safe-area-inset-bottom, 0px));
+    padding: 7px 6px calc(7px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid #e1e8f3;
+    border-radius: 20px 20px 0 0;
+    background: rgba(255,255,255,.98);
+    box-shadow: 0 -7px 24px rgba(18,40,82,.09);
+  }
+  .mobile-nav-link {
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    min-width:0;
+    gap:4px;
+    padding: 1px 2px;
+    border:0;
+    border-radius:13px;
+    background:transparent;
+    color:#62728b;
+    font-size:10px;
+    font-weight:650;
+    line-height:1.16;
+    transition: color .15s ease, background .15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-nav-link > svg {
+    box-sizing:content-box;
+    display:block;
+    width:22px;
+    height:22px;
+    padding:8px;
+    border-radius:14px;
+    background:linear-gradient(150deg,#f4f7ff 5%,#eaf0fb);
+    border:1px solid #e5edf8;
+    color:#315582;
+    stroke-width:2;
+    transition:background .16s ease, color .16s ease, transform .16s ease, box-shadow .16s ease;
+  }
+  .mobile-nav-link > span {
+    display:block;
+    text-align:center;
+    overflow-wrap:normal;
+    text-wrap:balance;
+    max-width:100%;
+  }
+  .mobile-nav-link.active { color:#245fc3; font-weight:800; }
+  .mobile-nav-link.active > svg {
+    background:linear-gradient(145deg,#4385f1,#2057b8);
+    border-color:#2e6ccf;
+    color:#fff;
+    box-shadow: 0 5px 12px rgba(48,105,211,.23), inset 0 1px rgba(255,255,255,.15);
+    transform: translateY(-2px);
+  }
+  .mobile-nav-link:active > svg { transform:scale(.92); }
+  .mobile-nav-link:focus-visible { outline:2px solid #5a95ed; outline-offset:-2px; }
+  /* A cor do ouro identifica discretamente a escrita. */
+  .mobile-nav-link[data-id="essays"]:not(.active) > svg { color:#9b7538; background:#fff8ec; border-color:#f4e8d0; }
+  .mobile-nav-link[data-id="planner"]:not(.active) > svg { color:#3d7189; }
+  .mobile-nav-link[data-id="performance"]:not(.active) > svg { color:#5569a3; }
+  .mobile-nav-link[data-id="essays"].active > svg { background:linear-gradient(145deg,#caa25e,#9a713a); border-color:#a7834f; }
+  main { padding-bottom: calc(108px + env(safe-area-inset-bottom, 0px)); }
+  .toast-region { bottom: calc(100px + env(safe-area-inset-bottom,0px)); }
+}
+@media(max-width:390px) {
+  .topbar { padding-inline: 7px 9px; gap:5px; }
+  .topbar-left { gap:5px; }
+  .bv-home-quick { flex-basis:40px;width:40px;height:40px;border-radius:13px; }
+  #menuToggle { flex-basis:24px; width:24px; }
+  .topbar-left .breadcrumb { font-size:7px; }
+  .topbar-left .top-greeting { font-size:12px; }
+  .mobile-bottom {padding-inline:3px;}
+  .mobile-nav-link { font-size:9px; padding-inline:0; }
+  .mobile-nav-link > svg {width:20px;height:20px;padding:7px;border-radius:12px;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .bv-home-quick, .mobile-nav-link, .mobile-nav-link > svg { transition: none !important; }
+}

@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="turmas-home.css" />
   <link rel="stylesheet" href="boniverso-avisos.css" />
+  <link rel="stylesheet" href="nav-icons.css" />
 </head>
 <body>
   <div id="app">
@@ -31,7 +32,18 @@
     <div class="mobile-shade" id="shade"></div>
     <div class="main-column">
       <header class="topbar">
-        <div class="topbar-left"><button class="icon-btn menu-button" id="menuToggle" aria-label="Abrir menu"><span data-icon="menu"></span></button><div><div class="breadcrumb">INSTITUTO RSB EDUCAÇÃO <span class="bread-slash">/</span> <span id="breadcrumb">Início</span></div><div class="top-greeting" id="topGreeting">Olá, estudante <span>✦</span></div></div></div>
+        <div class="topbar-left">
+          <a class="bv-home-quick" href="./" aria-label="Voltar para Início" title="Início">
+            <svg viewBox="0 0 36 36" width="33" height="33" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M7.5 16.4 18 7.9l10.5 8.5v11.2c0 1-.8 1.8-1.8 1.8H9.3c-1 0-1.8-.8-1.8-1.8V16.4Z" stroke="#F2D493" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M14.2 29.4v-9.1h7.6v9.1" stroke="#F2D493" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="m6.6 16.6 11.4-9 11.4 9" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="m27.8 5.4.9 2.2 2.2.9-2.2.9-.9 2.2-.9-2.2-2.2-.9 2.2-.9.9-2.2Z" fill="#F2D493"/>
+            </svg>
+          </a>
+          <button class="icon-btn menu-button" id="menuToggle" aria-label="Abrir menu de navegação" title="Menu"><span data-icon="menu" aria-hidden="true"></span></button>
+          <div><div class="breadcrumb">INSTITUTO RSB EDUCAÇÃO <span class="bread-slash">/</span> <span id="breadcrumb">Início</span></div><div class="top-greeting" id="topGreeting">Olá, estudante <span>✦</span></div></div>
+        </div>
         <div class="top-actions"><span class="demo-pill"><span class="pulse-dot"></span> Protótipo funcional</span><button class="top-search" id="searchButton"><span data-icon="search"></span><span>Buscar cursos</span><kbd>⌕</kbd></button><button class="circle-button" id="notifications" title="Avisos"><span data-icon="bell"></span></button><button class="top-avatar" id="topAvatar" title="Abrir perfil">E</button></div>
       </header>
       <main id="view" aria-live="polite"></main>
