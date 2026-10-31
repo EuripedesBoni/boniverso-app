@@ -1,0 +1,22 @@
+BONIVERSO 1.0.9 — CENTRAL DE ATUALIZAÇÕES CONFIÁVEL
+
+1. Abra github.com/EuripedesBoni/boniverso-app
+2. Add file > Upload files
+3. Envie SOMENTE app-updates.js e sw.js desta pasta/ZIP, substituindo os anteriores.
+4. Commit changes, aguarde GitHub Actions/Pages confirmar sucesso.
+5. Entre no BoniVerso, abra Atualizações e clique em Verificar agora.
+
+Mudanças:
+- Checagem da revisão publicada no seu domínio (sw.js), sem depender de commits ou da API do GitHub.
+- Resultado e horário da última verificação visíveis.
+- Botão 'Instalar nova versão' habilitado somente quando houver um novo CACHE publicado.
+- 'Recarregar a tela' é opcional quando a interface estiver desatualizada.
+- Confirmação antes do recarregamento se houver dados digitados.
+- CSS/JS/HTML usam rede primeiro no Service Worker, com cache para modo offline.
+
+IMPORTANTE PARA VERSÕES FUTURAS:
+A cada nova publicação do aplicativo, atualize o valor CACHE em sw.js para um identificador
+único e com número maior: por exemplo boniverso-v110-novos-recursos.
+A Central só identifica a nova versão quando sw.js for publicado no GitHub Pages.
+
+Não coloque chaves secretas no GitHub. Não precisa alterar o Supabase.
