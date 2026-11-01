@@ -25,6 +25,15 @@
   .essay-area .intro{font-size:13px;color:#526984;margin:0 0 15px}
   .essay-area .course-note{display:block;color:#58769b;margin-top:4px;font-size:11px}
   .essay-info{border:1px solid #cfddf3;background:#f4f8ff;padding:13px;border-radius:12px;display:flex;flex-direction:column;gap:6px}
+ .publication-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;border:0;margin:19px 0 0;padding:0}
+ .publication-options legend{font-size:13px;font-weight:850;color:#274f86;padding-bottom:9px}
+ .publication-option{display:flex;gap:11px;align-items:flex-start;cursor:pointer;border:1.5px solid #d5e1f4;background:#f7faff;border-radius:14px;padding:16px;min-width:0}
+ .publication-option:has(input:checked){border-color:#387be0;background:#edf5ff;box-shadow:0 0 0 2px #387be017}
+ .publication-option input{accent-color:#2b66c3;margin:3px 0 0;flex:none}
+ .publication-option b{display:block;color:#1e477e;font-size:13px;line-height:1.35}
+ .publication-option small{display:block;font-size:11px;color:#5d7290;margin-top:5px;line-height:1.55}
+ @media(max-width:620px){.publication-options{grid-template-columns:1fr}}
+
   .essay-info strong{color:#234e8a}.essay-info small{font-size:12px;color:#576b88}
   .essay-info .btn{align-self:stretch;margin-top:6px}
   @media(max-width:480px){.essay-area{margin-inline:-3px}}
@@ -49,7 +58,12 @@
      <div class="field"><label for="newDescription">Orientações de estudo</label><textarea id="newDescription" maxlength="3000" placeholder="Leitura proposta, repertórios que podem ser utilizados, atividade sugerida..."></textarea></div>
     </div>
     <div class="file-box" style="margin-top:15px"><div class="field"><label for="newPdf">📄 PDF do professor (até 10 MB)</label><input id="newPdf" type="file" accept=".pdf,application/pdf" required /><small>Arquivo privado, disponível somente aos integrantes autorizados após a publicação.</small></div></div>
-    <fieldset class="essay-area">
+    <fieldset class="publication-options" aria-label="O que deseja publicar?">
+     <legend>Como deseja publicar este material?</legend>
+     <label class="publication-option"><input type="radio" name="publicationMode" value="solo" checked /><span><b>📚 Somente o repertório</b><small>Publicar apenas o PDF para a turma baixar e estudar, sem criar uma proposta de redação.</small></span></label>
+     <label class="publication-option"><input type="radio" name="publicationMode" value="linked" /><span><b>📚 + 📝 Repertório e redação</b><small>Publicar o PDF com uma proposta de redação, gênero e prazo de entrega.</small></span></label>
+    </fieldset>
+    <fieldset class="essay-area" id="newEssayArea" hidden disabled>
      <legend>📝 Redação vinculada ao repertório</legend>
      <p class="intro">Ao publicar este repertório, a proposta de redação será publicada junto, somente para os alunos da turma, série e curso selecionados. Defina obrigatoriamente a data-limite de envio.</p>
      <div class="grid">
@@ -63,8 +77,8 @@
      <div class="field" style="margin-top:14px"><label for="newEssayTheme">Tema específico da redação</label><input id="newEssayTheme" required maxlength="350" minlength="3" placeholder="Ex.: Os desafios da educação midiática no combate à desinformação" /></div>
      <div class="field" style="margin-top:14px"><label for="newEssayInstructions">Orientações para o texto e para a correção</label><textarea id="newEssayInstructions" required minlength="8" maxlength="5000" placeholder="Defina o gênero, o recorte temático, a estrutura esperada, os critérios e como o repertório deverá ser utilizado."></textarea><small>O professor poderá usar a IA apenas para pré-correção privada. A nota continuará exigindo aprovação docente.</small></div>
     </fieldset>
-    <div class="actions"><button class="btn" type="submit" id="saveMaterial">Salvar repertório e redação como rascunho</button></div>
-    <small class="muted" style="display:block;margin-top:8px;color:#6a7a90">O PDF e a redação permanecerão ocultos até o professor confirmar a publicação. A data-limite será aplicada no envio.</small>
+    <div class="actions"><button class="btn" type="submit" id="saveMaterial">Salvar repertório como rascunho</button></div>
+    <small class="muted" id="publicationHelp" style="display:block;margin-top:8px;color:#6a7a90">O PDF permanecerá oculto até o professor confirmar a publicação.</small>
    </form>
   </section>
   <section class="panel">
@@ -116,6 +130,19 @@
    'Esta turma usa o curso contratado. A atividade exige acesso válido a ele.':
    'Para esta turma, selecione um curso gratuito publicado. Somente integrantes autorizados da turma verão a redação.';
  }
+ function publicationMode(){return document.querySelector('input[name="publicationMode"]:checked')?.value==='linked'?'linked':'solo'}
+ function updatePublicationMode(){
+  const linked=publicationMode()==='linked',section=$('newEssayArea');
+  section.hidden=!linked;section.disabled=!linked;
+  for(const field of section.querySelectorAll('input,textarea,select')){
+   field.disabled=!linked;
+   field.required=linked;
+  }
+  $('saveMaterial').textContent=linked?'Salvar repertório e redação como rascunho':'Salvar repertório como rascunho';
+  $('publicationHelp').textContent=linked?
+   'O PDF e a redação permanecerão ocultos até o professor publicar os dois. A data-limite será aplicada no envio.':
+   'Somente o PDF será disponibilizado à turma quando o professor publicar. Nenhuma redação será criada.';
+ }
  function paint(){
   const cid=$('filterClass').value,week=$('filterWeek').value,search=$('filterSearch').value.trim().toLocaleLowerCase('pt-BR');
   const matches=materials.filter(m=>(!cid||m.classroom_id===cid)&&(!week||m.week_start===week)&&(!search||[m.title,m.description,getRoom(m.classroom_id)?.name,getSection(m.section_id)?.label].join(' ').toLocaleLowerCase('pt-BR').includes(search)));
@@ -129,7 +156,8 @@
    const title=el('h3',m.title);const metadata=el('div',name+' · '+sec,'meta');const desc=el('p',m.description||'Material de repertório e leitura da semana.','description');
    const filename=el('div','📄 '+m.original_filename,'meta');filename.style.overflowWrap='anywhere';
    const acts=el('div',null,'actions');const download=el('button','⬇ Baixar PDF','btn');download.type='button';download.addEventListener('click',()=>downloadFile(m,download));acts.append(download);
-   if(staff){const publish=el('button',m.published?'Ocultar dos alunos':'✓ Publicar repertório e redação',m.published?'btn warn':'btn secondary');publish.type='button';publish.addEventListener('click',()=>togglePublish(m,publish));acts.append(publish)}
+   const linked=!!m.essay_course_id;
+   if(staff){const publish=el('button',m.published?'Ocultar dos alunos':linked?'✓ Publicar repertório e redação':'✓ Publicar apenas repertório',m.published?'btn warn':'btn secondary');publish.type='button';publish.addEventListener('click',()=>togglePublish(m,publish));acts.append(publish)}
    const essay=el('div',null,'essay-info');
    essay.append(el('strong','📝 Redação vinculada'),el('span',m.essay_title||'Proposta a definir'));
    if(m.essay_due_at){const deadline=el('small','Prazo: '+new Date(m.essay_due_at).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}));essay.append(deadline)}
@@ -145,7 +173,9 @@
     reply.href='./?redacao='+encodeURIComponent(m.assignment_id);
     essay.append(reply);
    }else if(staff){essay.append(el('small','A atividade será disponibilizada junto com o PDF ao publicar.'))}
-   card.append(head,title,metadata,desc,filename,essay,acts);host.append(card);
+   if(linked){card.append(head,title,metadata,desc,filename,essay,acts)}
+   else{const solo=el('span','📚 Material de estudo · sem redação vinculada','meta');card.append(head,title,metadata,desc,filename,solo,acts)}
+   host.append(card);
   });
  }
  async function downloadFile(m,button){
@@ -156,9 +186,18 @@
  }
  async function togglePublish(m,button){
   const desired=!m.published;
-  if(!confirm(desired?'Publicar o PDF e a redação vinculada para esta turma e curso, respeitando a data-limite definida?':'Ocultar o repertório e a proposta de redação da turma?'))return;
+  const linked=!!m.essay_course_id;
+  const question=desired?(linked?
+   'Publicar o PDF e a redação vinculada para esta turma e curso, respeitando o prazo definido?':
+   'Publicar somente o repertório em PDF para os alunos da turma?'):(linked?
+   'Ocultar o repertório e a proposta de redação da turma?':
+   'Ocultar o repertório dos estudantes?');
+  if(!confirm(question))return;
   button.disabled=true;
-  try{await call('publish',{material_id:m.id,published:desired});await load();show(desired?'Repertório e redação publicados juntos para a turma, com o prazo de envio definido.':'Repertório e redação ocultados dos estudantes.','success')}
+  try{await call('publish',{material_id:m.id,published:desired});await load();show(desired?(linked?
+   'Repertório e redação publicados juntos para a turma, com o prazo de envio definido.':
+   'Repertório publicado para os estudantes, sem atividade de redação.'):(linked?
+   'Repertório e redação ocultados dos estudantes.':'Repertório ocultado dos estudantes.'),'success')}
   catch(e){show(errMsg(e),'error')}finally{button.disabled=false}
  }
  async function load(){
@@ -176,6 +215,9 @@
   }catch(e){show(errMsg(e),'error');const go=el('a','Voltar ao BoniVerso','btn');go.href='./';$('content').hidden=false;$('staffArea').hidden=true;$('materialList').replaceChildren(go)}
  }
  $('newClass').addEventListener('change',updateSection);
+ for(const radio of document.querySelectorAll('input[name="publicationMode"]'))radio.addEventListener('change',updatePublicationMode);
+ $('publishForm').addEventListener('reset',()=>queueMicrotask(updatePublicationMode));
+ updatePublicationMode();
  for(const id of ['filterClass','filterWeek'])$(id).addEventListener('change',paint);
  $('filterSearch').addEventListener('input',paint);
  $('reload').addEventListener('click',async()=>{const btn=$('reload');btn.disabled=true;try{await load();show('Materiais atualizados.','success')}catch(e){show(errMsg(e),'error')}finally{btn.disabled=false}});
@@ -185,26 +227,33 @@
   if(!valid.test(cid)||!file)return show('Selecione uma turma e um PDF.','error');
   if(file.size<30||file.size>10*1024*1024)return show('O PDF deve ter até 10 MB.','error');
   if(!/\.pdf$/i.test(file.name)||await file.slice(0,5).text()!=='%PDF-')return show('Selecione um PDF válido.','error');
+  const mode=publicationMode();
+  const deadline=mode==='linked'?new Date($('newEssayDue').value):null;
+  if(mode==='linked'&&(!deadline||!Number.isFinite(deadline.getTime())||deadline.getTime()<=Date.now()))
+   return show('Defina uma data e hora futuras para a redação.','error');
   saving=true;btn.disabled=true;show('Enviando PDF para armazenamento privado...');
   try{
    const info=await call('prepare_upload',{classroom_id:cid,section_id:sid});
    const upload=await db.storage.from('boniverso-weekly-repertoires').uploadToSignedUrl(info.path,info.token,file,{contentType:'application/pdf',upsert:false});
    if(upload.error)throw upload.error;
-   const deadline=new Date($('newEssayDue').value);
-   if(!Number.isFinite(deadline.getTime())||deadline.getTime()<=Date.now())throw Error('Defina uma data e hora futuras para a redação.');
    const created=await call('create',{
     classroom_id:cid,section_id:sid,week_start:monday($('newWeek').value),
     title:$('newTitle').value,description:$('newDescription').value,
     pdf_path:info.path,original_filename:file.name.slice(0,180),
-    essay_course_id:$('newEssayCourse').value,
-    essay_title:$('newEssayTitle').value,
-    essay_theme:$('newEssayTheme').value,
-    essay_genre:$('newEssayGenre').value,
-    essay_instructions:$('newEssayInstructions').value,
-    essay_due_at:deadline.toISOString()
+    publish_mode:mode,
+    ...(mode==='linked'?{
+     essay_course_id:$('newEssayCourse').value,
+     essay_title:$('newEssayTitle').value,
+     essay_theme:$('newEssayTheme').value,
+     essay_genre:$('newEssayGenre').value,
+     essay_instructions:$('newEssayInstructions').value,
+     essay_due_at:deadline.toISOString()
+    }:{})
    });
    $('publishForm').reset();const t=new Date();$('newWeek').value=monday(new Date(t.getTime()-t.getTimezoneOffset()*60000).toISOString().slice(0,10));await load();
-   show('Repertório e proposta salvos como rascunho. Confira os dois e clique em “Publicar repertório e redação”.','success');
+   show(mode==='linked'?
+    'Repertório e proposta salvos como rascunho. Revise e clique em “Publicar repertório e redação”.':
+    'PDF salvo como rascunho. Revise e clique em “Publicar apenas repertório”.','success');
    $('materialList').scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){show('Falha ao salvar: '+errMsg(e),'error')}
   finally{saving=false;btn.disabled=false}
