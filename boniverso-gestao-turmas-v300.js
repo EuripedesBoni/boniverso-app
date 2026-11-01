@@ -1,69 +1,63 @@
-/* BoniVerso v3.0 - gestão segura de turmas. Colocar somente em turmas.html.
-   Nunca embute chaves administrativas: Supabase Auth + RLS validam cada operação. */
-(async () => {
-  'use strict';
-  const cfg=window.BONIVERSO_CONFIG||{};
-  if(!cfg.supabaseUrl||!cfg.supabasePublishableKey||!document.getElementById('staff-view'))return;
-  const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2.57.2');
-  const db=createClient(cfg.supabaseUrl,cfg.supabasePublishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
-  const auth=await db.auth.getUser();if(!auth.data?.user)return;
-  const roleResult=await db.rpc('current_staff_role');
-  if(roleResult.error||!['teacher','admin'].includes(roleResult.data))return;
-  const admin=roleResult.data==='admin';
-  const panel=document.createElement('section');panel.className='card spaced';panel.id='bvClassManager';
-  panel.innerHTML=`<div class="section-top"><h2>⚙️ Gestão de turmas e matrículas</h2><button class="btn secondary sm" id="bvRefreshClasses" type="button">Atualizar</button></div>
-  <p class="muted">Editar informações, consultar alunos e ajustar matrículas. Arquivar preserva notas e redações.</p>
-  <div class="field"><label for="bvClassSelect">Turma / escola</label><select id="bvClassSelect"></select></div>
-  <form id="bvEditClass"><div class="formgrid"><div><label for="bvClassName">Nome da turma</label><input id="bvClassName" required minlength="3" maxlength="140"></div><div><label for="bvClassDesc">Informações</label><input id="bvClassDesc" maxlength="500"></div></div><div class="actions"><button class="btn" type="submit">Salvar informações</button><button type="button" class="btn warn" id="bvArchiveClass">Arquivar turma</button></div></form>
-  <h3 style="margin-top:24px">Alunos matriculados</h3><p class="hint">Para alterações, selecione a série correspondente e salve. Remover matrícula não exclui a conta do aluno nem suas redações.</p>
-  <div class="scroll"><table><thead><tr><th>Aluno</th><th>Série</th><th>Situação</th><th>Ações</th></tr></thead><tbody id="bvMembers"></tbody></table></div>
-  <div id="bvManagerStatus" class="notice hidden" role="status"></div>`;
-  const target=document.getElementById('report-panel');
-  if(target)target.before(panel);else document.getElementById('staff-view').append(panel);
-  const $=s=>panel.querySelector(s);
-  const msg=(str,err=false)=>{const e=$('#bvManagerStatus');e.className='notice '+(err?'error':'success');e.textContent=str;};
-  let classes=[],sections=[],members=[],profiles=[];
-  async function request(query){const r=await query;if(r.error)throw r.error;return r.data||[];}
-  async function load(){
-    try{
-      [classes,sections,members,profiles]=await Promise.all([
-        request(db.from('classrooms').select('id,name,description,is_active,enrollment_type').order('name')),
-        request(db.from('classroom_sections').select('id,classroom_id,label,grade_code,is_active')),
-        request(db.from('classroom_memberships').select('id,classroom_id,user_id,section_id,status')),
-        request(db.from('profiles').select('id,display_name,full_name'))
-      ]);
-      const select=$('#bvClassSelect'),old=select.value;
-      select.replaceChildren(...classes.map(c=>new Option(c.name+(c.is_active?'':' (arquivada)'),c.id)));
-      if(classes.some(c=>c.id===old))select.value=old;
-      render();
-    }catch(e){msg('Falha ao atualizar turmas: '+e.message,true)}
-  }
-  function render(){
-    const id=$('#bvClassSelect').value,c=classes.find(x=>x.id===id);
-    if(!c)return;
-    $('#bvClassName').value=c.name;$('#bvClassDesc').value=c.description||'';
-    $('#bvArchiveClass').textContent=c.is_active?'Arquivar turma':'Reativar turma';
-    const body=$('#bvMembers');body.replaceChildren();
-    for(const m of members.filter(x=>x.classroom_id===id)){
-      const tr=document.createElement('tr');
-      const userCell=document.createElement('td');const prof=profiles.find(p=>p.id===m.user_id);userCell.textContent=prof?.full_name||prof?.display_name||('Aluno '+m.user_id.slice(0,8));
-      const seriesCell=document.createElement('td');const combo=document.createElement('select');combo.setAttribute('aria-label','Série do aluno');
-      combo.append(new Option('Sem série',''));
-      sections.filter(s=>s.classroom_id===id&&s.is_active).forEach(s=>combo.add(new Option(s.label||s.grade_code,s.id)));
-      combo.value=m.section_id||'';seriesCell.append(combo);
-      const status=document.createElement('td');status.textContent=m.status;
-      const actions=document.createElement('td');const save=document.createElement('button');save.type='button';save.className='btn sm secondary';save.textContent='Salvar série';
-      save.addEventListener('click',async()=>{if(!confirm('Alterar a série deste aluno?'))return;save.disabled=true;try{await request(db.from('classroom_memberships').update({section_id:combo.value||null}).eq('id',m.id));msg('Série atualizada.');await load()}catch(e){msg(e.message,true)}finally{save.disabled=false}});
-      actions.append(save);
-      const remove=document.createElement('button');remove.type='button';remove.className='btn sm warn';remove.textContent=m.status==='active'?'Desativar':'Reativar';remove.style.marginLeft='6px';
-      remove.addEventListener('click',async()=>{const next=m.status==='active'?'inactive':'active';if(!confirm((next==='inactive'?'Desativar':'Reativar')+' matrícula? O histórico do aluno será preservado.'))return;remove.disabled=true;try{await request(db.from('classroom_memberships').update({status:next}).eq('id',m.id));msg('Matrícula atualizada.');await load()}catch(e){msg(e.message,true)}finally{remove.disabled=false}});
-      actions.append(remove);tr.append(userCell,seriesCell,status,actions);body.append(tr);
-    }
-    if(!body.childElementCount){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=4;td.textContent='Nenhum aluno matriculado.';tr.append(td);body.append(tr)}
-  }
-  $('#bvClassSelect').addEventListener('change',render);
-  $('#bvRefreshClasses').addEventListener('click',load);
-  $('#bvEditClass').addEventListener('submit',async e=>{e.preventDefault();const id=$('#bvClassSelect').value,name=$('#bvClassName').value.trim(),description=$('#bvClassDesc').value.trim();if(name.length<3)return msg('Informe um nome com pelo menos 3 caracteres.',true);const b=e.target.querySelector('[type=submit]');b.disabled=true;try{await request(db.from('classrooms').update({name,description}).eq('id',id));msg('Informações atualizadas com sucesso.');await load()}catch(err){msg(err.message,true)}finally{b.disabled=false}});
-  $('#bvArchiveClass').addEventListener('click',async e=>{const id=$('#bvClassSelect').value,c=classes.find(x=>x.id===id);if(!c)return;if(!confirm(c.is_active?'Arquivar esta turma? As matrículas e redações serão preservadas.':'Reativar esta turma?'))return;e.target.disabled=true;try{await request(db.from('classrooms').update({is_active:!c.is_active}).eq('id',id));msg('Situação da turma atualizada.');await load()}catch(err){msg(err.message,true)}finally{e.target.disabled=false}});
-  await load();
+/* BoniVerso 3.1 — Gestão de turmas clara e segura.
+   Substitui boniverso-gestao-turmas-v300.js. Não mexe no ícone principal. */
+(async()=>{
+'use strict';
+const cfg=window.BONIVERSO_CONFIG||{};
+if(!cfg.supabaseUrl||!cfg.supabasePublishableKey||!document.getElementById('staff-view'))return;
+const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2.57.2');
+const db=createClient(cfg.supabaseUrl,cfg.supabasePublishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+const auth=await db.auth.getUser();if(!auth.data?.user)return;
+const rr=await db.rpc('current_staff_role');if(rr.error||!['admin','teacher'].includes(rr.data))return;
+const admin=rr.data==='admin';
+const old=document.querySelector('#bvClassManager');if(old)old.remove();
+const panel=document.createElement('section');panel.className='card spaced';panel.id='bvClassManager';
+panel.innerHTML=`<style>
+#bvClassManager .bv-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}#bvClassManager .bv-tabs button[aria-pressed=true]{background:#132d58;color:white}
+#bvClassManager .bv-rows{display:grid;gap:12px}#bvClassManager .bv-turma{border:1px solid #dce4f1;border-radius:14px;padding:15px;background:#fff}
+#bvClassManager .bv-turma[aria-expanded=true]{border-color:#396ec6;box-shadow:0 4px 16px #243f6f18}
+#bvClassManager .bv-title{font-size:16px;color:#172c4b;font-weight:800;overflow-wrap:anywhere}
+#bvClassManager .bv-details{margin-top:14px;padding-top:14px;border-top:1px solid #e5eaf4}
+#bvClassManager .bv-help{background:#f3f6fb;border-radius:10px;padding:12px;color:#405a79;font-size:13px;margin:10px 0}
+#bvClassManager .bv-danger{background:#fff;color:#a12e2e;border-color:#dba9a9}#bvClassManager .bv-danger:hover{background:#fff0ef}
+#bvClassManager .bv-muted{color:#657894;font-size:13px}#bvClassManager .bv-student-row{padding:10px;border-bottom:1px solid #e6eaf1}
+#bvClassManager .bv-student-row:last-child{border:0}
+</style>
+<div class="section-top"><div><h2>🏫 Gerenciar turmas</h2><p class="muted">Ações dentro de cada turma, com separação das arquivadas.</p></div><button class="btn secondary sm" id="bvRefreshClasses" type="button">Atualizar</button></div>
+<div class="bv-tabs"><button class="btn secondary" type="button" data-filter="active" aria-pressed="true">Turmas ativas <span id="bvActiveCount"></span></button><button class="btn secondary" type="button" data-filter="archived" aria-pressed="false">📦 Turmas arquivadas <span id="bvArchiveCount"></span></button></div>
+<div id="bvClassRows" class="bv-rows"></div><div id="bvManagerStatus" class="notice hidden" role="status"></div>`;
+const target=document.getElementById('report-panel');if(target)target.before(panel);else document.getElementById('staff-view').append(panel);
+const $=s=>panel.querySelector(s);const msg=(s,bad=false)=>{const e=$('#bvManagerStatus');e.className='notice '+(bad?'error':'success');e.textContent=s;e.scrollIntoView({block:'nearest'});};
+let classes=[],sections=[],members=[],profiles=[],filter='active',opened=null;
+const request=async q=>{const r=await q;if(r.error)throw r.error;return r.data||[];};
+const node=(tag,cls,txt)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(txt!==undefined)el.textContent=txt;return el;};
+const button=(title,cls,cb)=>{const b=node('button','btn sm '+cls,title);b.type='button';b.onclick=cb;return b;};
+const saveForm=(c,content)=>{
+ const form=node('form','bv-details');const fields=node('div','formgrid');
+ for(const [label,key,max] of [['Nome da turma','name',140],['Informações / descrição','description',500]]){
+  const wrap=node('div');const lab=node('label',null,label);const input=node('input');input.name=key;input.value=c[key]||'';input.maxLength=max;input.required=key==='name';wrap.append(lab,input);fields.append(wrap);
+ }
+ form.append(fields);form.append(button('Salvar alterações','',()=>form.requestSubmit()));
+ form.onsubmit=async e=>{e.preventDefault();const name=form.elements.name.value.trim(),description=form.elements.description.value.trim();if(name.length<3)return msg('O nome deve ter pelo menos 3 caracteres.',true);
+ const btn=form.querySelector('button');btn.disabled=true;try{await request(db.from('classrooms').update({name,description}).eq('id',c.id));msg('Turma atualizada.');await load(c.id)}catch(err){msg(err.message,true)}finally{btn.disabled=false}};
+ const enrolled=members.filter(m=>m.classroom_id===c.id);
+ form.append(node('h3',null,'Alunos matriculados'));
+ form.append(node('p','bv-muted','As matrículas e as notas são preservadas quando você arquiva uma turma.'));
+ if(!enrolled.length)form.append(node('p','bv-muted','Nenhum aluno vinculado a esta turma.'));
+ for(const m of enrolled){const row=node('div','bv-student-row');const p=profiles.find(x=>x.id===m.user_id);row.append(node('strong',null,p?.full_name||p?.display_name||'Aluno cadastrado'));
+ const opts=sections.filter(s=>s.classroom_id===c.id),select=node('select');select.setAttribute('aria-label','Série do aluno');select.append(new Option('Sem série',''));opts.forEach(s=>select.append(new Option(s.label||s.grade_code,s.id)));select.value=m.section_id||'';
+ const tools=node('div','actions');tools.append(select,button('Salvar série','secondary',async()=>{if(!confirm('Alterar série deste aluno?'))return;try{await request(db.from('classroom_memberships').update({section_id:select.value||null}).eq('id',m.id));msg('Série atualizada.');await load(c.id)}catch(e){msg(e.message,true)}}),button(m.status==='active'?'Desativar matrícula':'Reativar matrícula','warn',async()=>{const next=m.status==='active'?'inactive':'active';if(!confirm('Alterar situação da matrícula? O histórico será preservado.'))return;try{await request(db.from('classroom_memberships').update({status:next}).eq('id',m.id));msg('Matrícula atualizada.');await load(c.id)}catch(e){msg(e.message,true)}}));row.append(tools);form.append(row);}
+ content.append(form);
+};
+function render(){const active=classes.filter(c=>c.is_active),archived=classes.filter(c=>!c.is_active);$('#bvActiveCount').textContent='('+active.length+')';$('#bvArchiveCount').textContent='('+archived.length+')';for(const b of panel.querySelectorAll('[data-filter]'))b.setAttribute('aria-pressed',String(b.dataset.filter===filter));
+ const rows=$('#bvClassRows');rows.replaceChildren();const list=filter==='active'?active:archived;
+ if(!list.length){rows.append(node('p','bv-help',filter==='archived'?'Não há turmas arquivadas. Quando arquivadas, elas aparecem aqui e podem ser reativadas.':'Não há turmas ativas. Consulte a aba de turmas arquivadas.'));return;}
+ for(const c of list){const card=node('article','bv-turma');card.setAttribute('aria-expanded',String(opened===c.id));const head=node('div','section-top');const title=node('div');title.append(node('div','bv-title',c.name),node('div','bv-muted',c.is_active?'Turma ativa':'Turma arquivada — histórico preservado'));head.append(title);card.append(head);
+ const actions=node('div','actions');actions.append(button(opened===c.id?'Fechar detalhes':'✏️ Editar turma e alunos','secondary',()=>{opened=opened===c.id?null:c.id;render()}));
+ actions.append(button(c.is_active?'📦 Arquivar turma':'↩ Reativar turma','warn',async()=>{if(!confirm(c.is_active?'Arquivar esta turma? Ela será movida para a aba Turmas arquivadas, preservando alunos, redações e notas.':'Reativar esta turma?'))return;try{await request(db.from('classrooms').update({is_active:!c.is_active}).eq('id',c.id));filter=c.is_active?'archived':'active';opened=null;msg(c.is_active?'Turma arquivada. Você a encontra na aba Turmas arquivadas.':'Turma reativada.');await load()}catch(e){msg(e.message,true)}}));
+ actions.append(button('🗑 Excluir turma','bv-danger',()=>{if(!admin){msg('A exclusão definitiva é reservada ao administrador geral.',true);return;}const m=members.filter(x=>x.classroom_id===c.id).length,s=sections.filter(x=>x.classroom_id===c.id).length;alert(`Exclusão definitiva indisponível para proteção do histórico escolar. Esta turma possui ${m} matrícula(s) e ${s} série(s) vinculada(s). Também pode possuir redações, aulas e arquivos. Use “Arquivar turma” para removê-la das turmas ativas, sem apagar dados.`);}));card.append(actions);
+ if(opened===c.id){const d=node('div');d.append(node('p','bv-help','Editar os dados abaixo afeta apenas esta turma. Exclusão permanente não remove automaticamente registros vinculados.'));saveForm(c,d);card.append(d)}rows.append(card);
+ }
+}
+async function load(keep){try{[classes,sections,members,profiles]=await Promise.all([request(db.from('classrooms').select('id,name,description,is_active,enrollment_type').order('name')),request(db.from('classroom_sections').select('id,classroom_id,label,grade_code,is_active')),request(db.from('classroom_memberships').select('id,classroom_id,user_id,section_id,status')),request(db.from('profiles').select('id,display_name,full_name'))]);if(keep)opened=keep;render()}catch(e){msg('Falha ao carregar turmas: '+e.message,true)}}
+panel.addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(b){filter=b.dataset.filter;opened=null;render()}});$('#bvRefreshClasses').onclick=()=>load();await load();
 })();

@@ -1,11 +1,9 @@
-BONIVERSO — FASE 1 | GESTÃO DE TURMAS v3.0
+BONIVERSO 3.1 - GESTAO DE TURMAS
 
-1. No GitHub, repositório EuripedesBoni/boniverso-app, envie à raiz o arquivo boniverso-gestao-turmas-v300.js.
-2. No final de turmas.html, imediatamente antes de </body> (DEPOIS do bloco </script> já existente), acrescente:
-<script defer src="./boniverso-gestao-turmas-v300.js"></script>
-3. Salve com Commit changes e abra Turmas e séries no BoniVerso.
-
-Este módulo não altera o ícone do app. Apenas professor/admin autenticado verá a interface.
-Permite editar nome/descrição, escolher série, desativar/reativar matrículas, arquivar/reativar turmas.
-Não exclui redações, matrículas nem dados históricos. Não existe exclusão definitiva neste módulo.
-A segurança real depende das políticas RLS existentes no Supabase.
+1. Extraia o ZIP no aplicativo Arquivos do iPad.
+2. O arquivo de codigo chama-se boniverso-gestao-turmas-v300.js.
+3. O GitHub nao substitui necessariamente arquivos existentes via Upload files.
+4. Se o GitHub impedir o envio porque o arquivo ja existe, NAO delete o antigo.
+5. Nesse caso abra o arquivo no repositorio, clique Editar, substitua o conteudo pelo arquivo novo e Commit changes.
+6. Nao altere o arquivo index.html, turmas.html nem o icone original.
+7. Excluir turma nesta versao e uma acao de seguranca que explica o bloqueio; NAO apaga dados.
