@@ -1,26 +1,44 @@
-BONIVERSO v1.9.0 — ETAPA 4: IDENTIFICAÇÃO DO ALUNO E DA TURMA
+BONIVERSO 2.1.0 — FÓRUM DAS TURMAS (ETAPA 6)
+=============================================
 
-O que mudou
-- A lista de redações mostra nome do estudante, turma da proposta, série, curso, data e formato (PDF/digitado).
-- A ficha do aluno inclui dados escolares cadastrados no perfil, turma e série da atividade, curso e situação da correção.
-- Filtros por turma, curso, série, formato, situação, data e pesquisa textual.
-- Quando a proposta não foi vinculada a uma turma, mostra explicitamente "Proposta geral — turma não definida".
-- Se o estudante tem várias matrículas, exibe-as como contexto, sem escolher uma delas indevidamente.
-- Preserva o manual PDF do gênero personalizado, a análise da IA e a aprovação exclusiva do professor.
+O Supabase já recebeu as tabelas privadas, o bucket PDF e a Edge Function
+boniverso-forum. Não envie SQL nem chaves secretas para o GitHub.
 
-COMO INSTALAR
+COMO INSTALAR NO IPHONE/IPAD OU COMPUTADOR
 1. Abra o GitHub: https://github.com/EuripedesBoni/boniverso-app
-2. Entre em Add file > Upload files.
-3. Dentro da pasta ENVIAR-PARA-GITHUB, selecione gestao-redacoes.html e substitua o arquivo com o mesmo nome na raiz do repositório.
-4. Clique em Commit changes.
-5. Quando a publicação do GitHub Pages terminar, acesse:
-   https://euripedesboni.github.io/boniverso-app/gestao-redacoes.html?v=190
+2. Acesse Add file > Upload files.
+3. Envie os QUATRO arquivos da pasta ENVIAR-PARA-GITHUB para a RAIZ do repositório:
+   - index.html (substituir existente)
+   - sw.js (substituir existente)
+   - forum-turmas.html (novo)
+   - boniverso-forum-menu-v210.js (novo)
+4. Confirme em Commit changes e aguarde GitHub Actions: Success.
+5. Acesse o BoniVerso pelo endereço normal e abra "Fórum da Turma" no menu.
 
-TESTAR
-- Entrar como professor/admin.
-- Abrir uma redação da turma Areião e conferir dados e série.
-- Abrir uma redação antiga de proposta geral: verificar que não atribui uma turma por engano.
-- Usar filtros e confirmar que o botão de correção e aprovação permanece funcionando.
+ENDEREÇO APÓS A PUBLICAÇÃO
+https://euripedesboni.github.io/boniverso-app/forum-turmas.html?v=210
 
-A ATUALIZAÇÃO NÃO ALTERA NOTAS, MATRÍCULAS OU REDAÇÕES SALVAS.
-Não publique um parecer ou nota de teste para estudante real sem revisar.
+TESTE RECOMENDADO
+A. Professor: selecione 'Aparecida de Goiânia — Prof. Rafa Boni', crie uma discussão
+   com uma mensagem, opcionalmente inclua um PDF de até 10 MB, e envie uma mensagem no chat.
+B. Estudante MATRICULADO E COM ACESSO AO CURSO: abra o fórum, leia a discussão,
+   envie uma resposta e baixe o PDF. Um estudante de outra turma não deve ter acesso.
+C. Presença: ambos optam por 'Mostrar que estou online'. Aparece apenas quem optou
+   pelo status e esteve ativo nos últimos dois minutos.
+D. Moderação: o professor pode ocultar conteúdos e conferir denúncias.
+
+INFORMAÇÕES TÉCNICAS IMPORTANTES
+- Chats são atualizados em intervalos periódicos, enquanto a página está aberta.
+  Não se trata ainda de mensagens em tempo real via WebSocket.
+- Apenas PDFs são aceitos como anexo; máximo de 10 MB por arquivo.
+- Downloads são concedidos por links assinados que expiram em três minutos.
+- Os arquivos ficam em bucket PRIVADO no Supabase.
+- Nomes exibidos: nomes de apresentação já cadastrados, sem exibir e-mails.
+- A opção de presença online é voluntária e expira automaticamente.
+- A função server-side boniverso-forum consulta autenticação, matrícula,
+  permissões de curso e turma antes de liberar qualquer recurso.
+- Não há necessidade de alterações adicionais nas redações nem nas notas.
+- Para evitar regressões após a falha de tela branca da v2.0.1, não foi
+  modificado o script de Web Push: somente index.html, sw.js e o novo fórum.
+- O primeiro teste de uso real deve ser feito com a conta do professor e uma
+  conta de estudante; não houve navegação autenticada automatizada.
