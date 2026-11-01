@@ -1,37 +1,45 @@
-BONIVERSO v1.7.1 — GÊNEROS PERSONALIZADOS EM PDF
-============================================
+BONIVERSO v1.8.1 — REPERTÓRIO SEMANAL + REDAÇÃO VINCULADA
+RSB Educação | Prof. Rafa Boni
 
-INSTALE NO GITHUB (BRANCH main)
+O QUE MUDA
+1. O professor escolhe a turma e a semana, adiciona o PDF de repertório.
+2. No mesmo formulário, preenche o curso, título, tema, gênero, orientações e prazo da redação.
+3. Ao salvar, o repertório e os dados da redação permanecem em rascunho.
+4. Ao clicar em PUBLICAR REPERTÓRIO E REDAÇÃO, o Supabase publica o PDF e cria/libera a atividade vinculada, numa única transação de banco.
+5. Os alunos autorizados veem o material e um atalho para a redação; a entrega fica disponível somente até o prazo.
+6. Ao ocultar o repertório, a redação também deixa de ser exibida. Notas anteriores NÃO são apagadas.
+7. O PDF do repertório pode ser utilizado como material de referência pedagógica pela IA. O professor precisa aprovar qualquer nota.
 
-1. Descompacte o ZIP no aplicativo Arquivos do iPad.
-2. No repositório EuripedesBoni/boniverso-app, use Add file > Upload files.
-3. Envie APENAS o arquivo boniverso-genero-personalizado-v171.js para a RAIZ do repositório.
-4. Clique em Commit changes.
-5. Abra o arquivo gestao-redacoes.html no GitHub (branch main), clique em Edit (ícone lápis).
-6. Encontre o trecho final:
-   </script></body></html>
-7. Substitua somente esse final por:
-   </script><script type="module" src="./boniverso-genero-personalizado-v171.js"></script></body></html>
-8. Clique em Commit changes. Aguarde o GitHub Pages mostrar Success.
+INSTALAÇÃO NO GITHUB (PELO CELULAR / IPAD / COMPUTADOR)
+1. Descompacte o ZIP.
+2. Entre em https://github.com/EuripedesBoni/boniverso-app
+3. Clique Add file > Upload files.
+4. Envie SOMENTE os três arquivos da pasta ENVIAR-PARA-GITHUB para a RAIZ do repositório:
+   - repertorios-semanais.html (substituir)
+   - index.html (substituir)
+   - boniverso-redacao-semanal-nav-v181.js (novo)
+5. Clique Commit changes. Espere o workflow do GitHub Pages ficar verde (Success).
+6. Acesse https://euripedesboni.github.io/boniverso-app/repertorios-semanais.html?v=181
 
-TESTE
-- Faça login na conta do professor Rafael.
-- Abra https://euripedesboni.github.io/boniverso-app/gestao-redacoes.html?v=171
-- Em Criar proposta, selecione Gênero da proposta > Outro.
-- Deve aparecer o bloco com Nome do gênero textual e PDF de orientações.
-- Escreva um nome, escolha um PDF (até 10 MB) e preencha os campos normais.
-- Salve como rascunho; o professor publica somente após revisar.
-- Quando houver uma redação desse gênero, peça uma PRÉ-CORREÇÃO à IA no painel do professor.
-- A IA recebe o manual como referência pedagógica privada. A nota e a devolutiva
-  só são publicadas depois da confirmação explícita do professor.
+TESTE, COMO PROFESSOR
+1. Entre com uma conta de professor autorizada.
+2. Escolha turma Aparecida de Goiânia — Prof. Rafa Boni.
+3. O campo CURSO DEVE selecionar automaticamente o curso dessa turma.
+4. Preencha a semana, PDF, tema, título, gênero, orientações e data-limite FUTURA.
+5. Salve. Verifique o rascunho e clique Publicar repertório e redação.
+6. Veja o vínculo e a data no cartão.
 
-ATENÇÃO
-- O PDF da COLETÂNEA da proposta é separado do PDF com ORIENTAÇÕES DE GÊNERO.
-- O manual do gênero é privado, não é colocado para download dos estudantes.
-- Outros gêneros não usam automaticamente a rubrica oficial do ENEM.
-- As mudanças no Supabase já foram aplicadas. Não altere as chaves, buckets ou RLS.
-- Não houve edição automática no GitHub: o conector não tem permissão de escrita.
+TESTE, COMO ESTUDANTE
+1. Entre em uma conta com matrícula autorizada na mesma turma e curso.
+2. Abra Repertório Semanal; baixe o PDF.
+3. Clique em Abrir e enviar a redação (a navegação abre o menu Redações e a atividade).
+4. Confirme o prazo, envie um texto de teste ou PDF. Depois do prazo, novas entregas devem ser bloqueadas.
+5. Confirme que outro estudante SEM acesso à turma não vê o repertório nem a redação.
 
-ARQUIVOS NO ZIP
-- boniverso-genero-personalizado-v171.js (arquivo a enviar ao GitHub)
-- LEIA-ME-INSTALACAO.txt (instruções, NÃO enviar ao GitHub)
+OBSERVAÇÕES
+- Para turmas vinculadas a um curso pago, o sistema exige acesso ao curso vinculado.
+- Para turmas sem curso pago, o professor escolhe um curso gratuito publicado; a matrícula na turma ainda é obrigatória.
+- A data e hora são interpretadas no fuso horário do dispositivo do professor e salvas em UTC no Supabase.
+- Gêneros personalizados com PDF de critérios são cadastrados separadamente na Central de Redações; este formulário vincula ENEM, carta, resenha ou artigo de opinião.
+- Nenhuma atividade antiga foi removida. A migração do banco e as funções de servidor já estão aplicadas.
+- O teste ponta a ponta depende do acesso às contas de professor e estudante; o aplicativo precisa ser testado após o upload.
