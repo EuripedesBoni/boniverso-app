@@ -1,42 +1,47 @@
-BONIVERSO — CORREÇÃO MOBILE E NAVEGAÇÃO DOS CURSOS — v1.6.2
-============================================================
+BONIVERSO v1.7.0 — ETAPA 1: CENTRAL DE REDAÇÕES POR TURMAS
 
-O QUE ESTA VERSÃO CORRIGE
-- No celular, os cartões dos cursos ficam em UMA coluna, ocupando a largura disponível.
-- Os botões Ver aulas, Videoteca e Progresso e materiais ficam inteiros dentro do cartão.
-- O nome do curso passa a ser um link para a página dedicada de aprendizagem do curso.
-- Se o curso ainda estiver bloqueado, tocar no título usa o mesmo botão Detalhes que já existia.
-- A barra de navegação inferior fica adaptada aos cinco ícones e ao atalho Ao vivo.
-- As telas do computador permanecem com as colunas adaptadas à largura disponível.
+INSTALAÇÃO (GitHub Pages, branch main)
+1) Descompacte este ZIP no iPad/celular/computador.
+2) Abra a pasta ENVIAR-PARA-GITHUB.
+3) Envie os TRÊS arquivos diretamente para a RAIZ do repositório EuripedesBoni/boniverso-app:
+   - index.html                       [SUBSTITUI o anterior]
+   - gestao-redacoes.html             [NOVO]
+   - boniverso-redacoes-v170.js       [NOVO]
+4) Clique em Commit changes e aguarde GitHub Actions Pages mostrar 'success'.
+5) Atualize a página do app e abra o menu professor -> 'Central de Redações por turma'.
 
-INSTALAÇÃO
-1. Descompacte este ZIP no aplicativo Arquivos (iPad/iPhone) ou no computador.
-2. Na pasta ENVIAR-PARA-GITHUB, estão EXATAMENTE TRÊS arquivos:
-   - index.html (substituir na raiz da branch main)
-   - boniverso-mobile-v162.css (novo)
-   - boniverso-course-navigation-v162.js (novo)
-3. Acesse https://github.com/EuripedesBoni/boniverso-app
-4. Na branch main, clique em Add file > Upload files.
-5. Selecione os três arquivos EXTRAÍDOS, não o ZIP inteiro.
-6. Finalize com Commit changes; aguarde o GitHub Pages apresentar Success.
-7. No celular, feche a página e reabra o aplicativo para forçar a atualização dos estilos.
-   Se necessário, recarregue e teste em aba privada. Não precisa apagar dados do estudante.
+ARQUIVOS CRIADOS NO SERVIDOR
+- Tabela de autorização de redações em PDF (privada, sem gravação direta do aluno).
+- Bucket PRIVADO boniverso-proposals (coletâneas PDF, 10 MB).
+- Campos proposal_theme e collection_pdf_path em assignments.
+- Função Edge boniverso-essays-manager (autenticação, upload seguro, listagem e autorização).
+- Função Edge boniverso-ai-correct foi atualizada para considerar gênero, tema, instruções e coletânea em PDF. A geração depende de OPENAI_API_KEY, BONIVERSO_AI_ENABLED=true e créditos.
+- A publicação de uma nota continua exclusiva ao professor, por confirmação explícita e RPC publish_ai_review.
+- Políticas específicas permitem que os membros de uma turma autorizada recebam propostas daquela turma mesmo sem matrícula separada em curso, quando a turma não está vinculada a curso pago. Acessos a curso pago continuam sujeitos às regras de matrícula.
 
-TESTES
-[ ] No iPhone, a área Meus cursos mostra um cartão por linha.
-[ ] Os botões Videoteca e Progresso estão totalmente visíveis dentro do cartão.
-[ ] Tocar no título Aparecida de Goiânia abre seu Painel de Aprendizagem.
-[ ] Tocar no título de um curso bloqueado abre Detalhes e não concede acesso.
-[ ] Rodapé mostra Início, Cursos, Meu planejamento, Redações, Desempenho e Ao vivo.
-[ ] No computador, os cartões continuam funcionando sem cortar os botões.
+COMO TESTAR
+A) Professor: abra gestao-redacoes.html, crie proposta com título, tema, curso e turma, gênero e PDF opcional. Salve como rascunho. Depois publique.
+B) Aluno da turma: abra Redações no app, selecione a proposta e utilize 'Baixar coletânea'. Envie texto digitado ou PDF.
+C) Professor: filtre a Central por turma, data, formato, nome do aluno ou status.
+D) Texto digitado: clique em 'Gerar pré-correção da IA' se a conta estiver habilitada; a IA não publica nenhuma nota. Alternativamente preencha o parecer manualmente.
+E) PDF: clique em 'Abrir PDF original'; depois de lê-lo, clique em 'Autorizar análise por IA'. Só então o botão de IA ficará disponível. Para PDF ilegível, não autorize: faça devolutiva manual.
+F) Revise notas e comentários, Salve rascunho privado e confirme 'Aprovar nota e liberar ao aluno'. A nota só aparece na conta do estudante após essa confirmação.
 
-OBSERVAÇÃO: A contagem "0 aula(s)" nos cartões vem da tabela de aulas antiga
-(lessons), diferente das gravações da Videoteca. A correção atual NÃO altera
-esta contagem nem dados e permissões do Supabase.
+LIMITAÇÕES IMPORTANTES
+- O resultado por IA não é validação oficial ENEM. Para carta, resenha e artigo usam-se critérios pedagógicos ADAPTADOS, que precisam da revisão do professor.
+- A IA não inicia automaticamente em segundo plano quando o estudante envia a redação; o professor a solicita na Central para controlar custos e impedir uso indevido. Não se ativou nenhuma assinatura ou cobrança.
+- PDFs da coletânea são enviados ao modelo apenas quando a análise de IA é solicitada. O professor deve orientar o compartilhamento desses documentos e a política de privacidade.
+- Nesta versão, a Central carrega até 500 envios recentes e 300 propostas, adequado ao teste atual. Para escala comercial, implementar paginação e auditoria de revisões.
+- A turma deve ter acesso explícito ao curso ou à proposta; os estudantes sem vínculo ativo não devem receber material.
+- Versões existentes do app são preservadas; só o index.html é substituído e acrescenta um script.
+- Não libere o app para uma grande turma antes de testar login, filtros, upload, permissões e publicação de notas no ambiente real.
 
-Não alteramos: autenticação, matrículas, vídeos, PDFs, avaliações, Supabase,
-pagamentos ou arquivos anteriores. O index.html foi gerado sobre a versão
-atual do repositório (blob SHA 93ff7fd3515208c9861070b077822b385106665c).
-
-A etiqueta do menu inferior "Meu planejamento" fica mais curta ("Planejar")
-apenas no celular; o leitor de telas continua recebendo o nome completo.
+PRÓXIMOS PEDIDOS, NA ORDEM DO USUÁRIO
+2) Reforçar a aba de PDF em todas as telas de publicação da proposta.
+3) Repertório semanal por turma, PDF do professor e download autorizado.
+4) Conferir exibição do nome e dados da turma em toda interface de correção.
+5) Notificações no celular (com permissão do usuário, PWA, push).
+6) Fórum por turma, PDFs e presença on-line.
+7) Segurança, propriedade e registro do aplicativo.
+8) Planilha de serviços e gastos.
+9) Manual do professor Rafael.
