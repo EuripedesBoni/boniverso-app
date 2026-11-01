@@ -1,44 +1,10 @@
-BONIVERSO 2.1.0 — FÓRUM DAS TURMAS (ETAPA 6)
-=============================================
+BoniVerso — Tela de MFA para administradores
 
-O Supabase já recebeu as tabelas privadas, o bucket PDF e a Edge Function
-boniverso-forum. Não envie SQL nem chaves secretas para o GitHub.
+1. Adicione o arquivo mfa-admin.html na RAIZ do repositório EuripedesBoni/boniverso-app, pelo GitHub (Add file > Upload files).
+2. Aguarde a publicação do GitHub Pages e acesse https://euripedesboni.github.io/boniverso-app/mfa-admin.html
+3. Entre com a conta euripedes_junoo@icloud.com. Não divulgue a senha.
+4. Digitalize o QR code em um aplicativo autenticador e confirme o código de seis dígitos.
+5. Guarde método alternativo de autenticação em local seguro. A tela não armazena chaves TOTP no banco da aplicação; somente o Supabase Auth gerencia os fatores.
+6. No próximo acesso, confirme o código para obter sessão aal2. A regra do banco exige aal2 para contas de papel admin.
 
-COMO INSTALAR NO IPHONE/IPAD OU COMPUTADOR
-1. Abra o GitHub: https://github.com/EuripedesBoni/boniverso-app
-2. Acesse Add file > Upload files.
-3. Envie os QUATRO arquivos da pasta ENVIAR-PARA-GITHUB para a RAIZ do repositório:
-   - index.html (substituir existente)
-   - sw.js (substituir existente)
-   - forum-turmas.html (novo)
-   - boniverso-forum-menu-v210.js (novo)
-4. Confirme em Commit changes e aguarde GitHub Actions: Success.
-5. Acesse o BoniVerso pelo endereço normal e abra "Fórum da Turma" no menu.
-
-ENDEREÇO APÓS A PUBLICAÇÃO
-https://euripedesboni.github.io/boniverso-app/forum-turmas.html?v=210
-
-TESTE RECOMENDADO
-A. Professor: selecione 'Aparecida de Goiânia — Prof. Rafa Boni', crie uma discussão
-   com uma mensagem, opcionalmente inclua um PDF de até 10 MB, e envie uma mensagem no chat.
-B. Estudante MATRICULADO E COM ACESSO AO CURSO: abra o fórum, leia a discussão,
-   envie uma resposta e baixe o PDF. Um estudante de outra turma não deve ter acesso.
-C. Presença: ambos optam por 'Mostrar que estou online'. Aparece apenas quem optou
-   pelo status e esteve ativo nos últimos dois minutos.
-D. Moderação: o professor pode ocultar conteúdos e conferir denúncias.
-
-INFORMAÇÕES TÉCNICAS IMPORTANTES
-- Chats são atualizados em intervalos periódicos, enquanto a página está aberta.
-  Não se trata ainda de mensagens em tempo real via WebSocket.
-- Apenas PDFs são aceitos como anexo; máximo de 10 MB por arquivo.
-- Downloads são concedidos por links assinados que expiram em três minutos.
-- Os arquivos ficam em bucket PRIVADO no Supabase.
-- Nomes exibidos: nomes de apresentação já cadastrados, sem exibir e-mails.
-- A opção de presença online é voluntária e expira automaticamente.
-- A função server-side boniverso-forum consulta autenticação, matrícula,
-  permissões de curso e turma antes de liberar qualquer recurso.
-- Não há necessidade de alterações adicionais nas redações nem nas notas.
-- Para evitar regressões após a falha de tela branca da v2.0.1, não foi
-  modificado o script de Web Push: somente index.html, sw.js e o novo fórum.
-- O primeiro teste de uso real deve ser feito com a conta do professor e uma
-  conta de estudante; não houve navegação autenticada automatizada.
+Observação: há recursos adicionais do BoniVerso que devem continuar recebendo testes de acesso. Esta página não substitui uma auditoria de RLS nem o ajuste da navegação do painel administrativo.
