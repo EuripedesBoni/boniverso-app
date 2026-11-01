@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#122a4b"><title>Importar vídeos do Meet | BoniVerso</title>
+<style>
+:root{font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif;color:#19304f;background:#f2f5fb}*{box-sizing:border-box}body{margin:0}header{padding:17px clamp(16px,4vw,60px);background:#132746;color:white;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}header strong{font-size:22px}header span{color:#efc985}header a{color:#f5dbae;margin-left:15px;text-decoration:none}main{max-width:1180px;margin:auto;padding:24px 16px 70px}.hero{background:linear-gradient(125deg,#142847,#32629b);color:white;padding:28px;border-radius:21px}.hero h1{font-size:clamp(27px,4vw,39px);margin:4px 0}.hero p{color:#dfecff;margin:0}.panel{background:white;border:1px solid #dce5f2;border-radius:16px;padding:22px;margin:18px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:15px}.field{margin-bottom:13px}.field label{font-weight:750;font-size:13px;display:block;margin-bottom:5px}input,textarea,select{font:inherit;width:100%;padding:10px 12px;background:white;border:1px solid #c7d4e6;color:#18314f;border-radius:10px;min-height:44px}textarea{min-height:80px;resize:vertical}button{font:inherit;background:#2b62bf;color:white;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;min-height:43px;font-weight:650}button.secondary{background:#e8effa;color:#25548b}button.danger{background:#a83746}button:disabled{opacity:.55;cursor:default}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.status{padding:13px 15px;border:1px solid #b8cde8;border-radius:12px;background:#e8f1fe;color:#244e87;margin:16px 0}.error{border-color:#edb8b8;background:#fff0ee;color:#8f2835}.small{font-size:13px;color:#60758e}.entry{padding:15px;border-radius:13px;border:1px solid #dce5f1;background:#fcfdff;margin-bottom:11px}.entry h3{font-size:17px;margin:0 0 4px}.entry p{font-size:12px;color:#677b95;margin:5px 0}.pill{font-size:11px;border-radius:100px;background:#e3f5e8;color:#1d683d;font-weight:750;padding:4px 8px;display:inline-block}.pill.off{background:#fff1e0;color:#885d1d}.pill.loading{background:#eaf1ff;color:#34588c}progress{width:100%;height:18px;accent-color:#2f68cb;margin:10px 0 3px}video{width:100%;margin-top:12px;border-radius:9px;background:#101d30;max-height:480px}.note{font-size:12px;line-height:1.65;color:#677e94}@media(max-width:650px){.panel{padding:15px}.hero{padding:20px}header a{margin:0 10px 0 0}}
+</style></head><body>
+<header><strong>Boni<span>Verso</span> · Videoteca</strong><nav><a href="./biblioteca-live.html">📚 Biblioteca</a><a href="./painel-gravacoes.html">⚙️ Gerenciar lives</a><a href="./live-central.html">🎥 Aulas</a></nav></header>
+<main><section class="hero"><small>RSB EDUCAÇÃO · APENAS PROFESSORES</small><h1>Importar vídeos do Google Meet</h1><p>Envie a gravação MP4 do Meet para o armazenamento privado do BoniVerso. Selecione um curso ou turma, revise e só então publique.</p></section>
+<p id="status" class="status" role="status">Verificando sua conta…</p>
+<section class="panel"><h2>Adicionar uma videoaula</h2><form id="upload"><div class="grid"><div class="field"><label for="target">Curso ou turma *</label><select id="target" required><option>Carregando…</option></select></div><div class="field"><label for="title">Título da videoaula *</label><input id="title" maxlength="180" required placeholder="Ex.: Aula de redação — 31 de outubro"></div></div><div class="field"><label for="description">Descrição (opcional)</label><textarea id="description" maxlength="2000" placeholder="Conteúdo e orientações aos alunos"></textarea></div><div class="field"><label for="file">Vídeo MP4 gravado no Meet *</label><input id="file" type="file" accept=".mp4,video/mp4" required><p class="small">No Google Drive, baixe o arquivo da pasta Google Meet. Escolha esse MP4 aqui. Limite inicial: 4 GiB. O envio é dividido em partes de 16 MiB.</p></div><div class="actions"><button id="send" type="submit">⬆ Importar vídeo</button><button id="cancel" type="button" class="secondary" hidden>Cancelar envio</button></div><div id="progressBox" hidden><progress id="progress" max="100" value="0"></progress><p id="progressText" class="small">Preparando upload…</p></div></form></section>
+<section class="panel"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h2 style="margin:0">Gerenciar vídeos importados</h2><button id="reload" class="secondary" type="button">↻ Atualizar</button></div><p class="small">A publicação é sempre manual. Somente professor ou administrador pode editar, mudar de turma, ocultar ou apagar definitivamente.</p><div id="videos"></div></section>
+<p class="note">Proteção de acesso: verificação de matrícula e links temporários. O controle do navegador omite o botão de download; não impede captura de tela nem cópia técnica por usuários autorizados. A exclusão do BoniVerso não exclui o arquivo original do Google Drive.</p>
+</main><script src="./config.js"></script><script type="module">
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.2';
+const $=id=>document.getElementById(id),cfg=window.BONIVERSO_CONFIG;
+const node=(tag,txt,cls)=>{const n=document.createElement(tag);if(txt!==undefined&&txt!==null)n.textContent=String(txt);if(cls)n.className=cls;return n};
+let db,catalog={courses:[],classrooms:[]},loading=false,ongoingId=null,abortController=null;
+const status=(s,error=false)=>{$('status').textContent=s;$('status').classList.toggle('error',error)};
+const nameFor=(v)=>v.course_id?'Curso · '+(catalog.courses.find(c=>c.id===v.course_id)?.title||'Curso'):'Turma · '+(catalog.classrooms.find(c=>c.id===v.classroom_id)?.name||'Turma');
+const formatBytes=(n)=>n>1048576?(n/1048576).toFixed(1)+' MiB':Math.round(n/1024)+' KiB';
+const act=async(action,more={})=>{const {data,error}=await db.functions.invoke('boniverso-course-videos',{body:{action,...more}});if(error){let why=error.message||'Falha na solicitação';try{why=(await error.context?.json?.())?.error||why}catch{}throw Error(why)}if(data?.error)throw Error(data.error);return data};
+async function load(){const a=await act('list');$('videos').replaceChildren();if(!a.videos?.length){$('videos').append(node('p','Ainda não há vídeos importados para gerenciar.','small'));return}
+ for(const v of a.videos){const card=node('article',null,'entry');card.append(node('h3',v.title));card.append(node('span',v.status==='ready'?(v.is_published?'Publicado':'Não publicado'):v.status==='uploading'?'Enviando':'Falha no envio','pill '+(v.status==='ready'&&!v.is_published?'off':v.status!=='ready'?'loading':'')));
+  card.append(node('p',nameFor(v)+' · '+formatBytes(v.original_size_bytes)+' · Fonte: Google Meet'));
+  if(v.description)card.append(node('p',v.description));const controls=node('div',null,'actions');
+  function btn(label,fn,kind){const b=node('button',label,kind);b.type='button';b.onclick=async()=>{b.disabled=true;try{await fn()}catch(e){status(e.message,true)}finally{b.disabled=false}};controls.append(b)}
+  if(v.status==='ready'){btn('▶ Visualizar',async()=>{const r=await act('watch',{video_id:v.id});const prev=card.querySelector('video');prev?.remove();const vid=node('video');vid.controls=true;vid.playsInline=true;vid.controlsList='nodownload noremoteplayback';vid.disablePictureInPicture=true;vid.addEventListener('contextmenu',e=>e.preventDefault());vid.src=r.url;card.append(vid);vid.play().catch(()=>{});});
+   btn(v.is_published?'🔒 Ocultar':'📚 Publicar',async()=>{if(v.is_published||confirm('Publicar este vídeo para os alunos matriculados em '+nameFor(v)+'?')){await act(v.is_published?'hide':'publish',{video_id:v.id});await load()}});
+   btn('✎ Renomear',async()=>{const name=prompt('Novo título (3 a 180 caracteres):',v.title);if(name===null)return;await act('rename',{video_id:v.id,title:name});await load()},'secondary');
+   btn('↪ Mover',async()=>{const options=[...catalog.courses.map(x=>({key:'course:'+x.id,label:'Curso · '+x.title})),...catalog.classrooms.map(x=>({key:'class:'+x.id,label:'Turma · '+x.name}))];const selected=prompt('Digite o número do novo destino. O vídeo ficará não publicado até nova liberação:\n'+options.map((x,i)=>(i+1)+'. '+x.label).join('\n'));if(selected===null)return;const target=options[Number(selected)-1]?.key;if(!target)throw Error('Número de destino inválido');await act('move',{video_id:v.id,target});await load()},'secondary');
+  }
+  btn('🗑 Excluir',async()=>{if(!confirm('Excluir definitivamente este vídeo da biblioteca e do R2? Isso NÃO pode ser desfeito.'))return;if(!confirm('Confirma a exclusão permanente do arquivo?'))return;await act('delete',{video_id:v.id});status('Vídeo excluído do BoniVerso.');await load()},'danger');
+  card.append(controls);$('videos').append(card);
+ }
+}
+$('reload').onclick=()=>load().catch(e=>status(e.message,true));
+$('cancel').onclick=()=>abortController?.abort();
+$('upload').onsubmit=async e=>{e.preventDefault();if(loading)return;const file=$('file').files?.[0],title=$('title').value.trim(),target=$('target').value;if(!file||!file.name.toLowerCase().endsWith('.mp4')){status('Selecione um arquivo de gravação .mp4',true);return;}if(!file.size||file.size>4294967296){status('O arquivo deve ter até 4 GiB.',true);return;}
+ loading=true;ongoingId=null;abortController=new AbortController();$('send').disabled=true;$('cancel').hidden=false;$('progressBox').hidden=false;$('progress').value=0;
+ try{
+  const start=await act('begin',{target,title,description:$('description').value,size_bytes:file.size});ongoingId=start.id;
+  const parts=[];
+  for(let i=1;i<=start.parts;i++){
+    if(abortController.signal.aborted)throw Error('Envio cancelado');
+    $('progressText').textContent='Enviando parte '+i+' de '+start.parts+'…';
+    const {url}=await act('sign_part',{video_id:ongoingId,part_number:i});
+    const begin=(i-1)*start.part_size,end=Math.min(file.size,begin+start.part_size);
+    const response=await fetch(url,{method:'PUT',body:file.slice(begin,end),signal:abortController.signal});
+    if(!response.ok)throw Error('Falha ao enviar a parte '+i+' ('+response.status+'). Verifique o CORS do bucket R2.');
+    const etag=response.headers.get('ETag');
+    if(!etag)throw Error('O R2 não expôs o cabeçalho ETag. Configure ExposeHeaders ["ETag"] na política CORS.');
+    parts.push({part_number:i,etag});$('progress').value=Math.round(i/start.parts*100);
+  }
+  status('Finalizando MP4 no Cloudflare R2…');await act('complete',{video_id:ongoingId,parts});ongoingId=null;
+  $('progressText').textContent='Upload concluído. Publique o vídeo na listagem abaixo.';
+  $('upload').reset();status('Vídeo importado! Ele ainda está oculto dos alunos. Revise e clique em Publicar.');await load();
+ }catch(error){
+  const message=abortController.signal.aborted?'Envio cancelado.':error?.message||'Falha ao importar';status(message,true);
+  if(ongoingId){await act('abort',{video_id:ongoingId}).catch(()=>{});ongoingId=null;}
+ }finally{loading=false;abortController=null;$('send').disabled=false;$('cancel').hidden=true;}
+};
+(async()=>{try{if(!cfg?.supabaseUrl||!cfg?.supabasePublishableKey)throw Error('Configuração indisponível');db=createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);const {data:{user}}=await db.auth.getUser();if(!user)throw Error('Faça login como professor.');catalog=await act('catalog');const select=$('target');select.replaceChildren();for(const c of catalog.courses)select.append(new Option('Curso · '+c.title,'course:'+c.id));for(const c of catalog.classrooms)select.append(new Option('Turma · '+c.name,'class:'+c.id));if(!select.options.length)throw Error('Cadastre um curso ou turma antes de importar');await load();status('Painel do professor carregado. Selecione um MP4 para importar.');}catch(e){status('Acesso indisponível: '+e.message,true);$('send').disabled=true;}})();
+</script></body></html>
