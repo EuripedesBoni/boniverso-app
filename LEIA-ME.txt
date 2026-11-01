@@ -1,9 +1,16 @@
-BoniVerso v1.2.0
-1. Descompacte o ZIP.
-2. No GitHub boniverso-app, envie painel-gravacoes.html (novo) e biblioteca-live.html (substitua o antigo) na RAIZ do repositorio, branch main.
-3. Confirme Commit changes e a publicacao no GitHub Pages.
-4. Abra a Biblioteca de gravacoes com a conta professor: ela exibira o link Gerenciar gravacoes no cabecalho.
-5. Nao apague arquivos de video por fora da lixeira do painel.
-Seguranca: professores e administradores autenticados podem gerenciar; alunos so veem videos concluidos e publicados associados a matricula.
-Reorganizacao de curso/turma oculta automaticamente ate republicacao.
-Exclusao definitiva e irreversivel. Use apenas apos testar.
+BONIVERSO - CORRECAO CONTINUAR ASSISTINDO - V1.5.1
+
+ESTE ZIP DEVE SER DESCOMPACTADO ANTES DO ENVIO AO GITHUB.
+
+1) Abra o ZIP no app Arquivos e extraia o arquivo curso-videos.html.
+2) Abra https://github.com/EuripedesBoni/boniverso-app
+3) Na branch main, use Add file > Upload files.
+4) Selecione SOMENTE o curso-videos.html extraido, para a raiz do repositorio.
+5) Confirme a substituicao do arquivo antigo e clique em Commit changes.
+6) Na pagina do arquivo no GitHub, procure pela frase 'Retomando aula a partir de'.
+
+NAO envie o ZIP ao GitHub no lugar do HTML.
+NAO e necessario mexer no Supabase, R2 ou reimportar videos.
+
+Teste: acesse uma conta de aluno, abra a Videoteca de um curso,
+assista ao video, pause, reabra e verifique se retoma do tempo salvo.
