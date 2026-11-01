@@ -1,47 +1,26 @@
-BONIVERSO v1.7.0 — ETAPA 1: CENTRAL DE REDAÇÕES POR TURMAS
+BONIVERSO — CORREÇÃO EMERGENCIAL v2.0.2
 
-INSTALAÇÃO (GitHub Pages, branch main)
-1) Descompacte este ZIP no iPad/celular/computador.
-2) Abra a pasta ENVIAR-PARA-GITHUB.
-3) Envie os TRÊS arquivos diretamente para a RAIZ do repositório EuripedesBoni/boniverso-app:
-   - index.html                       [SUBSTITUI o anterior]
-   - gestao-redacoes.html             [NOVO]
-   - boniverso-redacoes-v170.js       [NOVO]
-4) Clique em Commit changes e aguarde GitHub Actions Pages mostrar 'success'.
-5) Atualize a página do app e abra o menu professor -> 'Central de Redações por turma'.
+PROBLEMA CORRIGIDO:
+A tela inicial podia ficar totalmente em branco porque o Web Push monitorava alterações
+que o próprio módulo de notificações criava, causando um ciclo infinito no navegador.
 
-ARQUIVOS CRIADOS NO SERVIDOR
-- Tabela de autorização de redações em PDF (privada, sem gravação direta do aluno).
-- Bucket PRIVADO boniverso-proposals (coletâneas PDF, 10 MB).
-- Campos proposal_theme e collection_pdf_path em assignments.
-- Função Edge boniverso-essays-manager (autenticação, upload seguro, listagem e autorização).
-- Função Edge boniverso-ai-correct foi atualizada para considerar gênero, tema, instruções e coletânea em PDF. A geração depende de OPENAI_API_KEY, BONIVERSO_AI_ENABLED=true e créditos.
-- A publicação de uma nota continua exclusiva ao professor, por confirmação explícita e RPC publish_ai_review.
-- Políticas específicas permitem que os membros de uma turma autorizada recebam propostas daquela turma mesmo sem matrícula separada em curso, quando a turma não está vinculada a curso pago. Acessos a curso pago continuam sujeitos às regras de matrícula.
+COMO INSTALAR:
+1. Abra o GitHub em https://github.com/EuripedesBoni/boniverso-app
+2. Escolha Add file > Upload files.
+3. Envie os 3 arquivos que estão dentro de ENVIAR-PARA-GITHUB:
+   - boniverso-webpush-v201.js (SUBSTITUIR o existente)
+   - sw.js (SUBSTITUIR o existente)
+   - index.html (SUBSTITUIR o existente)
+4. Clique em Commit changes e aguarde o GitHub Pages mostrar Success.
+5. No computador, abra https://euripedesboni.github.io/boniverso-app/?v=202
+   e faça Ctrl+Shift+R (atualização forçada).
+6. No celular, feche e reabra o BoniVerso. Se ainda vir a tela anterior,
+   abra uma nova aba do navegador e visite o endereço com ?v=202. Em iPhone,
+   não é necessário apagar o app nem remover sua conta.
 
-COMO TESTAR
-A) Professor: abra gestao-redacoes.html, crie proposta com título, tema, curso e turma, gênero e PDF opcional. Salve como rascunho. Depois publique.
-B) Aluno da turma: abra Redações no app, selecione a proposta e utilize 'Baixar coletânea'. Envie texto digitado ou PDF.
-C) Professor: filtre a Central por turma, data, formato, nome do aluno ou status.
-D) Texto digitado: clique em 'Gerar pré-correção da IA' se a conta estiver habilitada; a IA não publica nenhuma nota. Alternativamente preencha o parecer manualmente.
-E) PDF: clique em 'Abrir PDF original'; depois de lê-lo, clique em 'Autorizar análise por IA'. Só então o botão de IA ficará disponível. Para PDF ilegível, não autorize: faça devolutiva manual.
-F) Revise notas e comentários, Salve rascunho privado e confirme 'Aprovar nota e liberar ao aluno'. A nota só aparece na conta do estudante após essa confirmação.
-
-LIMITAÇÕES IMPORTANTES
-- O resultado por IA não é validação oficial ENEM. Para carta, resenha e artigo usam-se critérios pedagógicos ADAPTADOS, que precisam da revisão do professor.
-- A IA não inicia automaticamente em segundo plano quando o estudante envia a redação; o professor a solicita na Central para controlar custos e impedir uso indevido. Não se ativou nenhuma assinatura ou cobrança.
-- PDFs da coletânea são enviados ao modelo apenas quando a análise de IA é solicitada. O professor deve orientar o compartilhamento desses documentos e a política de privacidade.
-- Nesta versão, a Central carrega até 500 envios recentes e 300 propostas, adequado ao teste atual. Para escala comercial, implementar paginação e auditoria de revisões.
-- A turma deve ter acesso explícito ao curso ou à proposta; os estudantes sem vínculo ativo não devem receber material.
-- Versões existentes do app são preservadas; só o index.html é substituído e acrescenta um script.
-- Não libere o app para uma grande turma antes de testar login, filtros, upload, permissões e publicação de notas no ambiente real.
-
-PRÓXIMOS PEDIDOS, NA ORDEM DO USUÁRIO
-2) Reforçar a aba de PDF em todas as telas de publicação da proposta.
-3) Repertório semanal por turma, PDF do professor e download autorizado.
-4) Conferir exibição do nome e dados da turma em toda interface de correção.
-5) Notificações no celular (com permissão do usuário, PWA, push).
-6) Fórum por turma, PDFs e presença on-line.
-7) Segurança, propriedade e registro do aplicativo.
-8) Planilha de serviços e gastos.
-9) Manual do professor Rafael.
+OBSERVAÇÕES:
+- Esta é somente uma correção de interface; não apaga arquivos, notas nem matrículas.
+- O Web Push continua disponível, sujeito à permissão do aparelho.
+- Depois de abrir novamente, teste ativar notificações pelo ícone do sino.
+- Se persistir a tela em branco, envie o erro do Console do navegador
+  (F12 > Console) e uma captura da tela.

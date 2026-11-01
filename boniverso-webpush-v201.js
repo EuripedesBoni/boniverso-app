@@ -1,4 +1,4 @@
-/* BoniVerso 2.0.1 — Web Push remoto opt-in. Nenhuma chave privada no navegador. */
+/* BoniVerso 2.0.2 — Web Push corrigido, sem loop de mutações. Nenhuma chave privada no navegador. */
 (()=>{
   'use strict';
   const $=(selector,scope=document)=>scope.querySelector(selector);
@@ -45,7 +45,8 @@
     if(p.textContent!==txt)p.textContent=txt;
     const usable=supported()&&(!iOS||installed())&&Notification.permission!=='denied';
     button.hidden=!usable;button.disabled=busy||!serverReady;
-    button.textContent=busy?'Aguarde...':subscription?'Desativar neste aparelho':'Ativar notificações com app fechado';
+    const nextLabel=busy?'Aguarde...':subscription?'Desativar neste aparelho':'Ativar notificações com app fechado';
+    if(button.textContent!==nextLabel)button.textContent=nextLabel;
     testBtn.hidden=!subscription;testBtn.disabled=busy;
   }
   async function api(action,extra={}){
@@ -124,7 +125,9 @@
     });
     const {data}=await db.auth.getUser();await setUser(data?.user);
     const observer=new MutationObserver(()=>{if(userId)mount()});
-    observer.observe(document.body,{childList:true,subtree:true});
+    // Observar apenas a criação da janela de avisos (filha direta do body).
+    // Jamais observar alterações internas de botões e disparar um ciclo infinito.
+    observer.observe(document.body,{childList:true,subtree:false});
     document.addEventListener('visibilitychange',()=>{if(!document.hidden&&userId)sync()});
   }
   window.addEventListener('boniverso-db-ready',init);
