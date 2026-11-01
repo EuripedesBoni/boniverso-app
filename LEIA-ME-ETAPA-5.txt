@@ -1,0 +1,48 @@
+BONIVERSO 2.0.0 — ETAPA 5: NOTIFICAÇÕES
+=====================================
+
+INSTALAÇÃO NO GITHUB
+1. Extraia o ZIP no iPhone/iPad ou computador.
+2. Entre na pasta ENVIAR-PARA-GITHUB.
+3. No repositório EuripedesBoni/boniverso-app (branch main), abra Add file > Upload files.
+4. Envie à raiz: index.html, sw.js, boniverso-alertas-v200.js.
+5. Confirme Commit changes.
+6. Aguarde o GitHub Pages finalizar (Actions > Success).
+7. Abra https://euripedesboni.github.io/boniverso-app/?v=200
+
+O SUPABASE JÁ FOI ATUALIZADO; não é necessário enviar SQL ao GitHub.
+
+ATIVAÇÃO NO APARELHO
+- Abra o BoniVerso e entre em sua conta.
+- Abra o sino (Notificações).
+- Toque em "Ativar alertas neste aparelho" e autorize quando o sistema solicitar.
+- Para desativar, toque em "Desativar alertas neste aparelho".
+- A opção é individual por aparelho e por usuário.
+- iPhone e iPad: iOS/iPadOS 16.4 ou posterior, "Compartilhar" > "Adicionar à Tela de Início", depois abra pelo ícone instalado; só então permita notificações.
+- Android/Chrome: a permissão do navegador também é necessária.
+- Safari em aba comum no iPhone não oferece a mesma opção de Web Push do app instalado.
+
+O QUE ESTÁ ATIVO
+- Central interna (sino): avisos já existentes + novos eventos de aulas, videoaulas, materiais,
+  repertórios e mensagens enviadas pelo professor no chat de aula, além de redações corrigidas.
+- Alertas do sistema para eventos novos quando o aplicativo está aberto/em uso, se autorizados.
+- Mensagens do chat: somente mensagens originadas de professor/administrador, limitadas a um
+  aviso por turma a cada 30 minutos para evitar excesso de notificações.
+- Não expõe conteúdo integral de redações, notas ou mensagens nas notificações da tela bloqueada.
+- Materiais de cursos pagos continuam condicionados às permissões de acesso do Supabase.
+
+IMPORTANTE — LIMITAÇÃO DESTA ETAPA
+Esta versão NÃO possui ainda o serviço de envio de Web Push remoto via servidor para notificar
+quando o BoniVerso estiver completamente fechado. Para ativar esse recurso, é preciso configurar
+chaves VAPID protegidas no servidor, inscrições push por aparelho e processamento de entrega.
+NÃO INFORME alunos de que terão alertas garantidos com o aplicativo fechado.
+O sino de avisos continua atualizando durante o uso do app, mesmo com alertas de dispositivo desligados.
+
+TESTE
+- Entre como estudante em um dispositivo compatível e ative alertas no sino.
+- Com o aplicativo aberto, o professor publica uma NOVA aula/material no curso do estudante,
+  ou libera uma NOVA redação corrigida.
+- Confirme o novo aviso no sino e, se permitido, uma notificação do sistema.
+- Teste também com opção desativada: o aviso fica no sino, mas não dispara alerta do sistema.
+
+OBS.: Os dados reais foram preservados e apenas triggers de novos eventos foram adicionados.
