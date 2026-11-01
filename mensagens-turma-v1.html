@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#152844">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Mensagens da Turma | BoniVerso · RSB Educação</title>
+<link rel="icon" href="./icon-192.png">
+<style>
+:root{font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#152b48;background:#f3f6fb;--navy:#142a4a;--blue:#3d64dc;--line:#d8e3f1;--muted:#61748b}
+*{box-sizing:border-box}body{margin:0}header{background:linear-gradient(115deg,#152644,#203c6b);color:white;padding:23px clamp(18px,4vw,60px)}header a{color:#e0eaff}header h1{font-size:clamp(24px,3vw,34px);margin:10px 0 4px}header p{margin:0;color:#d4e4f6}main{max-width:1120px;margin:auto;padding:20px 16px 60px}
+.panel{background:white;border:1px solid var(--line);border-radius:17px;padding:23px;margin:18px 0;box-shadow:0 5px 16px #0b27480a}.muted{color:var(--muted)}.small{font-size:13px}.status{background:#edf4ff;border:1px solid #cbdcf2;padding:13px 16px;border-radius:11px;white-space:pre-wrap}.status.error{background:#fff0ea;border-color:#f1c4b6;color:#a03928}.status.success{background:#eaf6ef;border-color:#c5e5d0;color:#1e6641}
+.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.controls label{display:block;font-weight:700;margin-bottom:6px}select,textarea{width:100%;font:inherit;border:1px solid #c1d1e6;color:#1c344e;background:white;border-radius:11px;padding:12px;outline-offset:3px}textarea{min-height:110px;resize:vertical}button{font:inherit;border:0;background:var(--blue);color:white;font-weight:750;padding:11px 18px;border-radius:10px;cursor:pointer}button.secondary{background:#e8effc;color:#274573}button.ghost{background:transparent;border:1px solid #c4d3e8;color:#2c4c83}button:disabled{opacity:.55;cursor:not-allowed}.buttons{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}.messages{display:flex;flex-direction:column;gap:14px;min-height:180px;max-height:580px;overflow-y:auto;padding:17px 11px;border:1px solid #d8e4f1;border-radius:14px;background:#f8faff;scroll-behavior:smooth}
+.message{max-width:min(86%,650px);padding:12px 14px;border-radius:15px;background:white;border:1px solid #d6e1ed;align-self:flex-start;overflow-wrap:anywhere;white-space:pre-wrap}.message.own{background:#e4edff;border-color:#bdcff5;align-self:flex-end}.message.hidden{border-style:dashed;color:#6c6c6c;background:#f5f2f2}.meta{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap;color:#526882;font-size:12px;margin-bottom:7px;white-space:normal}.meta strong{color:#253e61}.message p{margin:0}.message .moderate{font-size:12px;padding:5px 9px;margin-top:8px}.compose label{display:block;font-weight:700;margin:16px 0 7px}.heading{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.tag{background:#e8f0fc;border-radius:18px;padding:5px 11px;color:#32548a;font-size:12px}.empty{text-align:center;padding:32px 10px;color:#61748b}footer{font-size:12px;color:#647995;padding:10px 0}@media(max-width:700px){.controls{grid-template-columns:1fr}.panel{padding:16px}.messages{padding:10px;max-height:520px}.message{max-width:95%}.buttons button{flex:1}}
+</style>
+</head>
+<body>
+<header><a href="./">← Voltar ao BoniVerso</a><h1>✉ Mensagens da Turma</h1><p>Comunicação privada entre estudantes matriculados e equipe pedagógica · RSB Educação</p></header>
+<main>
+<p id="status" class="status" role="status" aria-live="polite">Verificando sua conta…</p>
+<section class="panel">
+  <div class="heading"><h2 style="margin:0">Sua conversa</h2><span class="tag" id="mode">Acesso protegido</span></div>
+  <p class="muted small" id="privacy">Somente você e os docentes autorizados podem ver esta conversa. Não compartilhe dados sensíveis.</p>
+  <div class="controls">
+    <div><label for="classroom">Turma</label><select id="classroom" disabled><option>Carregando…</option></select></div>
+    <div id="studentWrap" hidden><label for="student">Estudante</label><select id="student" disabled><option>Selecione uma turma</option></select></div>
+  </div>
+</section>
+<section class="panel">
+  <div class="heading"><h2 style="margin:0">Histórico de mensagens</h2><button id="refresh" class="secondary" type="button" disabled>Atualizar</button></div>
+  <p class="muted small">Exibimos até as 100 mensagens mais recentes da conversa selecionada. As mensagens não são públicas e não aparecem no fórum.</p>
+  <div class="messages" id="messages"><div class="empty">Selecione uma turma para abrir a conversa.</div></div>
+  <form id="composer" class="compose">
+    <label for="text">Escrever mensagem</label>
+    <textarea id="text" maxlength="2000" minlength="1" required placeholder="Escreva sua dúvida ou resposta pedagógica…" disabled></textarea>
+    <div class="buttons"><button id="send" type="submit" disabled>Enviar mensagem</button><span class="muted small" id="remaining">0 / 2000 caracteres</span></div>
+  </form>
+</section>
+<footer>Área de comunicação institucional em versão de teste. Professores podem ocultar mensagens inadequadas. Não utilize esta ferramenta para emergências ou para compartilhar senhas, documentos pessoais ou dados sensíveis. Sem notificações automáticas nesta versão.</footer>
+</main>
+<script src="./config.js"></script>
+<script type="module">
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.2';
+const $=id=>document.getElementById(id);
+let db,user,isStaff=false,classrooms=[],membershipRows=[],studentOptions=[],messages=[],loading=false,lastSend=0;
+const show=(s,type='')=>{const el=$('status');el.textContent=s;el.className='status'+(type?' '+type:'')};
+const fmt=(date)=>new Date(date).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'});
+async function req(query){const {data,error}=await query;if(error)throw error;return data}
+function opt(value,label){const o=document.createElement('option');o.value=value;o.textContent=label;return o}
+function selectedClass(){return $('classroom').value}
+function selectedStudent(){return isStaff?$('student').value:user?.id}
+function clearMessages(text){$('messages').replaceChildren();const el=document.createElement('div');el.className='empty';el.textContent=text;$('messages').append(el)}
+function updateInputs(){const valid=!!selectedClass()&&!!selectedStudent()&&!loading;$('refresh').disabled=!valid;$('text').disabled=!valid;$('send').disabled=!valid||!$('text').value.trim();}
+function makeMessage(row){
+ const own=row.sender_id===user.id;const item=document.createElement('article');item.className='message'+(own?' own':'')+(row.is_hidden?' hidden':'');
+ const meta=document.createElement('div');meta.className='meta';const who=document.createElement('strong');who.textContent=row.sender_kind==='staff'?'Equipe pedagógica':'Estudante';const when=document.createElement('span');when.textContent=fmt(row.created_at);meta.append(who,when);item.append(meta);
+ const body=document.createElement('p');body.textContent=row.is_hidden?'Mensagem ocultada pela equipe pedagógica.':row.content;item.append(body);
+ if(isStaff&&!row.is_hidden){const mod=document.createElement('button');mod.type='button';mod.className='secondary moderate';mod.textContent='Ocultar mensagem';mod.onclick=async()=>{if(!confirm('Ocultar esta mensagem do estudante? O registro permanece disponível para a equipe.'))return;mod.disabled=true;try{await req(db.from('bv_student_teacher_messages').update({is_hidden:true}).eq('id',row.id));await loadMessages();show('Mensagem ocultada na conversa do aluno.','success')}catch(e){show(e.message,'error');mod.disabled=false}};item.append(mod)}
+ return item;
+}
+async function loadMessages(){
+ const c=selectedClass(),s=selectedStudent();if(!c||!s){clearMessages('Selecione uma turma e um estudante.');updateInputs();return;}
+ loading=true;updateInputs();clearMessages('Carregando mensagens…');
+ try{
+  const data=await req(db.from('bv_student_teacher_messages').select('id,classroom_id,student_id,sender_id,sender_kind,content,is_hidden,created_at').eq('classroom_id',c).eq('student_id',s).order('created_at',{ascending:false}).limit(100));
+  messages=[...data].reverse();$('messages').replaceChildren();if(!messages.length){clearMessages('Nenhuma mensagem nesta conversa. Você pode iniciar o atendimento.')}
+  else{for(const row of messages)$('messages').append(makeMessage(row));$('messages').scrollTop=$('messages').scrollHeight}
+  show('Conversa carregada. Acesso restrito à matrícula e à equipe autorizada.','success');
+ }catch(e){clearMessages('Não foi possível abrir esta conversa.');show(e.message,'error')}
+ finally{loading=false;updateInputs()}
+}
+async function loadStudents(){
+ const c=selectedClass();$('student').replaceChildren();$('student').disabled=true;if(!c){$('student').append(opt('','Escolha uma turma'));updateInputs();return;}
+ try{
+  const members=await req(db.from('classroom_memberships').select('user_id').eq('classroom_id',c).eq('status','active').limit(250));
+  const ids=[...new Set(members.map(m=>m.user_id))];let profileMap=new Map();
+  if(ids.length){const ps=await req(db.from('profiles').select('id,display_name,full_name').in('id',ids));profileMap=new Map(ps.map(p=>[p.id,p.full_name||p.display_name||'Aluno sem nome']))}
+  studentOptions=ids.map(id=>({id,name:profileMap.get(id)||'Estudante sem nome'})).sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+  $('student').append(opt('','Selecione um estudante'));
+  for(const s of studentOptions)$('student').append(opt(s.id,s.name));
+  $('student').disabled=false;if(studentOptions.length===1)$('student').value=studentOptions[0].id;
+  await loadMessages();
+ }catch(e){show(e.message,'error');clearMessages('Não foi possível consultar matrículas da turma.')}
+}
+async function boot(){
+ const cfg=window.BONIVERSO_CONFIG||{};if(!cfg.supabaseUrl||!cfg.supabasePublishableKey)throw Error('Configuração do Supabase ausente.');
+ db=createClient(cfg.supabaseUrl,cfg.supabasePublishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+ const {data:auth,error:authError}=await db.auth.getUser();if(authError)throw authError;user=auth.user;if(!user)throw Error('Faça login no BoniVerso para abrir suas mensagens.');
+ const staffRole=await req(db.rpc('current_staff_role'));isStaff=['teacher','admin'].includes(staffRole);
+ $('mode').textContent=isStaff?'Atendimento docente':'Conversa do estudante';$('studentWrap').hidden=!isStaff;
+ if(isStaff){classrooms=await req(db.from('classrooms').select('id,name').eq('is_active',true).order('name'));}
+ else{
+  membershipRows=await req(db.from('classroom_memberships').select('classroom_id').eq('user_id',user.id).eq('status','active'));
+  const ids=[...new Set(membershipRows.map(m=>m.classroom_id))];
+  classrooms=ids.length?await req(db.from('classrooms').select('id,name').eq('is_active',true).in('id',ids).order('name')):[];
+ }
+ $('classroom').replaceChildren();$('classroom').append(opt('','Selecione uma turma'));
+ for(const c of classrooms)$('classroom').append(opt(c.id,c.name));$('classroom').disabled=false;
+ $('classroom').onchange=async()=>{if(isStaff)await loadStudents();else await loadMessages()};
+ $('student').onchange=loadMessages;$('refresh').onclick=loadMessages;
+ $('text').addEventListener('input',()=>{$('remaining').textContent=$('text').value.length+' / 2000 caracteres';updateInputs()});
+ $('composer').onsubmit=async ev=>{
+  ev.preventDefault();const classroom_id=selectedClass(),student_id=selectedStudent(),content=$('text').value.trim();
+  if(!classroom_id||!student_id||!content)return;if(content.length>2000){show('Limite de 2.000 caracteres.','error');return}
+  if(Date.now()-lastSend<5000){show('Aguarde alguns segundos antes de enviar outra mensagem.','error');return}
+  $('send').disabled=true;try{
+   await req(db.from('bv_student_teacher_messages').insert({classroom_id,student_id,sender_id:user.id,sender_kind:isStaff?'staff':'student',content}));
+   lastSend=Date.now();$('text').value='';$('remaining').textContent='0 / 2000 caracteres';await loadMessages();show('Mensagem enviada com sucesso.','success');
+  }catch(e){show(e.message,'error')}finally{updateInputs()}
+ };
+ show(isStaff?'Selecione uma turma e um estudante para iniciar o atendimento.':'Selecione sua turma para conversar com a equipe pedagógica.','success');
+ if(classrooms.length===1){$('classroom').value=classrooms[0].id;$('classroom').dispatchEvent(new Event('change'))}
+ else if(!classrooms.length)show('Nenhuma turma ativa disponível para sua conta.','error');
+}
+boot().catch(e=>{show(e.message,'error');document.querySelectorAll('button,textarea,select').forEach(x=>x.disabled=true)});
+</script>
+</body>
+</html>
