@@ -61,6 +61,18 @@ function makeMessage(row){
  if(isStaff&&!row.is_hidden){const mod=document.createElement('button');mod.type='button';mod.className='secondary moderate';mod.textContent='Ocultar mensagem';mod.onclick=async()=>{if(!confirm('Ocultar esta mensagem do estudante? O registro permanece disponível para a equipe.'))return;mod.disabled=true;try{await req(db.from('bv_student_teacher_messages').update({is_hidden:true}).eq('id',row.id));await loadMessages();show('Mensagem ocultada na conversa do aluno.','success')}catch(e){show(e.message,'error');mod.disabled=false}};item.append(mod)}
  return item;
 }
+async function markConversationRead(){
+ const classroom_id=selectedClass(),student_id=selectedStudent();
+ if(!user?.id||!classroom_id||!student_id)return;
+ try{
+  // Função protegida no banco: só o estudante da matrícula ou o professor designado.
+  await req(db.rpc('bv_mark_private_conversation_read',{
+   p_classroom_id:classroom_id,p_student_id:student_id
+  }));
+  // Atualiza o contador de abas abertas no mesmo navegador, sem compartilhar dados pessoais.
+  try{localStorage.setItem('bv-private-messages-read',String(Date.now()))}catch{}
+ }catch(e){console.warn('Não foi possível marcar a conversa como lida:',e?.message||e)}
+}
 async function loadMessages(){
  const c=selectedClass(),s=selectedStudent();if(!c||!s){clearMessages('Selecione uma turma e um estudante.');updateInputs();return;}
  loading=true;updateInputs();clearMessages('Carregando mensagens…');
@@ -69,6 +81,7 @@ async function loadMessages(){
   messages=[...data].reverse();$('messages').replaceChildren();if(!messages.length){clearMessages('Nenhuma mensagem nesta conversa. Você pode iniciar o atendimento.')}
   else{for(const row of messages)$('messages').append(makeMessage(row));$('messages').scrollTop=$('messages').scrollHeight}
   show('Conversa carregada. Acesso restrito ao estudante e ao professor responsável.','success');
+  await markConversationRead();
  }catch(e){clearMessages('Não foi possível abrir esta conversa.');show(e.message,'error')}
  finally{loading=false;updateInputs()}
 }

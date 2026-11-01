@@ -1,0 +1,42 @@
+BONIVERSO — AVISOS PRIVADOS NO ICONE DE MENSAGENS (atualizacao v2)
+RSB Educacao | 1 de novembro de 2026
+
+O QUE A ATUALIZACAO FAZ
+
+1. Contador vermelho de avisos privados nao lidos no atalho Mensagens, tanto no menu lateral quanto no topo.
+2. Ao tocar em Mensagens, abre uma previa elegante, com ate quatro avisos, sem exibir textos, nomes ou dados pessoais.
+3. Cada aviso oferece o botao Abrir, que leva diretamente a conversa privada autorizada.
+4. O botao Abrir todas as mensagens leva a Central de Mensagens completa.
+5. Ao abrir qualquer conversa, TODOS os avisos de mensagens recebidas nessa conversa passam a ser marcados como lidos com uma rotina segura no Supabase (RPC); não há limite de 100 mensagens para esta ação.
+6. Ao retornar ao aplicativo, o contador e recalculado. Em outra aba, ha atualizacao automatica, e a conferencia periodica e feita enquanto o aplicativo esta aberto.
+
+INSTALACAO — SEM SQL OU ALTERACAO NO INDEX.HTML
+
+1. Entre no repositorio EuripedesBoni/boniverso-app no GitHub, branch main.
+2. Substitua os dois arquivos existentes pelos arquivos deste pacote, mantendo exatamente os mesmos nomes:
+   - boniverso-mensagens-badge-v1.js
+   - mensagens-turma-v3.html
+3. Clique em Commit changes. A funcao segura do Supabase ja foi instalada e testada: nao precisa executar SQL.
+4. Aguarde o GitHub Actions/Pages concluir a publicacao.
+5. Abra o BoniVerso no Safari ou Chrome e atualize a pagina. Se vir a versao anterior, feche a guia, reabra ou use uma atualizacao forcada.
+
+TESTE COM CONTAS AUTORIZADAS
+
+1. Use a conta do aluno para enviar uma mensagem de teste ao Prof. Rafa Boni.
+2. Entre com a conta do professor (com verificacao em duas etapas): o icone de Mensagens deve exibir 1.
+3. Toque no icone: veja a previa e selecione Abrir, ou toque Abrir todas as mensagens e escolha a conversa.
+4. Quando a conversa carregar, volte ao BoniVerso: o contador deve diminuir ou desaparecer se nao houver mais mensagens pendentes.
+5. Responda usando a conta do professor. Na conta do aluno, repita e confira a notificacao e o desaparecimento do contador apos ler.
+6. Teste uma segunda conta de aluno para garantir que ela nao consiga abrir conversas de outros estudantes.
+
+PRIVACIDADE
+
+A previa mostra apenas informacoes genericas de notificacao, nunca o conteudo das mensagens.
+O controle de acesso real e realizado no Supabase por RLS; a interface nao substitui isso.
+Notificacoes no aparelho, com o app fechado, dependem das permissoes do dispositivo e do Web Push ja configurado.
+
+LIMITACOES
+
+- O contador nao e atualizado instantaneamente no servidor via websocket: o aplicativo confere periodicamente, ao receber foco e ao abrir uma guia.
+- O historico de avisos e consultado nos 150 mais recentes por conta; mensagens antigas podem ficar fora da contagem.
+- A atualizacao visual ainda precisa ser validada em navegadores de estudante e professor apos a publicacao.
