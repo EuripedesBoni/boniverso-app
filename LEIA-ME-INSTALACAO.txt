@@ -1,32 +1,41 @@
-BONIVERSO v1.8.2 — Repertório Semanal: duas modalidades de publicação
+BONIVERSO v2.0.1 — WEB PUSH COM O APLICATIVO FECHADO
 
-NOVIDADES
-1. Somente repertório: professor preenche turma, semana, título e anexa o PDF. Não é necessário criar redação ou informar prazo.
-2. Repertório + redação: professor preenche o PDF do repertório e também curso, título, gênero, tema, orientações e data/hora limite da redação. Os dois conteúdos são publicados juntos.
-3. O rascunho só se torna visível após clicar no botão de publicação no cartão da biblioteca.
-4. Nos cartões do professor e do estudante, redação vinculada e prazo só aparecem para materiais criados no segundo modo.
-5. Ambos os modos preservam as permissões de turma e o armazenamento privado de PDF.
+INSTALAÇÃO
+1. Abra a pasta ENVIAR-PARA-GITHUB.
+2. No repositório https://github.com/EuripedesBoni/boniverso-app
+   entre em Add file > Upload files.
+3. Envie os 3 arquivos para a RAIZ do repositório:
+   - index.html (substituir)
+   - sw.js (substituir)
+   - boniverso-webpush-v201.js (novo)
+4. Confirme com Commit changes. Não exclua arquivos antigos.
+5. Aguarde o GitHub Actions confirmar success.
+6. Abra https://euripedesboni.github.io/boniverso-app/?v=201 e faça login.
 
-INSTALAÇÃO NO GITHUB
-1. Abra https://github.com/Euripedesboni/boniverso-app
-2. Descompacte este ZIP.
-3. Em Add file > Upload files, envie APENAS:
-   ENVIAR-PARA-GITHUB/repertorios-semanais.html
-4. O novo arquivo deve SUBSTITUIR o repertorios-semanais.html existente na raiz do repositório.
-5. Confirme em Commit changes.
-6. Consulte GitHub > Actions e veja a implantação GitHub Pages.
-7. Abra https://euripedesboni.github.io/boniverso-app/repertorios-semanais.html?v=182
+TESTE NO IPHONE/IPAD
+- iOS/iPadOS 16.4 ou superior.
+- No Safari toque em Compartilhar > Adicionar à Tela de Início.
+- Abra o BoniVerso PELO ÍCONE na Tela de Início.
+- Entre em sua conta, abra o sino de Notificações.
+- Toque em 'Ativar notificações com app fechado' e permita os avisos.
+- Toque em 'Enviar notificação de teste'.
+- Bloqueie a tela e verifique o aviso na Central de Notificações.
 
-O QUE JÁ FOI ATUALIZADO
-- Supabase: função de publicação ligada à redação agora aceita também repertórios sem redação.
-- Supabase: rotina de cadastro passou a aceitar as duas modalidades.
-- Não há necessidade de atualizar index.html ou qualquer outro arquivo.
-- Não foi criado nem publicado nenhum repertório no seu banco durante os testes.
+TESTE NO ANDROID
+- Abra o BoniVerso no Chrome, entre e permita notificações.
+- Na central de avisos, ative Web Push e envie o teste.
 
-TESTE RECOMENDADO
-A) Professor: selecionar Somente repertório; preencher dados do PDF e salvar. Publicar pelo botão 'Publicar apenas repertório'. Conferir que o cartão NÃO mostra atividade de redação.
-B) Professor: selecionar Repertório e redação; conferir os novos campos; cadastrar e publicar. Conferir prazo e botão de acesso à redação.
-C) Estudante matriculado: abrir a biblioteca, baixar PDF. No modo B, verificar também abertura da redação e data-limite.
+O QUE FOI FEITO NO SERVIDOR
+- Chaves VAPID privadas protegidas no Supabase Vault.
+- Função boniverso-push (inscrição/desativação/envio/teste).
+- Job agendado no Supabase a cada minuto.
+- Inscrições privadas; não há token ou segredo no repositório.
+- Avisos de aulas, mensagens do professor, repertórios e redações corrigidas.
 
-IMPORTANTE
-Os PDFs têm armazenamento privado. As notas de redação dependem da aprovação do professor. O envio deve respeitar a data-limite.
+AVISOS
+- Sem a permissão do sistema e a inscrição deste dispositivo não haverá push.
+- Alguns modos de economia de bateria, foco ou bloqueios do navegador podem adiar avisos.
+- Notificações de alunos só ficam ativadas depois de consentimento individual.
+- A tela bloqueada não mostra nota ou dados pessoais do aluno.
+- Notificações internas no sino permanecem disponíveis independentemente do push.
+- O envio final depende de teste em aparelho real; backend vazio não comprova entrega.
