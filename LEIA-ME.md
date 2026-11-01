@@ -1,53 +1,29 @@
-# BoniVerso — vídeos do Google Meet + lives v1.4.0
+# BoniVerso v1.5.0 — Videoteca integrada a cada curso
 
-## Instalação
+## Instalação no GitHub
 
-Na raiz do repositório GitHub `EuripedesBoni/boniverso-app`, envie:
+1. Envie **curso-videos.html** e **videoteca-curso-link.js** para a raiz do repositório `EuripedesBoni/boniverso-app` (branch `main`).
+2. Edite o arquivo `index.html`, que contém a página inicial, e ANTES de `</body>` acrescente exatamente:
 
-- `importar-videos.html`
-- `biblioteca-meet.js`
+   `<script defer src="./videoteca-curso-link.js"></script>`
 
-No fim de `biblioteca-live.html`, logo antes de `</body>` (e depois de `</script>` do bloco da biblioteca), acrescente:
+3. Salve com Commit changes. Confirme que a ação de publicação GitHub Pages terminou com status success.
+4. Abra a página inicial do BoniVerso, atualize e clique em **Cursos**. Cada curso permitido deverá ter o atalho **Videoteca do curso**, também disponível dentro dos detalhes do curso.
+5. Use a conta do professor para testar criação e organização de módulos, e depois a conta do estudante para testar reprodução e "Continuar assistindo".
 
-```html
-<script defer src="./biblioteca-meet.js"></script>
-```
+## O que mudou
 
-O professor acessa a Biblioteca, escolhe **⬆ Importar vídeos Meet**, baixa o MP4 no Google Drive e importa o arquivo local na turma ou curso. O arquivo só aparece aos estudantes após clicar em **Publicar**.
+- O novo endereço de um curso é `curso-videos.html?curso=ID_DO_CURSO` (o link é preenchido automaticamente pelos cartões).
+- A página lista tanto gravações de LiveKit quanto gravações importadas do Meet do curso.
+- O painel do professor permite criar, renomear, reordenar e excluir módulos sem apagar vídeos, e vincular vídeos a módulos.
+- Cada aluno salva seu progresso de reprodução **na própria conta**, sincronizado entre dispositivos.
+- URLs de reprodução são temporárias e exigem autorização validada pelo servidor. O player oculta o download, mas não pode impedir capturas de tela nem a cópia técnica de fluxos recebidos no navegador.
+- Gerenciamento de exclusão, publicação e movimentação dos arquivos continua reservado aos painéis do professor (gravações de lives e vídeos Meet).
 
-## Cloudflare R2: CORS obrigatório para upload no navegador
+## Cuidados e testes
 
-Bucket privado: `boniverso-live-videos`. No Cloudflare: R2 > buckets > boniverso-live-videos > Settings > CORS Policy, defina:
-
-```json
-[
-  {
-    "AllowedOrigins": ["https://euripedesboni.github.io"],
-    "AllowedMethods": ["GET", "HEAD", "PUT"],
-    "AllowedHeaders": ["Content-Type", "Range", "*"],
-    "ExposeHeaders": ["ETag", "Content-Length", "Accept-Ranges"],
-    "MaxAgeSeconds": 3600
-  }
-]
-```
-
-Se já houver política CORS, preserve as origens/métodos necessários ao projeto e adicione PUT e ETag. Mantenha **Public Access desabilitado**. A API usa o token R2 existente somente no Supabase, sem exibir credenciais ao navegador.
-
-## Sobre a biblioteca e restrição de download
-
-- Gravações da live (LiveKit) continuam na biblioteca e no painel de gravações.
-- Vídeos do Meet são armazenados em uma tabela distinta, no mesmo bucket privado, e aparecem na biblioteca por curso/turma.
-- O acesso do aluno depende de matrícula ativa, publicação e uma URL assinada temporária.
-- Só professores e administradores podem publicar, editar, mudar o destino ou excluir vídeos Meet. O painel de gravações anterior mantém as exclusões das lives.
-- O botão de download é ocultado do player; entretanto URLs temporárias podem ser copiadas por usuários autorizados e nenhuma solução web impede totalmente captura de tela ou cópia. Para DRM real, é necessário serviço profissional de streaming com proteção de licenças.
-- A exclusão dos vídeos importados remove o arquivo do R2, mas **não** remove o original do Google Drive.
-
-## Primeiro teste
-
-Faça o teste com um MP4 pequeno e descartável antes de importar aulas reais. Verifique: upload → prévia do professor → publicação → reprodução na conta matriculada → acesso negado em conta não matriculada → ocultação → exclusão.
-
-A transferência é multipart em partes de 16 MiB, com limite inicial de 4 GiB por arquivo. Em redes móveis instáveis, um upload interrompido deverá ser reiniciado. Há custos de armazenamento e operações no R2 conforme consumo.
-
-## Lembrete do Diário de Classe
-
-O lembrete foi solicitado, mas ainda não há dia e horário informados. A programação será combinada separadamente, sem interferir no módulo de vídeos.
+- **Não exclua** arquivos JavaScript antigos de transmissão e gravação.
+- Teste com duas contas distintas: professor e aluno com matrícula ativa.
+- Se uma aula for transferida para outro curso, reorganize-a no módulo correto no destino.
+- O tempo salvo é aproximado; o indicador "concluído" se refere ao vídeo, **não** equivale a presença escolar comprovada.
+- Uma URL de reprodução temporária pode ser usada até expirar, mesmo após alteração de permissão. Para bloqueio forte contra cópia seria necessário streaming com DRM e outra infraestrutura.
