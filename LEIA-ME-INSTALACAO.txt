@@ -1,0 +1,37 @@
+BONIVERSO v1.7.1 — GÊNEROS PERSONALIZADOS EM PDF
+============================================
+
+INSTALE NO GITHUB (BRANCH main)
+
+1. Descompacte o ZIP no aplicativo Arquivos do iPad.
+2. No repositório EuripedesBoni/boniverso-app, use Add file > Upload files.
+3. Envie APENAS o arquivo boniverso-genero-personalizado-v171.js para a RAIZ do repositório.
+4. Clique em Commit changes.
+5. Abra o arquivo gestao-redacoes.html no GitHub (branch main), clique em Edit (ícone lápis).
+6. Encontre o trecho final:
+   </script></body></html>
+7. Substitua somente esse final por:
+   </script><script type="module" src="./boniverso-genero-personalizado-v171.js"></script></body></html>
+8. Clique em Commit changes. Aguarde o GitHub Pages mostrar Success.
+
+TESTE
+- Faça login na conta do professor Rafael.
+- Abra https://euripedesboni.github.io/boniverso-app/gestao-redacoes.html?v=171
+- Em Criar proposta, selecione Gênero da proposta > Outro.
+- Deve aparecer o bloco com Nome do gênero textual e PDF de orientações.
+- Escreva um nome, escolha um PDF (até 10 MB) e preencha os campos normais.
+- Salve como rascunho; o professor publica somente após revisar.
+- Quando houver uma redação desse gênero, peça uma PRÉ-CORREÇÃO à IA no painel do professor.
+- A IA recebe o manual como referência pedagógica privada. A nota e a devolutiva
+  só são publicadas depois da confirmação explícita do professor.
+
+ATENÇÃO
+- O PDF da COLETÂNEA da proposta é separado do PDF com ORIENTAÇÕES DE GÊNERO.
+- O manual do gênero é privado, não é colocado para download dos estudantes.
+- Outros gêneros não usam automaticamente a rubrica oficial do ENEM.
+- As mudanças no Supabase já foram aplicadas. Não altere as chaves, buckets ou RLS.
+- Não houve edição automática no GitHub: o conector não tem permissão de escrita.
+
+ARQUIVOS NO ZIP
+- boniverso-genero-personalizado-v171.js (arquivo a enviar ao GitHub)
+- LEIA-ME-INSTALACAO.txt (instruções, NÃO enviar ao GitHub)
