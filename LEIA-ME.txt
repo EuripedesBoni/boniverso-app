@@ -1,16 +1,96 @@
-BONIVERSO - CORRECAO CONTINUAR ASSISTINDO - V1.5.1
+BONIVERSO v1.6.1 - AVALIACOES POR PDF E CORRECAO POR QUESTAO
+============================================================
 
-ESTE ZIP DEVE SER DESCOMPACTADO ANTES DO ENVIO AO GITHUB.
+1) INSTALACAO NO GITHUB (BRANCH MAIN)
+--------------------------------------
+Abra o ZIP no aplicativo Arquivos do iPad e descompacte.
+Na pasta ENVIAR-PARA-GITHUB, ha somente DOIS arquivos:
 
-1) Abra o ZIP no app Arquivos e extraia o arquivo curso-videos.html.
-2) Abra https://github.com/EuripedesBoni/boniverso-app
-3) Na branch main, use Add file > Upload files.
-4) Selecione SOMENTE o curso-videos.html extraido, para a raiz do repositorio.
-5) Confirme a substituicao do arquivo antigo e clique em Commit changes.
-6) Na pagina do arquivo no GitHub, procure pela frase 'Retomando aula a partir de'.
+  painel-aprendizagem.html    [SUBSTITUI O EXISTENTE]
+  boniverso-pdf-import.js    [NOVO ARQUIVO]
 
-NAO envie o ZIP ao GitHub no lugar do HTML.
-NAO e necessario mexer no Supabase, R2 ou reimportar videos.
+No repositorio EuripedesBoni/boniverso-app:
+  Add file > Upload files > selecione OS DOIS arquivos da pasta
+  ENVIAR-PARA-GITHUB > Commit changes.
 
-Teste: acesse uma conta de aluno, abra a Videoteca de um curso,
-assista ao video, pause, reabra e verifique se retoma do tempo salvo.
+Envie diretamente para a RAIZ, ao lado de index.html e config.js.
+NAO envie o ZIP inteiro, o PDF modelo, nem o arquivo LEIA-ME.
+NAO precisa alterar index.html, o banco ou o Supabase: o servidor
+boniverso-learning v2 ja foi atualizado e a coluna de anexos foi criada.
+
+2) COMO CRIAR UMA AVALIACAO A PARTIR DE PDF
+------------------------------------------
+Entre no BoniVerso com a CONTA DO PROFESSOR, abra o Painel de
+Aprendizagem, selecione o curso e desca para Gestao pedagogica.
+
+  a. Abra a aba AVALIACAO.
+  b. Selecione um PDF que contenha questoes de multipla escolha.
+  c. Toque em "Converter PDF em questoes".
+  d. Confira na pre-visualizacao os enunciados, as quatro alternativas
+     e o gabarito correto de CADA questao.
+  e. Corrija manualmente qualquer interpretacao incorreta; se o PDF
+     nao contiver gabarito, selecione a resposta correta de cada item.
+  f. Defina titulo e modulo. Clique em "Salvar avaliacao como rascunho".
+  g. No cadastro do material, toque em PUBLICAR para liberar ao aluno.
+
+O PDF ORIGINAL da prova fica guardado em bucket privado, disponivel
+somente ao professor. O arquivo pode conter gabarito; por isso o aluno
+NUNCA recebe o link do PDF original da avaliacao.
+
+Formato recomendado para importar automaticamente:
+  1. Primeiro enunciado da questao?
+  A) Alternativa um
+  B) Alternativa dois
+  C) Alternativa tres
+  D) Alternativa quatro
+  2. Segundo enunciado...
+  ...
+  GABARITO
+  1-B 2-D
+
+Apenas alternativas A, B, C e D sao importadas automaticamente.
+Limites: ate 20 questoes, arquivo PDF de ate 15 MB, ate 70 paginas.
+PDFs digitalizados como imagem requerem OCR (ainda nao disponivel).
+Questoes com imagens, graficos ou formatacao complexa exigem revisao.
+Nao ha acerto de gabarito por IA: a verificacao final cabe ao professor.
+
+3) COMO ANEXAR UM PDF A UMA ATIVIDADE
+------------------------------------
+Em Gestao pedagogica, selecione ATIVIDADE, preencha titulo e orientacoes,
+anexe opcionalmente um PDF e salve como rascunho. Publique.
+O estudante usa "Ver PDF" para consultar o enunciado e escreve a
+resposta no proprio BoniVerso. A atividade discursiva nao recebe
+correcao automatica (exigiria uma rubrica e avaliacao docente/IA).
+
+4) TESTE COM A CONTA DO ESTUDANTE
+--------------------------------
+No mesmo curso, inicie a avaliacao publicada:
+  - Escolha uma resposta na questao 1.
+  - Toque em "Verificar resposta". Aparecem acerto/erro e gabarito.
+  - Continue nas demais questoes.
+  - Toque em "Finalizar e registrar avaliacao".
+O servidor calcula a nota final e registra a tentativa por usuario.
+
+Esta e uma avaliacao em MODO ESTUDO. Cada estudante pode verificar a
+resposta e ver o gabarito ANTES de finalizar. Para provas formais com
+nota sem consulta, sera necessario um modo especifico que so revele
+o gabarito apos o envio final.
+
+5) EXEMPLO PARA TESTE
+--------------------
+No ZIP esta o arquivo EXEMPLO-PROVA-PARA-IMPORTAR.pdf (3 questoes).
+NAO envie ao GitHub: selecione-o na aba Avaliacao como o PDF da prova.
+O gabarito esperado e 1-B, 2-A, 3-C.
+
+6) SEGURANCA E LIMITACOES
+------------------------
+- Alunos precisam estar matriculados no curso.
+- PDFs em armazenamento privado Supabase, acesso por URL temporaria.
+- Gabarito nunca enviado na listagem de questoes ao estudante.
+- A resposta correta e revelada pelo servidor apos cada verificacao
+  (modo estudo intencional); nao use para prova formal inviolavel.
+- O professor deve revisar a conversao antes de publicar.
+- Dependencia PDF.js 4.10.38 via CDN da Mozilla (cdnjs): requer internet.
+- Certificados continuam em preparacao, nao gerados nesta versao.
+
+Se aparecer erro, envie uma captura da tela e informe em qual aba foi.
