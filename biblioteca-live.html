@@ -45,4 +45,8 @@ async function load(){try{
  render();status(staff?'Biblioteca do professor carregada. Você pode visualizar prévias não publicadas.':'Exibindo gravações autorizadas pela sua matrícula.');
  }catch(e){status('Erro ao carregar biblioteca: '+e.message,true);$('list').replaceChildren()}}
 $('target').addEventListener('change',render);$('search').addEventListener('input',render);$('refresh').addEventListener('click',load);load();
-</script></body></html>
+</script>
+<script defer src="./biblioteca-meet.js"></script>
+</body>
+</html>
+
