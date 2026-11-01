@@ -1,10 +1,11 @@
-BoniVerso — Tela de MFA para administradores
+BONIVERSO — FASE 1 | GESTÃO DE TURMAS v3.0
 
-1. Adicione o arquivo mfa-admin.html na RAIZ do repositório EuripedesBoni/boniverso-app, pelo GitHub (Add file > Upload files).
-2. Aguarde a publicação do GitHub Pages e acesse https://euripedesboni.github.io/boniverso-app/mfa-admin.html
-3. Entre com a conta euripedes_junoo@icloud.com. Não divulgue a senha.
-4. Digitalize o QR code em um aplicativo autenticador e confirme o código de seis dígitos.
-5. Guarde método alternativo de autenticação em local seguro. A tela não armazena chaves TOTP no banco da aplicação; somente o Supabase Auth gerencia os fatores.
-6. No próximo acesso, confirme o código para obter sessão aal2. A regra do banco exige aal2 para contas de papel admin.
+1. No GitHub, repositório EuripedesBoni/boniverso-app, envie à raiz o arquivo boniverso-gestao-turmas-v300.js.
+2. No final de turmas.html, imediatamente antes de </body> (DEPOIS do bloco </script> já existente), acrescente:
+<script defer src="./boniverso-gestao-turmas-v300.js"></script>
+3. Salve com Commit changes e abra Turmas e séries no BoniVerso.
 
-Observação: há recursos adicionais do BoniVerso que devem continuar recebendo testes de acesso. Esta página não substitui uma auditoria de RLS nem o ajuste da navegação do painel administrativo.
+Este módulo não altera o ícone do app. Apenas professor/admin autenticado verá a interface.
+Permite editar nome/descrição, escolher série, desativar/reativar matrículas, arquivar/reativar turmas.
+Não exclui redações, matrículas nem dados históricos. Não existe exclusão definitiva neste módulo.
+A segurança real depende das políticas RLS existentes no Supabase.
