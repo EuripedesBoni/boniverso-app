@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+ <meta name="theme-color" content="#101d38" />
+ <meta name="referrer" content="strict-origin-when-cross-origin" />
+ <meta name="robots" content="noindex,nofollow" />
+ <title>Repertório Semanal | BoniVerso</title>
+ <link rel="icon" href="icon-192.png" />
+ <style>
+ :root{color-scheme:light;font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f5f7fc;color:#172c4e;--dark:#101d38;--blue:#2a68cb;--muted:#61738e;--line:#dbe4f2;--panel:#fff;--gold:#d6b16f}
+ *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:0;min-height:100vh}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:wait}a{color:inherit}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #88b7ff;outline-offset:3px}
+ header{background:linear-gradient(112deg,#10213f,#203d70);color:#fff;padding:15px clamp(15px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+ header .brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-weight:850;letter-spacing:-.6px;font-size:20px}header .brand img{width:38px;height:38px;border-radius:12px}header .brand em{font-style:normal;color:var(--gold)}.header-links{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.header-links a{border:1px solid #ffffff35;border-radius:11px;padding:8px 12px;text-decoration:none;font-size:12px;font-weight:700}.header-links a:hover{background:#ffffff17}
+ main{width:min(1120px,100%);margin:auto;padding:22px clamp(14px,3vw,34px) 80px}.hero{background:radial-gradient(circle at 95% 90%,#b2d6ff55,transparent 40%),linear-gradient(135deg,#173568,#265eae);color:white;border-radius:21px;padding:clamp(23px,4vw,42px);position:relative;overflow:hidden}.hero .eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:850;color:#f5daa4}.hero h1{font-size:clamp(27px,5vw,40px);line-height:1.13;letter-spacing:-1.2px;margin:10px 0}.hero p{max-width:650px;color:#e5efff;font-size:14px;margin:0}.hero .badge{margin-top:15px;display:inline-block;padding:7px 11px;background:#ffffff22;border:1px solid #ffffff40;border-radius:100px;font-weight:750;font-size:11px}
+ .notice{display:block;margin:17px 0;padding:13px 15px;border-radius:12px;background:#e9f2ff;border:1px solid #cadef8;color:#254b7f;font-size:13px;min-height:45px}.notice.error{background:#fff0ef;color:#a12c2c;border-color:#f3c9c6}.notice.success{background:#eaf9f1;color:#216947;border-color:#c7eed7}
+ .panel{background:var(--panel);border:1px solid #e4eaf4;border-radius:19px;box-shadow:0 8px 26px #18395d0a;padding:clamp(17px,3vw,25px);margin:18px 0}.panel h2{margin:0;font-size:20px;line-height:1.35}.panel p.subtitle{font-size:13px;color:var(--muted);margin:7px 0 19px}.panel-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.small-label{color:#2e66b3;font-size:11px;font-weight:850;letter-spacing:1.3px;text-transform:uppercase}
+ .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.field{min-width:0;display:flex;flex-direction:column;gap:6px}.field label{font-size:12px;font-weight:750;color:#324c70}.field small{font-size:11px;color:var(--muted);line-height:1.55}.field input,.field select,.field textarea{display:block;width:100%;min-width:0;border:1px solid #cfdbea;background:white;border-radius:11px;padding:12px;color:#18365c}.field textarea{min-height:96px;resize:vertical}.field input[type="file"]{padding:10px;background:#f7faff}.field input[type="date"]{min-height:46px}
+ .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}.btn{border:0;border-radius:11px;padding:11px 16px;min-height:43px;background:#285fbd;color:white;font-weight:760;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:13px;max-width:100%;text-align:center}.btn:hover:not(:disabled){background:#194f9f}.btn.secondary{background:#eef4ff;color:#26569c;border:1px solid #cdddff}.btn.secondary:hover:not(:disabled){background:#dfeaff}.btn.muted{background:#f5f6f9;color:#51627e;border:1px solid #dbe2ec}.btn.warn{background:#fff4e6;color:#82551f;border:1px solid #f2d5aa}.btn.full{width:100%}
+ .file-box{border:1px dashed #b5c9e7;background:#f6f9ff;border-radius:13px;padding:15px}.file-box small{display:block;margin-top:8px}.filter-bar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.item{border:1px solid #e0e8f3;background:#fff;border-radius:17px;padding:19px;display:flex;flex-direction:column;gap:11px;min-width:0;box-shadow:0 5px 16px #102c5009}.item-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;border-radius:100px;font-size:10px;font-weight:800;padding:5px 10px;background:#edf4ff;color:#2c5c9b}.pill.draft{background:#fff3df;color:#87591c}.item h3{font-size:18px;line-height:1.3;margin:0;overflow-wrap:anywhere}.item .description{color:#566c88;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;margin:0}.meta{font-size:12px;color:#5f7390;display:flex;flex-wrap:wrap;gap:7px}.item .actions{margin-top:auto;padding-top:8px;border-top:1px solid #edf1f7}.item .actions>*{flex:1 1 150px}.empty{text-align:center;border:1px dashed #ccd9eb;border-radius:16px;padding:35px 16px;background:#fbfdff;color:#66809d}.empty strong{display:block;color:#233d65;margin-bottom:5px}.hidden,[hidden]{display:none!important}.footer{margin-top:26px;color:#7890a9;font-size:12px;text-align:center}
+ @media(max-width:740px){main{padding:14px 14px 65px}.hero{border-radius:16px;padding:24px 19px}.panel{border-radius:16px}.grid.three{grid-template-columns:repeat(2,minmax(0,1fr))}.cards{grid-template-columns:1fr}.filter-bar{grid-template-columns:1fr 1fr}}@media(max-width:480px){.grid,.grid.three,.filter-bar{grid-template-columns:1fr}.header-links a{padding:8px}.item{padding:16px}.actions>.btn{flex:1 1 100%}.hero h1{font-size:29px}}
+ </style>
+</head>
+<body>
+<header><a class="brand" href="./"><img src="icon-192.png" alt="BoniVerso" /><span>Boni<em>Verso</em></span></a><nav class="header-links" aria-label="Navegação"><a href="./">Início</a><a href="./turmas.html">Minhas turmas</a><a href="./painel-aprendizagem.html">Meu aprendizado</a></nav></header>
+<main>
+ <section class="hero"><div class="eyebrow">RSB EDUCAÇÃO · PROF. RAFA BONI</div><h1>Repertório Semanal</h1><p>Leituras, referências socioculturais e materiais de apoio organizados por turma e semana. Consulte e baixe os PDFs publicados pelo professor.</p><span class="badge">📚 Seu material de estudo, no seu ritmo</span></section>
+ <div class="notice" id="status" role="status" aria-live="polite">Conferindo seu acesso ao BoniVerso...</div>
+ <div id="content" hidden>
+  <section id="staffArea" class="panel" hidden>
+   <div class="small-label">Área do professor</div><h2>Publicar repertório semanal</h2><p class="subtitle">Escolha a turma, a semana e, se necessário, uma série específica. O material será criado como rascunho; publique depois de conferi-lo.</p>
+   <form id="publishForm">
+    <div class="grid three">
+     <div class="field"><label for="newClass">Turma</label><select id="newClass" required></select></div>
+     <div class="field"><label for="newSection">Série ou grupo (opcional)</label><select id="newSection"><option value="">Toda a turma</option></select><small>Se definir uma série, apenas seus integrantes poderão baixar.</small></div>
+     <div class="field"><label for="newWeek">Semana de referência</label><input id="newWeek" type="date" required /><small>O app organiza automaticamente pela segunda-feira.</small></div>
+    </div>
+    <div class="grid" style="margin-top:14px">
+     <div class="field"><label for="newTitle">Título do repertório</label><input id="newTitle" maxlength="160" minlength="3" placeholder="Ex.: Educação midiática e desinformação" required /></div>
+     <div class="field"><label for="newDescription">Orientações de estudo</label><textarea id="newDescription" maxlength="3000" placeholder="Leitura proposta, repertórios que podem ser utilizados, atividade sugerida..."></textarea></div>
+    </div>
+    <div class="file-box" style="margin-top:15px"><div class="field"><label for="newPdf">📄 PDF do professor (até 10 MB)</label><input id="newPdf" type="file" accept=".pdf,application/pdf" required /><small>Arquivo privado, disponível somente aos integrantes autorizados após a publicação.</small></div></div>
+    <div class="actions"><button class="btn" type="submit" id="saveMaterial">Salvar repertório como rascunho</button></div>
+    <small class="muted" style="display:block;margin-top:8px;color:#6a7a90">O material não será publicado automaticamente.</small>
+   </form>
+  </section>
+  <section class="panel">
+   <div class="panel-top"><div><div class="small-label">Biblioteca de turmas</div><h2 id="listHeading">Materiais disponíveis</h2></div><button class="btn muted" type="button" id="reload">↻ Atualizar</button></div>
+   <div class="filter-bar">
+    <div class="field"><label for="filterClass">Turma</label><select id="filterClass"><option value="">Todas as minhas turmas</option></select></div>
+    <div class="field"><label for="filterWeek">Semana</label><select id="filterWeek"><option value="">Todas as semanas</option></select></div>
+    <div class="field"><label for="filterSearch">Pesquisar material</label><input id="filterSearch" type="search" placeholder="Título, assunto ou turma..." /></div>
+   </div>
+   <p id="resultsCount" style="font-size:12px;color:#697d98;margin:15px 0"></p>
+   <div id="materialList" class="cards" aria-live="polite"></div>
+  </section>
+ </div>
+ <p class="footer">BoniVerso · RSB Educação · Arquivos PDF protegidos por matrícula e permissões de turma. Os links de download têm validade limitada.</p>
+</main>
+<script src="./config.js"></script>
+<script type="module">
+ import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.2';
+ const config=window.BONIVERSO_CONFIG||{};
+ const $=id=>document.getElementById(id);
+ const el=(tag,text,cls)=>{const x=document.createElement(tag);if(text!==undefined&&text!==null)x.textContent=String(text);if(cls)x.className=cls;return x};
+ const errMsg=e=>typeof e?.message==='string'?e.message:'Ocorreu um erro. Tente novamente.';
+ const valid=/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i;
+ let db,staff=false,rooms=[],sections=[],materials=[],saving=false;
+ const show=(message,variant='')=>{$('status').textContent=message;$('status').className='notice '+variant};
+ async function call(action,body={}){
+  const {data,error}=await db.functions.invoke('boniverso-weekly-repertoires',{body:{action,...body}});
+  if(error){let detail=error.message;try{detail=(await error.context?.json?.())?.error||detail}catch{}throw Error(detail)}
+  if(data?.error)throw Error(data.error);
+  return data;
+ }
+ const getRoom=id=>rooms.find(r=>r.id===id);
+ const getSection=id=>sections.find(r=>r.id===id);
+ const dateLabel=value=>{const d=new Date(value+'T12:00:00Z');return new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'long',year:'numeric',timeZone:'UTC'}).format(d)};
+ const monday=(value)=>{if(!value)return'';const d=new Date(value+'T12:00:00Z');if(Number.isNaN(d.getTime()))return'';const weekday=d.getUTCDay();d.setUTCDate(d.getUTCDate()-((weekday+6)%7));return d.toISOString().slice(0,10)};
+ const weekLabel=x=>'Semana de '+dateLabel(x);
+ function option(value,label){const node=el('option',label);node.value=value;return node}
+ function resetFilters(){const f=$('filterClass'),w=$('filterWeek');const old=f.value;f.replaceChildren(option('','Todas as minhas turmas'));rooms.forEach(r=>f.append(option(r.id,r.name)));if([...f.options].some(o=>o.value===old))f.value=old;const previous=w.value;w.replaceChildren(option('','Todas as semanas'));[...new Set(materials.map(m=>m.week_start))].sort().reverse().forEach(v=>w.append(option(v,weekLabel(v))));if([...w.options].some(o=>o.value===previous))w.value=previous}
+ function updateSection(){const cid=$('newClass').value;const select=$('newSection');select.replaceChildren(option('','Toda a turma'));sections.filter(s=>s.classroom_id===cid).forEach(s=>select.append(option(s.id,s.label||s.grade_code||'Série')))}
+ function paint(){
+  const cid=$('filterClass').value,week=$('filterWeek').value,search=$('filterSearch').value.trim().toLocaleLowerCase('pt-BR');
+  const matches=materials.filter(m=>(!cid||m.classroom_id===cid)&&(!week||m.week_start===week)&&(!search||[m.title,m.description,getRoom(m.classroom_id)?.name,getSection(m.section_id)?.label].join(' ').toLocaleLowerCase('pt-BR').includes(search)));
+  $('resultsCount').textContent=matches.length+(matches.length===1?' material encontrado':' materiais encontrados')+(staff?' · Rascunhos visíveis apenas para a equipe':'');
+  const host=$('materialList');host.replaceChildren();
+  if(!matches.length){const n=el('div',null,'empty');n.style.gridColumn='1 / -1';n.append(el('strong',staff?'Nenhum repertório cadastrado nessa seleção.':'Nenhum material publicado para esta turma ainda.'),el('span',staff?'Cadastre um PDF e publique-o quando estiver pronto.':'Confira outra semana ou consulte o professor Rafael.'));host.append(n);return}
+  matches.forEach(m=>{
+   const card=el('article',null,'item');const head=el('div',null,'item-top');head.append(el('span',weekLabel(m.week_start),'pill'));
+   if(staff)head.append(el('span',m.published?'Publicado':'Rascunho',m.published?'pill':'pill draft'));
+   const name=getRoom(m.classroom_id)?.name||'Turma';const sec=m.section_id?(getSection(m.section_id)?.label||'Série específica'):'Toda a turma';
+   const title=el('h3',m.title);const metadata=el('div',name+' · '+sec,'meta');const desc=el('p',m.description||'Material de repertório e leitura da semana.','description');
+   const filename=el('div','📄 '+m.original_filename,'meta');filename.style.overflowWrap='anywhere';
+   const acts=el('div',null,'actions');const download=el('button','⬇ Baixar PDF','btn');download.type='button';download.addEventListener('click',()=>downloadFile(m,download));acts.append(download);
+   if(staff){const publish=el('button',m.published?'Ocultar dos alunos':'✓ Publicar para a turma',m.published?'btn warn':'btn secondary');publish.type='button';publish.addEventListener('click',()=>togglePublish(m,publish));acts.append(publish)}
+   card.append(head,title,metadata,desc,filename,acts);host.append(card);
+  });
+ }
+ async function downloadFile(m,button){
+  const tab=window.open('about:blank','_blank');button.disabled=true;
+  try{const data=await call('download',{material_id:m.id});if(tab){tab.location.href=data.url}else{const a=el('a','Toque aqui para baixar o PDF','btn');a.href=data.url;a.target='_blank';a.rel='noopener noreferrer';const wrap=el('div',null,'notice');wrap.append('O navegador bloqueou a janela. ',a);$('status').replaceWith(wrap);wrap.id='status';window.scrollTo({top:0,behavior:'smooth'})}}
+  catch(e){if(tab)tab.close();show('Não foi possível baixar: '+errMsg(e),'error')}
+  finally{button.disabled=false}
+ }
+ async function togglePublish(m,button){
+  const desired=!m.published;
+  if(!confirm(desired?'Publicar este PDF somente para integrantes autorizados da turma?':'Ocultar este material dos estudantes?'))return;
+  button.disabled=true;
+  try{await call('publish',{material_id:m.id,published:desired});await load();show(desired?'Repertório publicado para os estudantes da turma.':'Material ocultado dos estudantes.','success')}
+  catch(e){show(errMsg(e),'error')}finally{button.disabled=false}
+ }
+ async function load(){
+  const data=await Promise.all([call('catalog'),call('list')]);staff=!!data[0].staff;rooms=data[0].classes||[];sections=data[0].sections||[];materials=data[1].materials||[];
+  $('staffArea').hidden=!staff;$('listHeading').textContent=staff?'Repertórios de todas as turmas':'Meus repertórios semanais';
+  const old=$('newClass').value;$('newClass').replaceChildren();rooms.forEach(r=>$('newClass').append(option(r.id,r.name)));if([...$('newClass').options].some(o=>o.value===old))$('newClass').value=old;updateSection();
+  resetFilters();paint();$('content').hidden=false;
+ }
+ async function init(){
+  try{if(!config.supabaseUrl||!config.supabasePublishableKey)throw Error('Configuração de acesso não encontrada.');
+   db=createClient(config.supabaseUrl,config.supabasePublishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+   const {data,error}=await db.auth.getUser();if(error||!data.user)throw Error('Entre no BoniVerso antes de acessar o Repertório Semanal.');
+   const today=new Date();const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);$('newWeek').value=monday(localToday);
+   await load();show(staff?'Central do professor pronta: cadastre um repertório e publique após revisar.':'Seus repertórios estão disponíveis de acordo com suas turmas e matrículas.','success');
+  }catch(e){show(errMsg(e),'error');const go=el('a','Voltar ao BoniVerso','btn');go.href='./';$('content').hidden=false;$('staffArea').hidden=true;$('materialList').replaceChildren(go)}
+ }
+ $('newClass').addEventListener('change',updateSection);
+ for(const id of ['filterClass','filterWeek'])$(id).addEventListener('change',paint);
+ $('filterSearch').addEventListener('input',paint);
+ $('reload').addEventListener('click',async()=>{const btn=$('reload');btn.disabled=true;try{await load();show('Materiais atualizados.','success')}catch(e){show(errMsg(e),'error')}finally{btn.disabled=false}});
+ $('publishForm').addEventListener('submit',async e=>{
+  e.preventDefault();if(saving||!staff)return;
+  const btn=$('saveMaterial'),file=$('newPdf').files?.[0],cid=$('newClass').value,sid=$('newSection').value||null;
+  if(!valid.test(cid)||!file)return show('Selecione uma turma e um PDF.','error');
+  if(file.size<30||file.size>10*1024*1024)return show('O PDF deve ter até 10 MB.','error');
+  if(!/\.pdf$/i.test(file.name)||await file.slice(0,5).text()!=='%PDF-')return show('Selecione um PDF válido.','error');
+  saving=true;btn.disabled=true;show('Enviando PDF para armazenamento privado...');
+  try{
+   const info=await call('prepare_upload',{classroom_id:cid,section_id:sid});
+   const upload=await db.storage.from('boniverso-weekly-repertoires').uploadToSignedUrl(info.path,info.token,file,{contentType:'application/pdf',upsert:false});
+   if(upload.error)throw upload.error;
+   const created=await call('create',{classroom_id:cid,section_id:sid,week_start:monday($('newWeek').value),title:$('newTitle').value,description:$('newDescription').value,pdf_path:info.path,original_filename:file.name.slice(0,180)});
+   $('publishForm').reset();const t=new Date();$('newWeek').value=monday(new Date(t.getTime()-t.getTimezoneOffset()*60000).toISOString().slice(0,10));await load();
+   show('PDF salvo como rascunho. Localize o cartão do material e toque em “Publicar para a turma”.','success');
+   $('materialList').scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){show('Falha ao salvar: '+errMsg(e),'error')}
+  finally{saving=false;btn.disabled=false}
+ });
+ init();
+</script>
+</body>
+</html>
