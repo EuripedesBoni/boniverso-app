@@ -83,7 +83,7 @@
     if(!notices.length)return '<p class="bv-empty">Nenhuma notificação disponível para sua conta.</p>';
     return notices.map(n=>{
       const unread=!readIds.has(n.id);
-      const goto=validUuid(n.assignment_id) ? `<button class="bv-button" data-bv-open-notice="${esc(n.id)}" type="button">Abrir redação</button>` : '';
+      const goto=n.event_type==='message_new' && validUuid(n.private_message_id) ? `<button class="bv-button" data-bv-open-notice="${esc(n.id)}" type="button">Abrir conversa privada</button>` : validUuid(n.assignment_id) ? `<button class="bv-button" data-bv-open-notice="${esc(n.id)}" type="button">Abrir redação</button>` : '';
       const mark=unread?`<button class="bv-button secondary" data-bv-read="${esc(n.id)}" type="button">Marcar como lida</button>`:'';
       return `<article class="bv-notice-item ${unread?'unread':''}"><div class="bv-dot" aria-hidden="true"></div><div><h3>${esc(n.title)}</h3><p>${esc(n.body)}</p><time>${esc(when(n.created_at))}</time><div class="bv-row-actions">${goto}${mark}</div></div></article>`;
     }).join('');
@@ -97,7 +97,7 @@
     if(!userId||busy)return;busy=true;const expectedUser=userId;
     try{
       const {data,error}=await client.from('boniverso_notices')
-        .select('id,event_type,title,body,assignment_id,submission_id,created_at')
+        .select('id,event_type,title,body,assignment_id,submission_id,private_message_id,created_at')
         .order('created_at',{ascending:false}).limit(100);
       if(error)throw error;
       if(expectedUser!==userId)return;
@@ -134,7 +134,7 @@
     const openBtn=event.target.closest('[data-bv-open-notice]');
     if(openBtn){const id=openBtn.dataset.bvOpenNotice;const n=notices.find(x=>x.id===id);if(!n)return;
       try{await markRead(n.id);}catch(e){console.warn('Aviso não marcado:',e);}
-      closePane();location.href=n.assignment_id?`./?pagina=redacoes&atividade=${encodeURIComponent(n.assignment_id)}`:'./?pagina=redacoes';return;
+      closePane();if(n.event_type==='message_new'&&validUuid(n.private_message_id)){location.href='./mensagens-turma-v3.html?aviso='+encodeURIComponent(n.id);return;}location.href=n.assignment_id?`./?pagina=redacoes&atividade=${encodeURIComponent(n.assignment_id)}`:'./?pagina=redacoes';return;
     }
     if(event.target.closest('[data-bv-refresh]')){await loadNotices();renderOverlay();return;}
     if(event.target.closest('[data-bv-refresh-receipts]')){await loadReceipts();return;}

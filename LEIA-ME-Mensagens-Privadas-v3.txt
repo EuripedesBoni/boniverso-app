@@ -1,0 +1,21 @@
+BONIVERSO — MENSAGENS PRIVADAS E NOTIFICAÇÕES RECÍPROCAS v3
+
+O BANCO SUPABASE JÁ FOI ATUALIZADO. Não execute SQL adicional.
+
+Na raiz do GitHub EuripedesBoni/boniverso-app, em main, envie exatamente estes 3 arquivos:
+1. mensagens-turma-v3.html (arquivo novo)
+2. boniverso-mensagens-menu-v1.js (SUBSTITUIR o existente)
+3. boniverso-avisos.js (SUBSTITUIR o existente)
+
+Não precisa editar index.html, que já carrega os dois scripts.
+Ao enviar, confirme a substituição dos dois arquivos existentes. Faça Commit changes e espere o deploy concluído no GitHub Actions.
+
+O estudante e o professor responsável poderão trocar mensagens privadas; o administrador não possui acesso ao conteúdo. Mensagens geram avisos no sino e, se Web Push estiver ativo no aparelho, alertas em segundo plano. No iPhone/iPad, o Web Push exige BoniVerso instalado na tela de início e autorização do usuário.
+
+TESTE APÓS PUBLICAÇÃO
+1) Entrar no BoniVerso como estudante de uma turma, enviar mensagem teste sem dados pessoais.
+2) Entrar como Prof. Rafael com MFA, verificar sino e clicar em 'Abrir conversa privada'.
+3) Responder como professor, então verificar aviso na conta do estudante.
+4) Verificar com outro estudante e com conta administrativa que não há acesso à conversa.
+
+Os alertas automáticos já são gerados no banco. O inbox do aplicativo atualiza periodicamente (~60 s), e o envio Web Push depende da subscrição do aparelho e processamento da fila.
