@@ -1,0 +1,18 @@
+BONIVERSO — MENSAGENS PRIVADAS NO MENU — v1
+
+Instalação no GitHub (branch main):
+1. Na raiz do repositório, envie dois arquivos novos:
+   - boniverso-mensagens-menu-v1.js
+   - mensagens-turma-v2.html
+2. Abra index.html, clique em Editar e INSIRA antes de </body>:
+   <script defer src="./boniverso-mensagens-menu-v1.js"></script>
+3. Salve a alteração (Commit changes).
+4. Confira o sucesso do workflow GitHub Pages.
+5. Faça login pelo endereço principal do BoniVerso, usando o mesmo navegador.
+6. No computador, clique em Mensagens no menu lateral (ou no envelope no topo).
+7. No celular, abra o menu lateral e escolha Mensagens (ou toque no envelope do topo).
+
+A página mensagens-turma-v2.html mostra um botão de login caso seja aberta sem sessão de autenticação.
+As mensagens continuam privadas: apenas matrículas ativas e equipe pedagógica autorizada, conforme RLS do Supabase.
+Ainda não houve teste de ponta a ponta com contas diferentes; use apenas contas de teste antes do lançamento.
+Não inclua senhas ou chaves privadas nos arquivos. Nenhuma alteração do Supabase é necessária.
