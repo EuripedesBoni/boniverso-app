@@ -1,25 +1,9 @@
-BONIVERSO — PLAYER INTERNO (ATUALIZAÇÃO INCREMENTAL)
-====================================================
+BoniVerso — Caixa de Entrada do Professor
 
-1. No GitHub, abra EuripedesBoni/boniverso-app.
-2. Clique em Add file > Upload files e envie boniverso-player.js para a raiz.
-3. Abra index.html no GitHub e clique no lápis (Edit this file).
-4. ANTES de </body>, logo após os demais scripts, acrescente:
-   <script defer src="boniverso-player.js"></script>
-5. Salve em Commit changes e aguarde o GitHub Pages concluir a publicação.
-6. Teste com uma aula de CURSO GRATUITO com vídeo PUBLICO do YouTube ou Vimeo.
+1) No GitHub, substitua o arquivo mensagens-turma-v3.html pelo arquivo deste pacote (mesmo nome).
+2) Clique em Commit changes. Nao edite index.html nem execute SQL.
+3) Aguarde o GitHub Actions Pages concluir.
+4) Entre na conta do Prof. Rafa Boni com MFA. Abra Mensagens e veja a Caixa de Entrada, com busca por estudante/turma e filtro Somente nao lidas.
+5) No modo de aluno a Caixa de Entrada do professor nao e exibida.
 
-O QUE FAZ
-- Substitui o botão 'Assistir à videoaula pública' por um player responsivo.
-- Funciona no celular, tablet e computador sem sair do BoniVerso.
-- Mantém login, RLS, turmas, redações, aulas ao vivo e acesso pago inalterados.
-
-LIMITES IMPORTANTES
-- Somente links públicos de YouTube e Vimeo já permitidos pelo app.
-- Vídeos privados/restritos e aulas pagas NÃO são liberados por esta atualização.
-- Alguns vídeos bloqueiam incorporação. Para vídeo exclusivo pago, será
-  necessária infraestrutura de vídeo protegida e integração com autorização.
-- Google Meet, Zoom e Teams não permitem transformar uma reunião completa
-  num iframe do app simplesmente adicionando o link.
-
-RECUPERAÇÃO: se necessário, remova apenas a linha de script do index.html.
+O painel consulta somente metadados das conversas autorizadas pela RLS e nao revela conteudo. O indicador de nao lidas consulta ate 150 avisos recentes e a caixa lista conversas a partir de ate 500 mensagens recentes. Validar as permissoes em navegador com contas de teste antes do lancamento oficial.

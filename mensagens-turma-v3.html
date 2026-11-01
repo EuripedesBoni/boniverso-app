@@ -13,6 +13,31 @@
 .panel{background:white;border:1px solid var(--line);border-radius:17px;padding:23px;margin:18px 0;box-shadow:0 5px 16px #0b27480a}.muted{color:var(--muted)}.small{font-size:13px}.status{background:#edf4ff;border:1px solid #cbdcf2;padding:13px 16px;border-radius:11px;white-space:pre-wrap}.status.error{background:#fff0ea;border-color:#f1c4b6;color:#a03928}.status.success{background:#eaf6ef;border-color:#c5e5d0;color:#1e6641}
 .controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.controls label{display:block;font-weight:700;margin-bottom:6px}select,textarea{width:100%;font:inherit;border:1px solid #c1d1e6;color:#1c344e;background:white;border-radius:11px;padding:12px;outline-offset:3px}textarea{min-height:110px;resize:vertical}button{font:inherit;border:0;background:var(--blue);color:white;font-weight:750;padding:11px 18px;border-radius:10px;cursor:pointer}button.secondary{background:#e8effc;color:#274573}button.ghost{background:transparent;border:1px solid #c4d3e8;color:#2c4c83}button:disabled{opacity:.55;cursor:not-allowed}.buttons{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}.messages{display:flex;flex-direction:column;gap:14px;min-height:180px;max-height:580px;overflow-y:auto;padding:17px 11px;border:1px solid #d8e4f1;border-radius:14px;background:#f8faff;scroll-behavior:smooth}
 .message{max-width:min(86%,650px);padding:12px 14px;border-radius:15px;background:white;border:1px solid #d6e1ed;align-self:flex-start;overflow-wrap:anywhere;white-space:pre-wrap}.message.own{background:#e4edff;border-color:#bdcff5;align-self:flex-end}.message.hidden{border-style:dashed;color:#6c6c6c;background:#f5f2f2}.meta{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap;color:#526882;font-size:12px;margin-bottom:7px;white-space:normal}.meta strong{color:#253e61}.message p{margin:0}.message .moderate{font-size:12px;padding:5px 9px;margin-top:8px}.compose label{display:block;font-weight:700;margin:16px 0 7px}.heading{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.tag{background:#e8f0fc;border-radius:18px;padding:5px 11px;color:#32548a;font-size:12px}.empty{text-align:center;padding:32px 10px;color:#61748b}footer{font-size:12px;color:#647995;padding:10px 0}@media(max-width:700px){.controls{grid-template-columns:1fr}.panel{padding:16px}.messages{padding:10px;max-height:520px}.message{max-width:95%}.buttons button{flex:1}}
+
+/* Caixa de entrada privada do professor. Metadados somente, sem conteúdo das mensagens. */
+#teacherInbox[hidden]{display:none!important}
+.bv-inbox-controls{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:12px 0 14px}
+.bv-inbox-controls label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+.bv-inbox-controls .search{flex:1 1 240px}
+.bv-inbox-controls input[type=search]{width:100%;font:inherit;border:1px solid #c1d1e6;border-radius:11px;padding:11px 12px;min-height:44px}
+.bv-inbox-controls .unread-toggle{display:flex;gap:9px;align-items:center;min-height:44px;cursor:pointer}
+.bv-inbox-controls .unread-toggle input{width:18px;height:18px}
+.bv-inbox-controls .unread-toggle span{font-weight:650;font-size:13px}
+.bv-inbox-list{display:flex;flex-direction:column;gap:8px}
+.bv-inbox-item{width:100%;text-align:left;display:flex;align-items:center;gap:12px;justify-content:space-between;padding:13px 14px;min-height:76px;border-radius:13px;background:#f8faff;color:#1a3659;border:1px solid #d9e5f4;cursor:pointer}
+.bv-inbox-item:focus-visible{outline:3px solid #4d7ed4;outline-offset:2px}
+.bv-inbox-item:hover{background:#ecf3ff;border-color:#a9c5eb}
+.bv-inbox-item.is-unread{border-color:#789de2;background:#eef4ff}
+.bv-inbox-main{min-width:0;flex:1}
+.bv-inbox-name{display:block;font-weight:800;font-size:14px;overflow-wrap:anywhere}
+.bv-inbox-class{font-weight:550;color:#5c7190;font-size:12px;display:block;margin-top:2px}
+.bv-inbox-meta{font-size:12px;color:#536f91;display:block;margin-top:4px}
+.bv-inbox-right{flex:0 0 auto;display:flex;flex-direction:column;align-items:end;gap:6px}
+.bv-inbox-time{font-size:11px;font-weight:550;color:#61758c}
+.bv-inbox-pill{background:#275bc1;color:#fff;border-radius:14px;min-width:23px;height:23px;padding:0 7px;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
+.bv-inbox-arrow{color:#3367aa;font-size:18px}
+@media(max-width:700px){.bv-inbox-item{padding:12px 10px}.bv-inbox-time{font-size:10px}}
+
 a.login-cta{display:inline-flex;align-items:center;justify-content:center;background:#3465dc;color:white;text-decoration:none;border-radius:10px;padding:12px 18px;font-weight:750;min-height:46px}a.login-cta[hidden]{display:none!important}.access-help{margin:0 0 14px}
 </style>
 </head>
@@ -21,6 +46,19 @@ a.login-cta{display:inline-flex;align-items:center;justify-content:center;backgr
 <main>
 <p id="status" class="status" role="status" aria-live="polite">Verificando sua conta…</p>
 <p class="access-help"><a class="login-cta" id="loginCTA" href="./" hidden>Entrar no BoniVerso para abrir mensagens</a></p>
+<section class="panel" id="teacherInbox" hidden aria-labelledby="inboxTitle">
+  <div class="heading">
+    <h2 id="inboxTitle" style="margin:0">📥 Caixa de entrada do professor</h2>
+    <button id="inboxRefresh" type="button" class="secondary">Atualizar</button>
+  </div>
+  <p class="muted small">Conversas privadas das turmas atribuídas a você, em ordem de atividade recente. Somente o professor responsável e o aluno acessam cada conversa. As mensagens não são exibidas nesta lista.</p>
+  <div class="bv-inbox-controls">
+    <div class="search"><label for="inboxSearch">Buscar estudante ou turma</label><input id="inboxSearch" type="search" autocomplete="off" placeholder="Nome do aluno ou turma"></div>
+    <label class="unread-toggle" for="inboxUnreadOnly"><input id="inboxUnreadOnly" type="checkbox"><span>Somente não lidas</span></label>
+  </div>
+  <p class="muted small" id="inboxStatus" role="status">Carregando atendimentos…</p>
+  <div id="inboxList" class="bv-inbox-list" aria-live="polite"></div>
+</section>
 <section class="panel">
   <div class="heading"><h2 style="margin:0">Sua conversa</h2><span class="tag" id="mode">Acesso protegido</span></div>
   <p class="muted small" id="privacy">Somente você e o professor responsável por sua turma podem ver esta conversa. Não compartilhe dados sensíveis.</p>
@@ -46,6 +84,7 @@ a.login-cta{display:inline-flex;align-items:center;justify-content:center;backgr
 import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.2';
 const $=id=>document.getElementById(id);
 let db,user,isStaff=false,classrooms=[],membershipRows=[],studentOptions=[],messages=[],loading=false,lastSend=0;
+let teacherThreads=[],inboxLoading=false,teacherInboxTimer=null;
 const show=(s,type='')=>{const el=$('status');el.textContent=s;el.className='status'+(type?' '+type:'')};
 const fmt=(date)=>new Date(date).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'});
 async function req(query){const {data,error}=await query;if(error)throw error;return data}
@@ -61,6 +100,90 @@ function makeMessage(row){
  if(isStaff&&!row.is_hidden){const mod=document.createElement('button');mod.type='button';mod.className='secondary moderate';mod.textContent='Ocultar mensagem';mod.onclick=async()=>{if(!confirm('Ocultar esta mensagem do estudante? O registro permanece disponível para a equipe.'))return;mod.disabled=true;try{await req(db.from('bv_student_teacher_messages').update({is_hidden:true}).eq('id',row.id));await loadMessages();show('Mensagem ocultada na conversa do aluno.','success')}catch(e){show(e.message,'error');mod.disabled=false}};item.append(mod)}
  return item;
 }
+
+function inboxStatus(message){const el=$('inboxStatus');if(el)el.textContent=message;}
+function inboxCard(thread){
+ const btn=document.createElement('button');btn.type='button';
+ btn.className='bv-inbox-item'+(thread.unread?' is-unread':'');
+ const body=document.createElement('span');body.className='bv-inbox-main';
+ const name=document.createElement('strong');name.className='bv-inbox-name';name.textContent=thread.studentName;
+ const cls=document.createElement('span');cls.className='bv-inbox-class';cls.textContent=thread.className;
+ const meta=document.createElement('span');meta.className='bv-inbox-meta';meta.textContent=thread.lastKind==='student'?'Última mensagem: estudante':'Última resposta: professor';
+ body.append(name,cls,meta);
+ const side=document.createElement('span');side.className='bv-inbox-right';
+ const time=document.createElement('span');time.className='bv-inbox-time';time.textContent=fmt(thread.created_at);side.append(time);
+ if(thread.unread){const pill=document.createElement('span');pill.className='bv-inbox-pill';pill.textContent=thread.unread>99?'99+':String(thread.unread);pill.setAttribute('aria-label',`${thread.unread} mensagens não lidas`);side.append(pill)}
+ else {const arrow=document.createElement('span');arrow.className='bv-inbox-arrow';arrow.textContent='›';arrow.setAttribute('aria-hidden','true');side.append(arrow)}
+ btn.append(body,side);
+ btn.setAttribute('aria-label',`Abrir conversa de ${thread.studentName}, ${thread.className}${thread.unread?`, ${thread.unread} avisos não lidos`:''}`);
+ btn.onclick=async()=>{
+  btn.disabled=true;
+  try{
+   $('classroom').value=thread.classroom_id;
+   await loadStudents();
+   if(!studentOptions.some(v=>v.id===thread.student_id))throw Error('Estudante não está disponível nessa turma.');
+   $('student').value=thread.student_id;
+   await loadMessages();
+   document.querySelector('#messages')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){show('Não foi possível abrir o atendimento: '+(e.message||e),'error')}
+  finally{btn.disabled=false}
+ };
+ return btn;
+}
+function renderTeacherInbox(){
+ if(!isStaff)return;
+ const q=$('inboxSearch').value.trim().toLocaleLowerCase('pt-BR');
+ const pendingOnly=$('inboxUnreadOnly').checked;
+ const matching=teacherThreads.filter(t=>(!pendingOnly||t.unread>0)&&(!q||(t.studentName+' '+t.className).toLocaleLowerCase('pt-BR').includes(q)));
+ const root=$('inboxList');root.replaceChildren();
+ if(matching.length){for(const t of matching)root.append(inboxCard(t))}
+ else {const el=document.createElement('p');el.className='muted small';el.textContent=teacherThreads.length?'Nenhuma conversa corresponde ao filtro.':'Nenhuma conversa iniciada nas turmas atribuídas.';root.append(el)}
+ const unreadCount=teacherThreads.reduce((sum,t)=>sum+t.unread,0);
+ inboxStatus(`${teacherThreads.length} conversa(s) recente(s) · ${unreadCount} aviso(s) não lido(s)${matching.length!==teacherThreads.length?' · '+matching.length+' exibida(s)':''}`);
+}
+async function loadTeacherInbox(){
+ if(!isStaff||!user?.id||inboxLoading)return;
+ inboxLoading=true;$('inboxRefresh').disabled=true;inboxStatus('Atualizando atendimentos…');
+ try{
+  const ids=classrooms.map(c=>c.id);
+  if(!ids.length){teacherThreads=[];renderTeacherInbox();return}
+  const rows=await req(db.from('bv_student_teacher_messages')
+   .select('id,classroom_id,student_id,sender_kind,created_at')
+   .eq('teacher_id',user.id).in('classroom_id',ids)
+   .order('created_at',{ascending:false}).limit(500));
+  const byMessage=new Map();const byThread=new Map();
+  for(const r of rows){
+   const key=r.classroom_id+'|'+r.student_id;byMessage.set(r.id,key);
+   if(!byThread.has(key))byThread.set(key,{classroom_id:r.classroom_id,student_id:r.student_id,created_at:r.created_at,lastKind:r.sender_kind,unread:0});
+  }
+  const students=[...new Set([...byThread.values()].map(t=>t.student_id))];
+  let names=new Map();
+  if(students.length){
+   const prof=await req(db.from('profiles').select('id,display_name,full_name').in('id',students));
+   names=new Map(prof.map(p=>[p.id,p.full_name||p.display_name||'Estudante']));
+  }
+  const notices=await req(db.from('boniverso_notices')
+   .select('id,private_message_id')
+   .eq('event_type','message_new').eq('recipient_user',user.id)
+   .not('private_message_id','is',null)
+   .order('created_at',{ascending:false}).limit(150));
+  const noticeIds=notices.map(n=>n.id);
+  const reads=noticeIds.length?await req(db.from('boniverso_notice_reads')
+    .select('notice_id').eq('user_id',user.id).in('notice_id',noticeIds)):[];
+  const seen=new Set(reads.map(x=>x.notice_id));
+  for(const n of notices){
+    if(seen.has(n.id))continue;
+    const key=byMessage.get(n.private_message_id);
+    if(key&&byThread.has(key))byThread.get(key).unread+=1;
+  }
+  const classNames=new Map(classrooms.map(c=>[c.id,c.name]));
+  teacherThreads=[...byThread.values()].map(t=>({...t,studentName:names.get(t.student_id)||'Estudante',className:classNames.get(t.classroom_id)||'Turma'}));
+  teacherThreads.sort((a,b)=>b.created_at.localeCompare(a.created_at));
+  renderTeacherInbox();
+ }catch(e){inboxStatus('Não foi possível atualizar os atendimentos: '+(e.message||e));}
+ finally{inboxLoading=false;$('inboxRefresh').disabled=false}
+}
+
 async function markConversationRead(){
  const classroom_id=selectedClass(),student_id=selectedStudent();
  if(!user?.id||!classroom_id||!student_id)return;
@@ -71,6 +194,7 @@ async function markConversationRead(){
   }));
   // Atualiza o contador de abas abertas no mesmo navegador, sem compartilhar dados pessoais.
   try{localStorage.setItem('bv-private-messages-read',String(Date.now()))}catch{}
+  if(isStaff)await loadTeacherInbox();
  }catch(e){console.warn('Não foi possível marcar a conversa como lida:',e?.message||e)}
 }
 async function loadMessages(){
@@ -128,6 +252,7 @@ async function boot(){
  if(staffRole==='admin')throw Error('Por privacidade, a conta administrativa não pode ler as conversas privadas. Entre com a conta do professor responsável.');
  isStaff=staffRole==='teacher';
  $('mode').textContent=isStaff?'Atendimento docente':'Conversa do estudante';$('studentWrap').hidden=!isStaff;
+ if(isStaff){$('teacherInbox').hidden=false;$('inboxRefresh').onclick=loadTeacherInbox;$('inboxSearch').addEventListener('input',renderTeacherInbox);$('inboxUnreadOnly').addEventListener('change',renderTeacherInbox);}
  if(isStaff){
   const assignments=await req(db.from('bv_classroom_teachers').select('classroom_id').eq('teacher_id',user.id));
   const ids=assignments.map(x=>x.classroom_id);
@@ -155,6 +280,7 @@ async function boot(){
  show(isStaff?'Selecione uma turma e um estudante para iniciar o atendimento.':'Selecione sua turma para conversar com a equipe pedagógica.','success');
  if(classrooms.length===1){$('classroom').value=classrooms[0].id;$('classroom').dispatchEvent(new Event('change'))}
  else if(!classrooms.length)show(isStaff?'Nenhuma turma foi atribuída ao seu perfil docente.':'Você não possui matrícula ativa em turma com mensagens.','error');
+ if(isStaff){await loadTeacherInbox();teacherInboxTimer=setInterval(()=>{if(!document.hidden)loadTeacherInbox()},45000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)loadTeacherInbox()});}
  await openNoticeConversation();
 }
 boot().catch(e=>{
