@@ -1,36 +1,47 @@
-# BoniVerso Live — Participantes e Frequência v1.2.3
+# BoniVerso · Diário de Classe Digital v1.3.0
 
-## Instalação
-1. Envie `painel-participantes.html` e `boniverso-presenca-menu.js` para a raiz do repositório `EuripedesBoni/boniverso-app` na branch `main`.
-2. Edite `live-room.html` e acrescente, antes de `</body>`:
+## O que está implementado no servidor
 
-```html
-<script defer src="./boniverso-presenca-menu.js"></script>
-```
+As seguintes alterações já foram realizadas no Supabase do BoniVerso:
 
-3. Salve e confirme em GitHub Actions que o deploy terminou com sucesso.
-4. Abra a sala como professor. Clique em **Participantes e presença**.
+- Tabela `public.boniverso_class_diary`, com RLS e leitura restrita a professores/administradores autenticados.
+- Edge Function `boniverso-class-diary` com ações `catalog`, `load`, `save` e `delete`.
+- Integração com os cadastros existentes de `courses`, `classrooms`, `classroom_sections`, `enrollments`, `classroom_memberships`, `profiles`, `boniverso_live_events` e `boniverso_live_attendance`.
+- Nenhum cadastro duplicado de aluno, matrícula ou turma.
 
-## Ativar presença histórica com webhook
-Os controles e a lista de presentes dependem apenas de LiveKit e Supabase e já podem funcionar sem o webhook. Para o registro automático de entrada e saída, no **LiveKit Cloud > Settings > Webhooks > Create new webhook**:
+## Instalação no GitHub Pages
 
-- Nome: `boniverso-presenca`.
-- URL: `https://opzchnufngyegggkpdcn.supabase.co/functions/v1/boniverso-live-webhook`
-- **Signing API Key**: selecione a mesma API Key configurada nos Secrets do Supabase para `LIVEKIT_API_KEY`.
-- Salve e use **Send a test event**, sem enviar chaves aqui na conversa.
+1. Abra https://github.com/EuripedesBoni/boniverso-app e selecione a branch `main`.
+2. Use **Add file > Upload files** e envie **somente** `diario-classe.html` à pasta raiz do repositório.
+3. Clique em **Commit changes**.
+4. Abra `live-central.html` e, dentro do elemento `<nav>` do cabeçalho, acrescente o link:
 
-O receptor valida a assinatura e o conteúdo bruto de cada evento. Eventos de entrada e saída anteriores à configuração do webhook não são recuperados.
+   `<a href="./diario-classe.html">📘 Diário de Classe</a>`
 
-## Testes recomendados
-- Abrir a sala com duas contas distintas; conferir nomes e quantidade conectada.
-- Autorizar pedido de palavra, solicitar ao aluno atualizar a permissão.
-- Testar silenciar e remover somente contas de demonstração.
-- Entrar e sair de novo, conferir lista de frequência e exportar CSV.
-- Comparar horários de entrada e saída, lembrando que o envio do webhook pode atrasar ou falhar.
+5. Salve com **Commit changes** e aguarde a publicação do GitHub Pages.
+6. Acesse https://euripedesboni.github.io/boniverso-app/diario-classe.html
 
-## Cuidados
-- Remover um participante não revoga a matrícula. Um estudante pode voltar à sala.
-- Silenciar microfone é temporário se o aluno mantiver permissão de publicação.
-- A contagem de presença é uma medida de conexão técnica, não prova atenção.
-- Não compartilhar relatório CSV com terceiros sem autorização e política adequada de privacidade.
-- Não instalar uma API Key ou Secret no GitHub. Nunca enviar credenciais por mensagem.
+## Primeiro teste
+
+1. Entre no BoniVerso com a conta do professor.
+2. Escolha o curso em que está cadastrada a **AULA teste**.
+3. Confirme que ela aparece no histórico sem precisar de novo cadastro.
+4. Clique em **Registrar conteúdo** e preencha um resumo de teste (salve como rascunho).
+5. Consulte a aba **Frequência acumulada**; a conexão registrada pelo LiveKit aparecerá no curso correspondente.
+6. Teste **Relatório PDF** e **CSV**. O PDF é gerado no navegador ao clicar no botão, usando `jsPDF` carregado de `esm.sh`.
+7. Se desejar registrar aula presencial, use **+ Registrar aula**. Esse lançamento não registra presença automática.
+
+## Privacidade e interpretação
+
+- Apenas as contas reconhecidas pelo servidor como professor ou administrador podem consultar o diário.
+- Não há alteração do sistema existente de vídeo, chat, gravação ou matrículas.
+- **Conexão no LiveKit não equivale a frequência acadêmica oficial.** O percentual exibido considera aulas ao vivo que tenham pelo menos um registro de conexão no webhook.
+- Aulas sem evento do webhook **não são contadas como faltas**.
+- Reconexões do mesmo aluno dentro de uma aula são consolidadas; intervalos simultâneos não duplicam minutos.
+- Os relatórios contêm nomes de estudantes; compartilhe-os apenas com profissionais autorizados.
+- Se o navegador bloquear downloads ou o acesso à biblioteca externa de PDF, use o CSV ou tente novamente com conexão ativa.
+- A primeira validação do servidor foi feita pela implantação e inspeção da tabela, função e segurança. O fluxo completo de preenchimento e exportação deve ser validado com a conta do professor após a publicação.
+
+## Próxima evolução sugerida
+
+Definir regras formais de frequência, faltas justificadas, calendário letivo e vinculação dos conteúdos aos objetivos curriculares; isso depende da política da instituição de ensino e não será inferido automaticamente dos minutos de conexão.
