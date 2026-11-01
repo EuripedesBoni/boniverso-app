@@ -1,0 +1,9 @@
+BoniVerso — Correção de gestão de turmas v3.4
+
+1. Extraia este ZIP.
+2. No GitHub, abra boniverso-correcao-turmas-v33.js e use Editar (lápis).
+3. Substitua o conteúdo inteiro pelo arquivo JS deste pacote e confirme na branch main.
+4. Não altere turmas.html, que já carrega esse mesmo nome de arquivo.
+5. Atualize turmas.html no navegador, preferivelmente em janela anônima.
+
+Este pacote não remove dados e não altera privilégios. Os botões de exclusão apenas enviam pedidos às funções protegidas do Supabase; somente admin com AAL2 pode efetivar exclusão de turmas/anos vazios.
