@@ -1,41 +1,33 @@
-BONIVERSO v2.0.1 — WEB PUSH COM O APLICATIVO FECHADO
+BoniVerso — Gestão de turmas v3.2
+===================================
 
-INSTALAÇÃO
-1. Abra a pasta ENVIAR-PARA-GITHUB.
-2. No repositório https://github.com/EuripedesBoni/boniverso-app
-   entre em Add file > Upload files.
-3. Envie os 3 arquivos para a RAIZ do repositório:
-   - index.html (substituir)
-   - sw.js (substituir)
-   - boniverso-webpush-v201.js (novo)
-4. Confirme com Commit changes. Não exclua arquivos antigos.
-5. Aguarde o GitHub Actions confirmar success.
-6. Abra https://euripedesboni.github.io/boniverso-app/?v=201 e faça login.
+O SUPABASE JÁ FOI PREPARADO PELO CHATGPT.
+NÃO execute o SQL do pacote novamente.
 
-TESTE NO IPHONE/IPAD
-- iOS/iPadOS 16.4 ou superior.
-- No Safari toque em Compartilhar > Adicionar à Tela de Início.
-- Abra o BoniVerso PELO ÍCONE na Tela de Início.
-- Entre em sua conta, abra o sino de Notificações.
-- Toque em 'Ativar notificações com app fechado' e permita os avisos.
-- Toque em 'Enviar notificação de teste'.
-- Bloqueie a tela e verifique o aviso na Central de Notificações.
+COMO PUBLICAR NO GITHUB
+1. Abra https://github.com/EuripedesBoni/boniverso-app
+2. No repositório, localize boniverso-gestao-turmas-v300.js.
+3. Substitua o conteúdo desse arquivo pelo JavaScript novo do pacote.
+   Se usar Add file > Upload files, selecione o arquivo .js EXTRAÍDO,
+   nunca o ZIP fechado. Confirme que o GitHub aceitou a substituição;
+   em alguns casos ele solicita editar manualmente o arquivo existente.
+4. Salve na branch main com Commit changes.
+5. Não altere turmas.html: ele já usa o nome de arquivo acima.
+6. Acesse https://euripedesboni.github.io/boniverso-app/turmas.html
+   e atualize a página no Safari/iPad.
 
-TESTE NO ANDROID
-- Abra o BoniVerso no Chrome, entre e permita notificações.
-- Na central de avisos, ative Web Push e envie o teste.
+NOVIDADES
+- Turmas ativas | Arquivadas | + Criar turma
+- Criação de turma escolhendo 6º, 7º, 8º, 9º EF, 1ª, 2ª, 3ª EM
+- Adicionar anos depois da criação
+- Editar nome e descrição
+- Matrículas: modificar ano e desativar/reativar
+- Pausar e reativar cada ano; gerar código de matrícula por ano
+- Excluir um ano vazio ou uma turma vazia, com confirmação
+- Anos/turmas com matrículas, redações e demais registros NÃO são apagados;
+  é possível pausá-los/arquivá-los preservando o histórico.
 
-O QUE FOI FEITO NO SERVIDOR
-- Chaves VAPID privadas protegidas no Supabase Vault.
-- Função boniverso-push (inscrição/desativação/envio/teste).
-- Job agendado no Supabase a cada minuto.
-- Inscrições privadas; não há token ou segredo no repositório.
-- Avisos de aulas, mensagens do professor, repertórios e redações corrigidas.
+O ícone do aplicativo permanece igual.
 
-AVISOS
-- Sem a permissão do sistema e a inscrição deste dispositivo não haverá push.
-- Alguns modos de economia de bateria, foco ou bloqueios do navegador podem adiar avisos.
-- Notificações de alunos só ficam ativadas depois de consentimento individual.
-- A tela bloqueada não mostra nota ou dados pessoais do aluno.
-- Notificações internas no sino permanecem disponíveis independentemente do push.
-- O envio final depende de teste em aparelho real; backend vazio não comprova entrega.
+O arquivo seguranca_turmas_v320.sql fica somente como registro da
+implementação já realizada no Supabase BoniVerso.
