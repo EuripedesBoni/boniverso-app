@@ -1,31 +1,42 @@
-BONIVERSO v1.0.6 — CENTRAL DE ATUALIZAÇÕES
-==========================================
+BONIVERSO — CORREÇÃO MOBILE E NAVEGAÇÃO DOS CURSOS — v1.6.2
+============================================================
 
-1. Abra https://github.com/EuripedesBoni/boniverso-app
-2. Clique em Add file > Upload files.
-3. Selecione APENAS estes quatro arquivos DESTA pasta (sem a pasta):
-   - index.html
-   - sw.js
-   - app-updates.js
-   - app-updates.css
-4. Confirme a substituição dos dois arquivos existentes e clique em Commit changes.
-5. Aguarde GitHub Actions / GitHub Pages indicar 'Success'.
-6. Abra o site e procure o símbolo de atualização (duas setas circulares)
-   perto das notificações, ou a nova opção Atualizações no menu lateral.
-7. Clique Verificar agora e Atualizar aplicativo. Salve quaisquer redações antes de atualizar.
+O QUE ESTA VERSÃO CORRIGE
+- No celular, os cartões dos cursos ficam em UMA coluna, ocupando a largura disponível.
+- Os botões Ver aulas, Videoteca e Progresso e materiais ficam inteiros dentro do cartão.
+- O nome do curso passa a ser um link para a página dedicada de aprendizagem do curso.
+- Se o curso ainda estiver bloqueado, tocar no título usa o mesmo botão Detalhes que já existia.
+- A barra de navegação inferior fica adaptada aos cinco ícones e ao atalho Ao vivo.
+- As telas do computador permanecem com as colunas adaptadas à largura disponível.
 
-O GitHub Pages continua hospedando o site. A Central procura uma nova revisão
-no repositório público GitHub a cada 30 minutos enquanto a aba estiver aberta
-(e também ao voltar à aba). Não é necessário publicar manualmente o arquivo
-de versão quando fizer futuras alterações no GitHub: cada commit é detectável.
+INSTALAÇÃO
+1. Descompacte este ZIP no aplicativo Arquivos (iPad/iPhone) ou no computador.
+2. Na pasta ENVIAR-PARA-GITHUB, estão EXATAMENTE TRÊS arquivos:
+   - index.html (substituir na raiz da branch main)
+   - boniverso-mobile-v162.css (novo)
+   - boniverso-course-navigation-v162.js (novo)
+3. Acesse https://github.com/EuripedesBoni/boniverso-app
+4. Na branch main, clique em Add file > Upload files.
+5. Selecione os três arquivos EXTRAÍDOS, não o ZIP inteiro.
+6. Finalize com Commit changes; aguarde o GitHub Pages apresentar Success.
+7. No celular, feche a página e reabra o aplicativo para forçar a atualização dos estilos.
+   Se necessário, recarregue e teste em aba privada. Não precisa apagar dados do estudante.
 
-IMPORTANTE:
-- O sistema NÃO recarrega durante a escrita: pede confirmação.
-- Os dados e logins do Supabase NÃO são apagados.
-- Nenhum segredo de API é colocado no código.
-- A consulta pública ao GitHub tem limites de requisição; se ela falhar,
-  o botão Atualizar aplicativo permite renovar os arquivos diretamente.
-- O aviso sinaliza novos commits, mas o deploy pode demorar alguns instantes.
-- A identificação v1.0.6 é a versão da interface da Central; futuras
-  publicações são identificadas por revisão curta do GitHub.
-- Essa atualização não altera o outro aplicativo EstudNexa/Medatlas.
+TESTES
+[ ] No iPhone, a área Meus cursos mostra um cartão por linha.
+[ ] Os botões Videoteca e Progresso estão totalmente visíveis dentro do cartão.
+[ ] Tocar no título Aparecida de Goiânia abre seu Painel de Aprendizagem.
+[ ] Tocar no título de um curso bloqueado abre Detalhes e não concede acesso.
+[ ] Rodapé mostra Início, Cursos, Meu planejamento, Redações, Desempenho e Ao vivo.
+[ ] No computador, os cartões continuam funcionando sem cortar os botões.
+
+OBSERVAÇÃO: A contagem "0 aula(s)" nos cartões vem da tabela de aulas antiga
+(lessons), diferente das gravações da Videoteca. A correção atual NÃO altera
+esta contagem nem dados e permissões do Supabase.
+
+Não alteramos: autenticação, matrículas, vídeos, PDFs, avaliações, Supabase,
+pagamentos ou arquivos anteriores. O index.html foi gerado sobre a versão
+atual do repositório (blob SHA 93ff7fd3515208c9861070b077822b385106665c).
+
+A etiqueta do menu inferior "Meu planejamento" fica mais curta ("Planejar")
+apenas no celular; o leitor de telas continua recebendo o nome completo.

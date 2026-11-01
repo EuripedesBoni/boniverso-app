@@ -1,0 +1,212 @@
+/* BoniVerso v1.6.2 — cartões responsivos, atalhos e barra móvel.
+ * Mantém a aparência existente do desktop; sobreposição ao final das folhas de estilo.
+ */
+
+/* Evita que os links adicionados pela Videoteca e pelo Painel escapem do cartão,
+   inclusive em tablets e computadores com janelas estreitas. */
+#view .course-grid { min-width: 0; }
+#view .course-grid > .course-card { min-width: 0; max-width: 100%; }
+#view .course-card .course-art,
+#view .course-card .course-content { min-width: 0; }
+#view .course-card .course-content h3,
+#view .course-card .course-content p { overflow-wrap: anywhere; }
+#view .course-card .course-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+#view .course-card .course-footer > .tag {
+  grid-column: 1;
+  justify-self: start;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+#view .course-card .course-footer > button[data-online-action="course"] {
+  grid-column: 2;
+  justify-self: stretch;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+}
+#view .course-card .course-footer > .bv-study-link,
+#view .course-card .course-footer > .bv-course-video-link {
+  grid-column: 1 / -1;
+  display: flex !important;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 !important;
+  padding: 12px 10px;
+  justify-content: center;
+  align-items: center;
+  white-space: normal;
+  text-align: center;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+  font-size: 13px;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+#view .course-card .bv-course-title-link,
+#view .course-card .bv-course-title-trigger {
+  display: inline;
+  text-decoration: none;
+  color: #19355d;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(57,120,232,.13);
+}
+#view .course-card .bv-course-title-link:hover,
+#view .course-card .bv-course-title-trigger:hover { color: #286acc; text-decoration: underline; }
+#view .course-card .bv-course-title-link:focus-visible,
+#view .course-card .bv-course-title-trigger:focus-visible {
+  outline: 3px solid #e0b966;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+@media (max-width: 640px) {
+  /* A grade de duas colunas era a causa principal dos cortes na captura. */
+  #view .course-grid,
+  #view .section.course-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 17px !important;
+  }
+  #view .course-card { width: 100%; }
+  #view .course-card .course-art { height: 145px; }
+  #view .course-card .course-content { padding: 18px; }
+  #view .course-card .course-content h3 {
+    font-size: 17px;
+    line-height: 1.42;
+    min-height: 0;
+    margin-bottom: 6px;
+  }
+  #view .course-card .course-content p {
+    font-size: 13px;
+    line-height: 1.55;
+    min-height: 0;
+    margin-bottom: 13px;
+  }
+  #view .course-card .course-meta { font-size: 12px; gap: 9px; }
+  #view .course-card .course-footer {
+    grid-template-columns: minmax(0, 1fr) minmax(96px, auto);
+    column-gap: 11px;
+    row-gap: 11px;
+    padding-top: 15px;
+    margin-top: 15px;
+  }
+  #view .course-card .course-footer > .tag { font-size: 12px; padding: 8px 13px; }
+  #view .course-card .course-footer > button[data-online-action="course"] {
+    min-height: 44px;
+    font-size: 13px;
+    padding: 10px 13px;
+    border-radius: 12px;
+  }
+  #view .course-card .course-footer > .bv-study-link,
+  #view .course-card .course-footer > .bv-course-video-link {
+    min-height: 45px;
+    font-size: 13px;
+    padding: 11px 12px;
+  }
+}
+
+@media (max-width: 740px) {
+  /* Seis destinos (cinco abas + Ao vivo) cabem no mesmo rodapé,
+     sem estourar a largura útil do iPhone. */
+  #mobileBottom.mobile-bottom {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-evenly;
+    flex-wrap: nowrap;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    gap: 2px;
+    height: calc(99px + env(safe-area-inset-bottom, 0px));
+    padding: 7px 4px calc(8px + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
+  }
+  #mobileBottom > .mobile-nav-link,
+  #mobileBottom > #bvLiveMobile {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: none;
+    margin: 0;
+    border-radius: 13px;
+    font-size: clamp(8px, 2.3vw, 10px);
+    line-height: 1.14;
+  }
+  #mobileBottom > .mobile-nav-link > svg {
+    width: 20px;
+    height: 20px;
+    padding: 7px;
+    flex-shrink: 0;
+  }
+  #mobileBottom > .mobile-nav-link > span {
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+    font-size: inherit;
+    line-height: 1.15;
+    text-align: center;
+  }
+  #mobileBottom > #bvLiveMobile {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 2px 0 !important;
+    font-weight: 650 !important;
+    font-size: clamp(8px, 2.3vw, 10px) !important;
+    color: #62728b;
+    white-space: normal;
+    text-align: center;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    -webkit-tap-highlight-color: rgba(57,120,232,.13);
+  }
+  #mobileBottom #bvLiveMobile > .bv-live-mobile-icon {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #e5edf8;
+    border-radius: 12px;
+    background: linear-gradient(150deg,#f4f7ff 5%,#eaf0fb);
+    font-size: 19px;
+    line-height: 1;
+  }
+  #mobileBottom #bvLiveMobile:focus-visible { outline: 2px solid #3978e8; outline-offset: -2px; }
+  .main-column > main#view { padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px)); }
+  .toast-region { bottom: calc(110px + env(safe-area-inset-bottom, 0px)); }
+}
+
+@media (max-width: 350px) {
+  #view .course-card .course-content { padding: 15px; }
+  #mobileBottom > .mobile-nav-link > svg { width: 18px; height: 18px; padding: 5px; }
+  #mobileBottom #bvLiveMobile > .bv-live-mobile-icon { width: 30px; height: 30px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #view .course-card .bv-course-title-link,
+  #view .course-card .bv-course-title-trigger { transition: none; }
+}
