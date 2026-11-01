@@ -1,9 +1,2 @@
-BONIVERSO 3.1 - GESTAO DE TURMAS
-
-1. Extraia o ZIP no aplicativo Arquivos do iPad.
-2. O arquivo de codigo chama-se boniverso-gestao-turmas-v300.js.
-3. O GitHub nao substitui necessariamente arquivos existentes via Upload files.
-4. Se o GitHub impedir o envio porque o arquivo ja existe, NAO delete o antigo.
-5. Nesse caso abra o arquivo no repositorio, clique Editar, substitua o conteudo pelo arquivo novo e Commit changes.
-6. Nao altere o arquivo index.html, turmas.html nem o icone original.
-7. Excluir turma nesta versao e uma acao de seguranca que explica o bloqueio; NAO apaga dados.
+Envie o JS para a raiz do GitHub, depois acrescente antes de </body> no turmas.html: <script defer src="./boniverso-correcao-turmas-v33.js"></script>
+Nao retire o arquivo antigo.
