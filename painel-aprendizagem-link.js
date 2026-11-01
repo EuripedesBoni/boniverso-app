@@ -1,0 +1,17 @@
+/* BoniVerso v1.6.0 — links para o Painel de Aprendizagem. Não altera matrículas. */
+(()=>{'use strict';
+const valid=/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i;
+const href=id=>'./painel-aprendizagem.html'+(id&&valid.test(id)?'?curso='+encodeURIComponent(id):'');
+const style=document.createElement('style');style.textContent='.bv-study-link{display:inline-flex;align-items:center;justify-content:center;gap:5px;border-radius:10px;background:#e9f2ff;color:#24558e!important;padding:9px 11px;text-decoration:none;font-weight:700;font-size:12px;min-height:37px}.bv-study-link:hover{background:#d4e7ff}.bv-study-shortcut{margin:10px 0;padding:11px 14px;border-radius:12px;background:#edf4ff;border:1px solid #cfdef3;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.bv-study-shortcut b{font-size:14px}';document.head.append(style);
+let activeCourse=null;const node=(id,label)=>{const a=document.createElement('a');a.className='bv-study-link';a.href=href(id);a.textContent=label||'📊 Progresso e materiais';return a};
+function enhance(){
+ const nav=document.getElementById('sideNav');if(nav&&!nav.querySelector('[data-bv-study]')){const a=node(null,'📊 Meu aprendizado');a.dataset.bvStudy='1';a.className='nav-link';a.style.cssText='display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;padding:12px 14px;border-radius:12px;font-size:14px;font-weight:600';nav.append(a)}
+ document.querySelectorAll('#view button[data-online-action="course"][data-id]').forEach(b=>{const id=b.dataset.id;if(!valid.test(id||''))return;const card=b.closest('.course-card, .task-row');if(!card||card.querySelector('.bv-study-link'))return;if(/detalhes|comprar/i.test(b.textContent||''))return;b.insertAdjacentElement('afterend',node(id));});
+ const dialog=document.getElementById('dialog');const body=document.getElementById('dialogContents');if(dialog?.open&&body&&activeCourse&&valid.test(activeCourse)&&!body.querySelector('[data-bv-study]')){const a=node(activeCourse,'📊 Ver progresso, materiais e avaliações');a.dataset.bvStudy='1';const wrap=document.createElement('div');wrap.className='bv-study-shortcut';const b=document.createElement('b');b.textContent='Painel de Aprendizagem do curso';wrap.append(b,a);const inner=body.querySelector('.dialog-inner');if(inner)inner.insertBefore(wrap,inner.querySelector('.dialog-actions')||null);else body.prepend(wrap)}
+ const view=document.getElementById('view');if(view&&!view.querySelector('.bv-study-overview')&&view.querySelector('.hero')){const bar=document.createElement('div');bar.className='bv-study-shortcut bv-study-overview';const b=document.createElement('b');b.textContent='Aulas iniciadas, concluídas e progresso do curso';bar.append(b,node(null,'Abrir meu painel'));view.querySelector('.hero').insertAdjacentElement('afterend',bar)}
+}
+document.addEventListener('click',e=>{const b=e.target.closest?.('button[data-online-action="course"][data-id]');if(b&&valid.test(b.dataset.id||'')){activeCourse=b.dataset.id;queueMicrotask(enhance);setTimeout(enhance,50)}},true);
+let busy=false;const schedule=()=>{if(busy)return;busy=true;queueMicrotask(()=>{busy=false;enhance()})};
+function init(){const app=document.getElementById('app');if(app)new MutationObserver(schedule).observe(app,{subtree:true,childList:true});enhance()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();

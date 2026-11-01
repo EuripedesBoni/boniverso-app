@@ -1,29 +1,53 @@
-# BoniVerso v1.5.0 — Videoteca integrada a cada curso
+# BoniVerso — Painel de Aprendizagem v1.6.0
 
-## Instalação no GitHub
+## Instalação no GitHub (sem alterar os arquivos anteriores)
 
-1. Envie **curso-videos.html** e **videoteca-curso-link.js** para a raiz do repositório `EuripedesBoni/boniverso-app` (branch `main`).
-2. Edite o arquivo `index.html`, que contém a página inicial, e ANTES de `</body>` acrescente exatamente:
+1. Descompacte o ZIP.
+2. No repositório `EuripedesBoni/boniverso-app` (branch `main`), envie os **dois arquivos** `painel-aprendizagem.html` e `painel-aprendizagem-link.js` para a **raiz** (não envie o ZIP).
+3. Abra `index.html` no GitHub e clique no lápis.
+4. Antes de `</body>`, acrescente **apenas** esta linha:
 
-   `<script defer src="./videoteca-curso-link.js"></script>`
+```html
+<script defer src="./videoteca-curso-link.js"></script>
+<script defer src="./painel-aprendizagem-link.js"></script>
+</body>
+</html>
+```
 
-3. Salve com Commit changes. Confirme que a ação de publicação GitHub Pages terminou com status success.
-4. Abra a página inicial do BoniVerso, atualize e clique em **Cursos**. Cada curso permitido deverá ter o atalho **Videoteca do curso**, também disponível dentro dos detalhes do curso.
-5. Use a conta do professor para testar criação e organização de módulos, e depois a conta do estudante para testar reprodução e "Continuar assistindo".
+O primeiro script já existe no projeto. **Acrescente somente o segundo**; não duplique o script antigo.
 
-## O que mudou
+5. Clique em **Commit changes** e aguarde o GitHub Pages publicar.
 
-- O novo endereço de um curso é `curso-videos.html?curso=ID_DO_CURSO` (o link é preenchido automaticamente pelos cartões).
-- A página lista tanto gravações de LiveKit quanto gravações importadas do Meet do curso.
-- O painel do professor permite criar, renomear, reordenar e excluir módulos sem apagar vídeos, e vincular vídeos a módulos.
-- Cada aluno salva seu progresso de reprodução **na própria conta**, sincronizado entre dispositivos.
-- URLs de reprodução são temporárias e exigem autorização validada pelo servidor. O player oculta o download, mas não pode impedir capturas de tela nem a cópia técnica de fluxos recebidos no navegador.
-- Gerenciamento de exclusão, publicação e movimentação dos arquivos continua reservado aos painéis do professor (gravações de lives e vídeos Meet).
+Link geral: https://euripedesboni.github.io/boniverso-app/painel-aprendizagem.html
 
-## Cuidados e testes
+Curso específico: `painel-aprendizagem.html?curso=ID_DO_CURSO` (os botões do aplicativo cuidam do ID).
 
-- **Não exclua** arquivos JavaScript antigos de transmissão e gravação.
-- Teste com duas contas distintas: professor e aluno com matrícula ativa.
-- Se uma aula for transferida para outro curso, reorganize-a no módulo correto no destino.
-- O tempo salvo é aproximado; o indicador "concluído" se refere ao vídeo, **não** equivale a presença escolar comprovada.
-- Uma URL de reprodução temporária pode ser usada até expirar, mesmo após alteração de permissão. Para bloqueio forte contra cópia seria necessário streaming com DRM e outra infraestrutura.
+## O que está pronto no Supabase
+
+- Função `boniverso-learning` implantada.
+- Indicadores com base em progresso real de vídeos do Meet, lives, aulas do catálogo, leitura de PDFs e entregas de atividades/avaliações; resumos de todos os cursos no mesmo painel.
+- PDFs privados no bucket `boniverso-learning-pdfs` (15 MB, somente PDF), via URL temporária.
+- Atividades discursivas com respostas salvas e visualização pelo professor.
+- Avaliações de 1 a 20 questões com quatro alternativas, correção no servidor e retorno de pontuação/comentários.
+- Recursos salvos inicialmente como **rascunho**, que o professor deve **publicar**.
+- Matriculados veem apenas conteúdos publicados; gabaritos não são enviados antes da submissão.
+
+## Como testar
+
+1. Como professor, abra um curso no painel e selecione um módulo (se ainda não existir, crie-o na Videoteca do Curso).
+2. Cadastre um PDF pequeno e publique-o.
+3. Cadastre uma atividade discursiva e uma avaliação com uma questão; publique.
+4. Entre na conta do estudante matriculado, abra os recursos, marque PDF como lido, envie uma resposta e conclua a avaliação.
+5. Reabra no computador e no iPad: indicadores e histórico devem se manter.
+
+## Definições importantes
+
+- **Aula concluída:** flag de conclusão registrada no histórico de vídeo ou aula cadastrada.
+- **Aula iniciada:** vídeo com tempo assistido > 0 sem conclusão.
+- **Aula pendente:** vídeo sem tempo assistido, ou aula do catálogo ainda não concluída.
+- **Progresso do curso:** itens concluídos ÷ total de vídeos/aulas publicados e recursos publicados (PDF marcado como lido, atividade entregue e avaliação realizada).
+- **Certificados:** apenas **planejados**; não são emitidos nesta versão. Definir critérios de aprovação, carga horária e controle de identidade antes de implementar.
+- O percentual mostra **avanço em conteúdos**, não presença acadêmica, competência demonstrada ou aprovação automática.
+- Botões de download ocultos nos vídeos não impedem cópias técnicas. PDFs abertos podem ser salvos pelo estudante conforme as capacidades do visualizador.
+
+Nenhum código secreto ou chave privada deve ir para o GitHub.
