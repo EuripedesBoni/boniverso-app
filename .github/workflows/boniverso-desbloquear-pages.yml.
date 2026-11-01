@@ -1,0 +1,32 @@
+name: BoniVerso - diagnosticar e desbloquear Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+
+jobs:
+  check-pages-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar implantacao travada
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_SHA: 2f9aadd43796e6703b4d5c706581988cfd4cf5bd
+        shell: bash
+        run: |
+          set -euo pipefail
+          target="repos/${GITHUB_REPOSITORY}/pages/deployments/${TARGET_SHA}"
+          status="$(gh api "$target" --jq '.status')"
+          echo "Estado: ${status}"
+          case "$status" in
+            in_progress|pending|queued)
+              gh api --method POST "${target}/cancel"
+              echo "Cancelamento solicitado."
+              ;;
+            *)
+              echo "Nenhum cancelamento necessario."
+              ;;
+          esac
