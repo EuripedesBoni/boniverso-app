@@ -1,40 +1,24 @@
-BONIVERSO - CAIXA DE ENTRADA DO ESTUDANTE (v1)
+BONIVERSO — INDICADORES DA PÁGINA INÍCIO CLICÁVEIS — v2
 
-OBJETIVO
-Exibe na página Mensagens Privadas as turmas matriculadas do aluno, com
-respostas não lidas, pesquisa por turma e acesso a cada conversa.
-Não exibe o texto das mensagens na lista. Professores e administradores
-não veem este painel; continuam com a Caixa de Entrada do Professor.
+Por que esta atualização?
+A correção anterior tornou clicáveis os quatro cartões do Painel do Professor.
+Os quatro cartões exibidos na página Início (com o banner Aprenda. Evolua. Conquiste.) ainda não tinham navegação.
 
-PUBLICAÇÃO NO GITHUB
-Repositório: EuripedesBoni/boniverso-app
-1. Envie boniverso-inbox-estudante-v1.js à raiz do repositório.
-2. Edite mensagens-turma-v3.html. Localize esta linha existente:
-     <script src="./config.js"></script>
-   Logo DEPOIS dela, acrescente:
-     <script defer src="./boniverso-inbox-estudante-v1.js"></script>
-3. Salve no GitHub (Commit changes) e confira GitHub Actions / Pages.
+INSTALAÇÃO NO GITHUB
+1. Envie boniverso-indicadores-inicio-v2.js para a raiz de EuripedesBoni/boniverso-app.
+2. Edite index.html.
+3. Logo abaixo da linha:
+   <script defer src="./boniverso-editor-painel-v1.js?v=1"></script>
+   acrescente:
+   <script defer src="./boniverso-indicadores-inicio-v2.js?v=2"></script>
+4. Clique em Commit changes e confira a publicação no GitHub Actions.
+5. Abra o BoniVerso no iPad, atualize a página e teste a área Início.
 
-NÃO alterar index.html, boniverso-avisos.js ou tabelas Supabase.
+ATUALIZAÇÃO DOS INDICADORES DA PÁGINA INÍCIO
+• Cursos no catálogo -> lista de cursos.
+• Tarefas concluídas -> Meu planejamento.
+• Redações enviadas -> Oficina de redação.
+• Aulas concluídas -> Meu aprendizado / Painel de Aprendizagem.
 
-TESTE
-1. Entre com uma conta de estudante matriculado; abra Mensagens.
-2. Verifique a seção 'Minhas conversas', o nome das turmas e a busca.
-3. Toque em uma turma: o seletor da conversa deve mudar para ela.
-4. Envie uma mensagem de teste ao professor (sem dados sensíveis).
-5. Com a conta docente, responda. Na conta do estudante, uma resposta não
-   lida deverá gerar número no ícone e destaque na turma correspondente.
-6. Abra a conversa: o aviso deve passar a lido e sumir do filtro após
-   a atualização.
-7. Na conta docente, 'Minhas conversas' de estudante não deve aparecer.
-
-NOTAS DE SEGURANÇA
-Usa somente a chave pública do projeto e acesso autenticado com RLS.
-Não há service_role, chave secreta nem dados pessoais exportados.
-Apenas metadados autorizados das conversas são mostrados.
-
-LIMITAÇÕES
-As buscas do histórico usam até 500 mensagens e até 200 avisos recentes.
-O indicador pode não ser exaustivo em contas com volume muito alto.
-O painel não envia alertas quando o aplicativo está fechado; para isso,
-permanece o sistema Web Push já instalado do BoniVerso.
+Não remova os arquivos de layout v1: eles continuam corrigindo o Editor de Cursos e o Painel do Professor.
+Esta atualização não altera Supabase, tabelas, turmas ou matrículas.
