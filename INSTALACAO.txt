@@ -1,0 +1,33 @@
+BONIVERSO — Ajustes Editor de Cursos + Painel do Professor (v1)
+
+Inclui:
+- boniverso-editor-painel-v1.css: corrige layout de formulário, cartões de cursos,
+  botões e adaptação a iPad/Android/iPhone.
+- boniverso-editor-painel-v1.js: deixa clicáveis os cartões de indicadores
+  do Painel do Professor; respeita a navegação SPA do app.
+
+INSTALAÇÃO NO GITHUB
+1. Extraia o ZIP.
+2. Envie ambos os arquivos .css e .js para a raiz do repositório boniverso-app.
+3. Edite index.html.
+4. Dentro de <head>, logo ABAIXO de:
+   <link rel="stylesheet" href="boniverso-mobile-v162.css" />
+   adicione:
+   <link rel="stylesheet" href="./boniverso-editor-painel-v1.css?v=1" />
+5. Ao final do <body>, logo ANTES de </body>, adicione:
+   <script defer src="./boniverso-editor-painel-v1.js?v=1"></script>
+6. Salve com Commit changes e confira a publicação em GitHub Actions.
+
+DESTINOS DOS INDICADORES
+- Cursos criados -> Editor de cursos.
+- Aulas cadastradas -> Editor de cursos, rolando até os cursos para escolher Aulas.
+- Atividades -> seção Atividades (rota interna essays).
+- Redações pendentes -> Corrigir redações (rota interna corrections).
+
+Não substitua online-app.js ou styles.css. Não altera Supabase, permissões ou matrículas.
+
+TESTE
+- No iPad, abra Cursos e aulas: o formulário deve ocupar uma coluna inteira
+  e os cursos devem aparecer em cartões com botões organizados.
+- No Painel do Professor, toque nos quatro indicadores e confirme a navegação.
+- Teste novamente após atualizar a página se houver cache do navegador.

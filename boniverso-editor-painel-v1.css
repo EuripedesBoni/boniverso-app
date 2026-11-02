@@ -1,0 +1,98 @@
+/* BoniVerso · correção responsiva do Editor de Cursos e cartões do Professor (v1).
+   Apenas apresentação: não altera autenticação, curso, conteúdo nem permissões. */
+#view.bv-admin-editor,
+#view.bv-admin-teacher-home {min-width:0}
+#view.bv-admin-editor .page-top,
+#view.bv-admin-editor .two-cols,
+#view.bv-admin-editor .two-cols > .panel {min-width:0;max-width:100%}
+
+/* No desktop grande, formulário e lista; no tablet e no celular, uma coluna. */
+#view.bv-admin-editor .two-cols {
+  display:grid;
+  grid-template-columns:minmax(300px,.83fr) minmax(0,1.5fr);
+  align-items:start;
+  gap:20px;
+}
+#view.bv-admin-editor .two-cols > .panel {overflow:visible}
+#view.bv-admin-editor .panel .section {margin-top:17px}
+#view.bv-admin-editor #newCourse .form-field {min-width:0;max-width:100%}
+#view.bv-admin-editor #newCourse input:not([type="checkbox"]),
+#view.bv-admin-editor #newCourse select,
+#view.bv-admin-editor #newCourse textarea {
+  width:100%;max-width:100%;min-width:0;box-sizing:border-box;
+  font-size:15px;min-height:46px;
+}
+#view.bv-admin-editor #newCourse textarea{min-height:118px;resize:vertical}
+#view.bv-admin-editor #newCourse .form-field > label {display:block;font-size:13px;line-height:1.45}
+#view.bv-admin-editor #newCourse label:has(input[type="checkbox"]) {display:flex;align-items:center;gap:10px;margin:12px 0;line-height:1.45;font-size:14px}
+#view.bv-admin-editor #newCourse input[type="checkbox"] {width:18px;height:18px;flex:none}
+#view.bv-admin-editor #newCourse button[type="submit"] {min-height:44px;max-width:100%}
+
+/* Cada curso ocupa um cartão legível, em vez de espremê-lo entre três botões. */
+#view.bv-admin-editor .task-row.bv-editor-course-row {
+  display:block!important;
+  min-width:0;
+  border:1px solid #e1e9f5;
+  border-radius:15px;
+  padding:17px;
+  margin:0 0 13px;
+  background:linear-gradient(180deg,#fff,#fafcff);
+  box-shadow:0 4px 14px rgba(29,52,90,.035);
+}
+#view.bv-admin-editor .bv-editor-course-row .task-detail {min-width:0;width:100%;overflow-wrap:anywhere}
+#view.bv-admin-editor .bv-editor-course-row .task-detail strong {
+  display:block;font-size:16px;font-weight:800;color:#1b385e;
+  line-height:1.4;overflow-wrap:anywhere;white-space:normal;
+}
+#view.bv-admin-editor .bv-editor-course-row .task-detail small {
+  display:block;font-size:12px;line-height:1.5;color:#657d99;margin-top:5px;
+}
+#view.bv-admin-editor .bv-editor-actions {
+  display:flex;flex-wrap:wrap;gap:9px;align-items:stretch;margin-top:15px;
+}
+#view.bv-admin-editor .bv-editor-actions > button,
+#view.bv-admin-editor .bv-editor-actions > a {
+  flex:1 1 145px;min-width:0;max-width:245px;min-height:44px;
+  padding:10px 12px!important;margin:0!important;
+  white-space:normal!important;overflow-wrap:break-word;
+  display:inline-flex!important;align-items:center;justify-content:center;
+  font-size:13px!important;font-weight:750;line-height:1.35;
+  text-align:center;text-decoration:none;border-radius:12px;
+}
+#view.bv-admin-editor .bv-editor-actions > *:focus-visible {outline:3px solid #83b3ff;outline-offset:2px}
+#view.bv-admin-editor .bv-editor-help {margin:5px 0 14px;color:#5e7694;font-size:13px;line-height:1.5}
+
+/* Indicadores tornam-se botões de navegação, com estados acessíveis. */
+#view.bv-admin-teacher-home .stats-row {min-width:0}
+#view.bv-admin-teacher-home .stat-card.bv-stat-action {
+  appearance:none;cursor:pointer;width:100%;min-width:0;color:inherit;
+  font:inherit;text-align:left;position:relative;padding-right:29px;
+  transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease;
+}
+#view.bv-admin-teacher-home .stat-card.bv-stat-action::after {
+  content:'›';position:absolute;right:13px;top:50%;transform:translateY(-50%);
+  font-size:23px;line-height:1;color:#376ec0;font-weight:800;
+}
+#view.bv-admin-teacher-home .stat-card.bv-stat-action:hover {
+  border-color:#b5cfef;transform:translateY(-2px);box-shadow:0 10px 25px rgba(27,66,123,.11);
+}
+#view.bv-admin-teacher-home .stat-card.bv-stat-action:focus-visible{outline:3px solid #80adf4;outline-offset:3px}
+#view.bv-admin-teacher-home .stat-card.bv-stat-action:active{transform:translateY(0)}
+#view.bv-admin-teacher-home .stat-card.bv-stat-action small{line-height:1.4;display:block}
+#view.bv-admin-teacher-home .stat-card.bv-stat-action b{color:#173858}
+
+@media(max-width:1320px){
+  #view.bv-admin-editor .two-cols {grid-template-columns:minmax(0,1fr)!important;gap:19px}
+  #view.bv-admin-editor .two-cols > .panel {width:100%}
+}
+@media(max-width:620px){
+  #view.bv-admin-editor .panel{padding:17px 15px}
+  #view.bv-admin-editor .task-row.bv-editor-course-row{padding:15px}
+  #view.bv-admin-editor .bv-editor-actions > button,
+  #view.bv-admin-editor .bv-editor-actions > a{max-width:none;flex:1 1 100%}
+  #view.bv-admin-teacher-home .stat-card.bv-stat-action{padding-right:25px}
+  #view.bv-admin-teacher-home .stat-card.bv-stat-action::after{right:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  #view.bv-admin-teacher-home .stat-card.bv-stat-action{transition:none}
+}
