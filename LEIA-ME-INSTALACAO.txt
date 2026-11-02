@@ -1,40 +1,29 @@
-BONIVERSO — PROPOSTAS DE REDAÇÃO E RUBRICAS — VERSÃO 3.6.0
+BONIVERSO — CORREÇÃO DO LAYOUT DAS CONVERSAS DO ESTUDANTE
+VERSÃO v2.1 — substituição simples no GitHub
 
-O QUE FAZ
-• Na página "Turmas e séries": acrescenta tema, critérios adicionais, PDF da coletânea e campos de gênero personalizado.
-• Para "Outro gênero", exige nome + PDF com a rubrica (motor da Luna requer ambos).
-• Na Central de Redações: também acrescenta campos de gênero personalizado e usa a Edge Function existente.
-• O PDF da coletânea pode ser aberto pelo estudante autorizado após publicar a proposta; o PDF da rubrica é apenas para professor/Luna.
-• Não altera o ícone do BoniVerso nem muda turmas ou notas existentes.
-• A Luna gera sugestões privadas. O professor deve revisar e aprovar. A calibração com textos de referência ainda precisa ser validada.
+O QUE FOI CORRIGIDO
+- Agora o CSS da caixa de entrada é realmente inserido na página.
+- Os cartões são separados, brancos, com bordas e espaços próprios.
+- Nome da turma, situação da última mensagem e ação ficam em linhas distintas.
+- Filtros de busca e de respostas não lidas são responsivos no iPhone.
+- A turma aberta recebe destaque visual.
+- Nenhum texto privado de conversa é apresentado na lista.
 
-PASSO 1 — PUBLICAR O ARQUIVO
-1) No GitHub EuripedesBoni/boniverso-app (branch main), escolha Add file > Upload files.
-2) Envie o arquivo boniverso-propostas-generos-v360.js para a RAIZ (ao lado de turmas.html).
-3) Confirme com Commit changes.
+INSTALAÇÃO
+1. Acesse github.com/EuripedesBoni/boniverso-app
+2. Abra a pasta raiz (principal) do repositório.
+3. Substitua SOMENTE o arquivo boniverso-inbox-estudante-v1.js
+   pelo arquivo de mesmo nome que está neste ZIP.
+4. Clique em Commit changes.
+5. Aguarde o GitHub Pages concluir a publicação.
+6. Abra https://euripedesboni.github.io/boniverso-app/
+   e entre com a conta de estudante. Acesse Mensagens.
+7. Se ainda ver os cartões azuis antigos, atualize a página ou
+   teste em uma guia privada com login.
 
-PASSO 2 — LIGAR O FORMULÁRIO DE TURMAS
-1) Edite turmas.html.
-2) Imediatamente antes de </body>, depois dos outros scripts, acrescente:
-<script defer src="./boniverso-propostas-generos-v360.js?v=360"></script>
-3) Salve com Commit changes.
-
-PASSO 3 — LIGAR A CENTRAL DE REDAÇÕES (RECOMENDADO)
-1) Edite gestao-redacoes.html.
-2) Imediatamente antes de </body>, acrescente a MESMA linha acima.
-3) Salve com Commit changes.
-
-TESTE SEM PUBLICAR PARA ALUNOS
-• Acesse turmas.html com conta de professor ou administrador.
-• Escolha a série, selecione "Outro gênero" e verifique se aparecem Nome e PDF da rubrica.
-• Confira que há PDF da proposta opcional.
-• Se desejar testar a publicação, utilize uma turma de teste e uma proposta explicitamente identificada como teste.
-• Não faça testes com dados reais de alunos e não gere pré-correção automática sem revisar rubrica e custos.
-
-OBSERVAÇÕES TÉCNICAS
-• Reutiliza Edge Function boniverso-essays-manager: prepare_pdf, e Storage privado boniverso-proposals.
-• Em turmas.html conserva classroom_id + section_id (restrição de série).
-• Propostas de turmas são publicadas diretamente, como no fluxo anterior. Na Central de Redações, são salvas como rascunho.
-• Para outros gêneros, a pontuação automática continua na escala técnica C1–C5 de até 1.000 pontos, MAS NÃO corresponde à matriz oficial ENEM.
-• Se a Luna estiver desativada ou sem chave/modelo válido, os PDFs serão guardados, mas não haverá pré-correção automática até configuração técnica.
-• Após enviar um PDF, se a gravação da proposta falhar, um arquivo órfão pode permanecer no Storage e exigir limpeza administrativa posterior.
+IMPORTANTE
+- NÃO altere index.html nem mensagens-turma-v3.html.
+- NÃO renomeie o arquivo JavaScript: o HTML já o importa.
+- NÃO execute migração SQL nem altere o Supabase.
+- A segurança continua protegida por RLS no banco existente.
+- Faça o teste visual no celular e no computador após a publicação.
