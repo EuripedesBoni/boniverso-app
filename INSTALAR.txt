@@ -1,29 +1,31 @@
-BoniVerso Live v1.1.9 — controles de gravação
+BONIVERSO — Caixa de Entrada do Professor · Layout responsivo v5
 
-1) No GitHub EuripedesBoni/boniverso-app, branch main, clique Add file > Upload files.
-2) Envie o arquivo live-recording-controls.js para a RAIZ do repositório e confirme o commit.
-3) Abra live-room.html, clique no lápis (Edit), vá até o FINAL.
-4) Logo ANTES de </body>, mas DEPOIS do </script> do código atual, insira:
+O QUE ESTA VERSAO FAZ
+- Cartoes claros, espacados e organizados no celular, iPad e computador.
+- Indica "Aguardando resposta" quando a ultima mensagem na conversa e do estudante.
+- Indica "Respondida" quando a ultima mensagem foi enviada pelo professor.
+- Mantem o contador de avisos nao lidos existente.
+- Conserva busca, filtros e clique que abre a conversa.
+- Nao altera o Supabase, o login ou as permissoes.
 
-<script defer src="live-recording-controls.js"></script>
+COMO INSTALAR
+1. Abra https://github.com/EuripedesBoni/boniverso-app
+2. Envie boniverso-inbox-professor-v5.js para a PASTA PRINCIPAL do repositorio.
+3. Abra mensagens-turma-v3.html e clique em Editar.
+4. Encontre: <script defer src="./boniverso-inbox-estudante-v3.js"></script>
+5. Na LINHA SEGUINTE, adicione:
+   <script defer src="./boniverso-inbox-professor-v5.js"></script>
+6. Salve em Commit changes e aguarde a publicacao do GitHub Pages.
 
-5) O final esperado é:
+Nao remova o script da Caixa do Estudante.
+Nao altere o index.html.
+Nao altere o Supabase.
 
-</script>
-<script defer src="live-room-media-fix.js"></script>
-<script defer src="live-recording-controls.js"></script>
-</body>
-</html>
+TESTE
+- Entre com a conta do Prof. Rafa e autenticacao reforcada.
+- Abra Mensagens > Caixa de entrada do professor.
+- Confira os cartoes separados e as etiquetas de status.
+- Abra uma conversa e confirme que funciona como antes.
 
-6) Salve com Commit changes. Atualize a página da aula nos dois dispositivos.
-
-SEGURANÇA E USO
-- Não poste os valores das chaves R2 e LiveKit no GitHub ou na conversa.
-- Gravação só inicia com professor autenticado, aula ao vivo e confirmação explícita do aviso.
-- A página passa a mostrar o aviso de gravação a todos os participantes.
-- Faça o teste apenas com contas de teste ou pessoas adequadamente informadas e autorizadas.
-- Após encerrar, clique "Verificar processamento" até ficar pronto.
-- Só depois clique "Publicar para alunos".
-- Não é automático. O LiveKit Egress pode gerar cobrança após a franquia gratuita.
-- Os alunos veem somente gravações prontas e publicadas dos cursos/turmas autorizados.
-- A gravação é uma função experimental: ainda não foi testada ponta a ponta com upload para o R2.
+AVISO: a etiqueta indica o autor da ULTIMA mensagem (aluno ou professor).
+Ela nao indica se o professor leu a mensagem; o aviso azul e o filtro de nao lidas continuam separados.
