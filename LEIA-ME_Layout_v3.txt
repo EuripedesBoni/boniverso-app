@@ -1,0 +1,29 @@
+BONIVERSO — CORREÇÃO DEFINITIVA DO LAYOUT DAS CONVERSAS DO ESTUDANTE (v3)
+====================================================================
+
+Este arquivo utiliza um NOVO NOME para evitar que o iPhone reutilize
+uma versão antiga do JavaScript guardada em cache.
+
+PASSO 1 — Envie para a raiz do GitHub:
+    boniverso-inbox-estudante-v3.js
+
+PASSO 2 — No arquivo EXISTENTE mensagens-turma-v3.html,
+procure esta linha:
+    <script defer src="./boniverso-inbox-estudante-v1.js"></script>
+
+Substitua SOMENTE esta linha por:
+    <script defer src="./boniverso-inbox-estudante-v3.js"></script>
+
+PASSO 3 — Salve no GitHub em Commit changes.
+Aguarde a publicação do GitHub Pages concluir com sucesso.
+
+PASSO 4 — Reabra as mensagens no Safari, já com a conta do aluno.
+A tela Minhas conversas agora terá cartões CLAROS separados,
+informações em linhas independentes e ação Abrir/Iniciar conversa embaixo.
+
+IMPORTANTE:
+- NÃO adicione os dois scripts juntos. O antigo deve ser SUBSTITUÍDO.
+- NÃO altere config.js, credenciais, banco de dados ou permissões.
+- O texto das mensagens NÃO aparece nos cartões.
+- Não é necessário apagar ou migrar conversas existentes.
+- O comportamento do sino de notificações permanece o mesmo.
