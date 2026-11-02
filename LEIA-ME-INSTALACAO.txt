@@ -1,29 +1,56 @@
-BONIVERSO — CORREÇÃO DO LAYOUT DAS CONVERSAS DO ESTUDANTE
-VERSÃO v2.1 — substituição simples no GitHub
+BoniVerso — Matrícula por Curso ou Turma, com acesso restrito (v5)
+=================================================================
 
-O QUE FOI CORRIGIDO
-- Agora o CSS da caixa de entrada é realmente inserido na página.
-- Os cartões são separados, brancos, com bordas e espaços próprios.
-- Nome da turma, situação da última mensagem e ação ficam em linhas distintas.
-- Filtros de busca e de respostas não lidas são responsivos no iPhone.
-- A turma aberta recebe destaque visual.
-- Nenhum texto privado de conversa é apresentado na lista.
+O QUE FOI FEITO
+- Acesso administrativo para matrícula pelo e-mail confirmado.
+- Escolha explícita do destino no próprio formulário:
+    - Turma: matrícula somente naquela turma; se for turma de convite pago,
+      concede também acesso ao curso vinculado.
+    - Turma gratuita: seleção obrigatória do ano/série ativo.
+    - Curso: acesso somente ao curso selecionado, sem matrícula automática
+      em turmas nem acesso a mensagens privadas de suas turmas.
+- Lista de matrículas por curso e opção de revogação para acessos concedidos
+  administrativamente. Compras existentes são preservadas.
+- Ocultação do formulário antigo para evitar matrículas em destino errado.
+- Regras do servidor atualizadas para exigir autorização específica para
+  vídeos vinculados a cursos/turmas.
 
-INSTALAÇÃO
-1. Acesse github.com/EuripedesBoni/boniverso-app
-2. Abra a pasta raiz (principal) do repositório.
-3. Substitua SOMENTE o arquivo boniverso-inbox-estudante-v1.js
-   pelo arquivo de mesmo nome que está neste ZIP.
-4. Clique em Commit changes.
-5. Aguarde o GitHub Pages concluir a publicação.
-6. Abra https://euripedesboni.github.io/boniverso-app/
-   e entre com a conta de estudante. Acesse Mensagens.
-7. Se ainda ver os cartões azuis antigos, atualize a página ou
-   teste em uma guia privada com login.
+COMO INSTALAR NO GITHUB
+1. Extraia este arquivo ZIP.
+2. Envie boniverso-matriculas-escopo-v5.js para a pasta principal de
+   https://github.com/EuripedesBoni/boniverso-app
+3. Abra turmas.html, clique em editar e localize:
+      <script defer src="./boniverso-admin-turmas-v4.js?v=4"></script>
+4. IMEDIATAMENTE ABAIXO acrescente:
+      <script defer src="./boniverso-matriculas-escopo-v5.js?v=5"></script>
+5. NÃO apague a linha da versão 4: ela gerencia a exclusão e reativação
+   de turmas e matrículas; a v5 muda apenas a escolha do destino da matrícula.
+6. Clique em Commit changes.
+7. Aguarde a publicação concluir em:
+   https://github.com/EuripedesBoni/boniverso-app/actions
+8. Abra https://euripedesboni.github.io/boniverso-app/turmas.html
+   autenticado como administrador com MFA (duas etapas).
 
-IMPORTANTE
-- NÃO altere index.html nem mensagens-turma-v3.html.
-- NÃO renomeie o arquivo JavaScript: o HTML já o importa.
-- NÃO execute migração SQL nem altere o Supabase.
-- A segurança continua protegida por RLS no banco existente.
-- Faça o teste visual no celular e no computador após a publicação.
+TESTE CONTROLADO ANTES DE LIBERAR ALUNOS
+A. No novo painel, selecione TURMA: Integrado Areião e um ano ativo.
+   Teste matricular apenas uma conta de aluno de teste já cadastrada e
+   com e-mail confirmado. Confira que não vê conteúdos de Jaó ou Aparecida.
+B. Teste CURSO: Aparecida. Confira acesso somente ao curso, sem ingresso
+   nas conversas particulares da turma de Aparecida.
+C. Teste TURMA: Aparecida. Confira que dá acesso à turma e ao curso associado.
+D. Teste a revogação de um acesso administrativo somente de curso;
+   o painel não permite revogar um pagamento/compra nem retirar curso
+   diretamente de estudante ainda matriculado numa turma vinculada.
+E. Confira no perfil do estudante por navegação e tentativa de acesso
+   direto que materiais e vídeos de outro curso/turma são negados.
+
+OBSERVAÇÕES IMPORTANTES
+- A v5 do Supabase já foi instalada. NÃO execute SQL manualmente.
+- O curso gratuito e público “Redação ENEM — Aula experimental” pode ter
+  material de demonstração público, conforme o modelo de curso gratuito.
+  O material PRIVADO de Aparecida continua exigindo matrícula.
+- Se conteúdos antigos estiverem publicados em links externos públicos,
+  ocultá-los no app não os torna privados. Revisar URLs e links externos
+  antes do piloto.
+- Nenhuma turma nem matrícula foi alterada por esta instalação.
+- O teste com contas diferentes ainda deve ser realizado antes do piloto.
