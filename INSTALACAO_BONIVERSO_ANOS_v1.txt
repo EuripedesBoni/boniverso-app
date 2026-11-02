@@ -1,0 +1,39 @@
+BONIVERSO - CORRECAO DA EXCLUSAO DE ANOS ESCOLARES (V1)
+
+Por que o 6o ano nao pode ser excluido?
+- Ha uma atividade, uma redacao entregue e uma notificacao vinculadas ao ano.
+- A exclusao definitiva antiga e bloqueada para preservar esses registros.
+
+O QUE FOI ATUALIZADO
+- Supabase: novas funcoes para excluir um ano da interface com historico preservado e restaurar esse ano.
+- Seguranca: as funcoes exigem administrador com autenticacao em dois fatores.
+- Integridade: matriculas ativas naquele ano sao suspensas e podem ser restabelecidas durante a restauracao. Matriculas ja revogadas permanecem revogadas.
+- O ano excluido nao aparece na lista administrativa normal de anos e nao aceita novos ingressos.
+
+INSTALACAO NO GITHUB (2 PASSOS)
+
+1. Na pasta principal de EuripedesBoni/boniverso-app, envie o arquivo:
+   boniverso-admin-anos-v1.js
+
+2. Edite turmas.html. Logo DEPOIS da linha ja existente:
+   <script defer src="./boniverso-admin-turmas-v4.js?v=4"></script>
+
+   insira esta nova linha:
+   <script defer src="./boniverso-admin-anos-v1.js?v=1"></script>
+
+   Clique em Commit changes.
+
+COMO USAR
+- Abra https://euripedesboni.github.io/boniverso-app/turmas.html
+- Entre pela conta admin com MFA ativo.
+- Na turma Integrado Areiao - Redacao, abra os anos escolares.
+- No 6o ano, clique em "Excluir ano (preservar historico)".
+- Confirme e digite EXATAMENTE: 6º ano do Ensino Fundamental
+- O ano desaparece da gestao regular.
+- Para desfazer, use "Gestao administrativa de anos escolares" > "Anos excluidos (restauraveis)" > "Restaurar ano".
+
+ATENCAO
+- Nao use o antigo comando "Excluir ano" do gestor legado. O novo script o oculta.
+- Esta funcionalidade nao apaga arquivos, redacoes, notas, tarefas ou outras turmas.
+- Nao exige novos comandos SQL: funcoes e tabela de controle ja instaladas no Supabase.
+- A publicacao no GitHub so ocorre depois que voce enviar o arquivo e editar turmas.html.
