@@ -1,9 +1,44 @@
-BoniVerso — Caixa de Entrada do Professor
+BONIVERSO — GESTÃO ADMINISTRATIVA DE TURMAS E MATRÍCULAS — V4
 
-1) No GitHub, substitua o arquivo mensagens-turma-v3.html pelo arquivo deste pacote (mesmo nome).
-2) Clique em Commit changes. Nao edite index.html nem execute SQL.
-3) Aguarde o GitHub Actions Pages concluir.
-4) Entre na conta do Prof. Rafa Boni com MFA. Abra Mensagens e veja a Caixa de Entrada, com busca por estudante/turma e filtro Somente nao lidas.
-5) No modo de aluno a Caixa de Entrada do professor nao e exibida.
+INSTALAÇÃO (Supabase já atualizado e testado):
+1) Extraia este ZIP.
+2) No repositório EuripedesBoni/boniverso-app, envie o arquivo
+   boniverso-admin-turmas-v4.js à pasta principal (raiz).
+3) Abra o arquivo turmas.html no editor do GitHub.
+4) Encontre a linha existente:
+   <script defer src="./boniverso-gestao-turmas-v300.js"></script>
+5) LOGO ABAIXO acrescente (sem remover os scripts existentes):
+   <script defer src="./boniverso-admin-turmas-v4.js?v=4"></script>
+6) Confirme Commit changes. Aguarde GitHub Actions concluir.
+7) Abra https://euripedesboni.github.io/boniverso-app/turmas.html
+   com conta ADMINISTRADORA e autenticação em duas etapas.
 
-O painel consulta somente metadados das conversas autorizadas pela RLS e nao revela conteudo. O indicador de nao lidas consulta ate 150 avisos recentes e a caixa lista conversas a partir de ate 500 mensagens recentes. Validar as permissoes em navegador com contas de teste antes do lancamento oficial.
+RESULTADO:
+- Novo painel "Gestão administrativa de matrículas e turmas".
+- Matricular por e-mail cadastrado E confirmado, na turma e ano/série ativo.
+- Desmatricular ou reativar pelo botão do aluno, com status 'revoked' válido.
+- Excluir turma DA INTERFACE mesmo com históricos vinculados.
+- Restaurar a turma na aba Excluídas (restauráveis).
+
+IMPORTANTE SOBRE A EXCLUSÃO:
+Isto é EXCLUSÃO LÓGICA, NÃO APAGAMENTO IRREVERSÍVEL DO BANCO.
+A turma deixa de aparecer como ativa e o histórico de notas, redações,
+mensagens, arquivos e comprovantes permanece guardado. Arquivar e
+excluir do aplicativo são estados diferentes.
+A exclusão definitiva com apagamento de registros pedagógicos precisa
+ser projetada e autorizada separadamente para evitar perda de dados
+acadêmicos e violação das regras de retenção.
+
+SEGURANÇA:
+As permissões são verificadas por funções autenticadas no Supabase.
+O administrador deve ter MFA AAL2. O cliente não contém chaves secretas.
+Os comandos antigos de desmatrícula e exclusão sem histórico ficam
+ocultos na interface do administrador; anos e demais recursos permanecem.
+
+TESTE: matrícula e exclusão simuladas dentro de transação revertida,
+sem alterar nenhuma turma/nota/matrícula real.
+
+OBSERVAÇÃO SOBRE O EXEMPLO DO 6º ANO (AREIÃO):
+Desmatricular funciona com status 'revoked'. Mas o 6º ano contém uma
+atividade e uma redação entregue; sua exclusão física permanece protegida.
+Não apague notas ou redações para tentar liberar a exclusão.
