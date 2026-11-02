@@ -1,0 +1,33 @@
+BoniVerso — Caixa de Entrada do Professor v6
+===============================================
+
+Atualização: filtro por situação e texto de privacidade do professor.
+
+INSTALAÇÃO (GITHUB)
+1. Extraia este ZIP.
+2. Na raiz do repositório EuripedesBoni/boniverso-app, envie o arquivo
+   boniverso-inbox-professor-v6.js (NOVO).
+3. Substitua o arquivo EXISTENTE mensagens-turma-v3.html pelo incluído
+   neste ZIP, mantendo exatamente o mesmo nome.
+4. Clique em Commit changes e confirme o GitHub Pages em Actions.
+
+Não altere index.html, boniverso-inbox-estudante-v3.js ou Supabase.
+Não remova arquivos existentes sem necessidade. A página nova já chama
+somente o módulo do professor v6 e mantém o do estudante v3.
+
+COMO TESTAR
+- Entre na conta do Prof. Rafa Boni, autenticada com MFA.
+- Abra Mensagens, na Caixa de Entrada do Professor.
+- Em 'Situação do atendimento', selecione Todas, Aguardando resposta
+  e Respondidas; a pesquisa e 'Somente não lidas' continuam funcionando.
+- 'Aguardando resposta': a última mensagem foi enviada pelo estudante.
+- 'Respondida': a última mensagem foi enviada pelo professor.
+- Confira em 'Sua conversa' que a descrição do professor foi ajustada.
+- Com conta de estudante, a descrição antiga correta permanece.
+
+SEGURANÇA
+A lista mostra somente metadados, sem o texto das mensagens.
+Nenhuma regra de autorização ou privacidade do Supabase foi alterada.
+O status não equivale a mensagem não lida; são critérios distintos.
+
+Atualização front-end: v6

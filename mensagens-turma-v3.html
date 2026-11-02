@@ -54,6 +54,7 @@ a.login-cta{display:inline-flex;align-items:center;justify-content:center;backgr
   <p class="muted small">Conversas privadas das turmas atribuídas a você, em ordem de atividade recente. Somente o professor responsável e o aluno acessam cada conversa. As mensagens não são exibidas nesta lista.</p>
   <div class="bv-inbox-controls">
     <div class="search"><label for="inboxSearch">Buscar estudante ou turma</label><input id="inboxSearch" type="search" autocomplete="off" placeholder="Nome do aluno ou turma"></div>
+    <div class="bv-prof-filter"><label for="inboxStatusFilter">Situação do atendimento</label><select id="inboxStatusFilter" aria-label="Filtrar atendimentos por situação"><option value="all">Todas</option><option value="pending">Aguardando resposta</option><option value="answered">Respondidas</option></select></div>
     <label class="unread-toggle" for="inboxUnreadOnly"><input id="inboxUnreadOnly" type="checkbox"><span>Somente não lidas</span></label>
   </div>
   <p class="muted small" id="inboxStatus" role="status">Carregando atendimentos…</p>
@@ -81,7 +82,7 @@ a.login-cta{display:inline-flex;align-items:center;justify-content:center;backgr
 </main>
 <script src="./config.js"></script>
 <script defer src="./boniverso-inbox-estudante-v3.js"></script>
-<script defer src="./boniverso-inbox-professor-v5.js"></script>
+<script defer src="./boniverso-inbox-professor-v6.js"></script>
 <script type="module">
 import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.2';
 const $=id=>document.getElementById(id);
@@ -136,12 +137,17 @@ function renderTeacherInbox(){
  if(!isStaff)return;
  const q=$('inboxSearch').value.trim().toLocaleLowerCase('pt-BR');
  const pendingOnly=$('inboxUnreadOnly').checked;
- const matching=teacherThreads.filter(t=>(!pendingOnly||t.unread>0)&&(!q||(t.studentName+' '+t.className).toLocaleLowerCase('pt-BR').includes(q)));
+ const situation=$('inboxStatusFilter').value;
+ // O status depende de quem enviou a última mensagem, não da leitura do aviso.
+ const matching=teacherThreads.filter(t=>(!pendingOnly||t.unread>0)
+   &&(situation==='all'||(situation==='pending'?t.lastKind==='student':t.lastKind==='staff'))
+   &&(!q||(t.studentName+' '+t.className).toLocaleLowerCase('pt-BR').includes(q)));
  const root=$('inboxList');root.replaceChildren();
  if(matching.length){for(const t of matching)root.append(inboxCard(t))}
  else {const el=document.createElement('p');el.className='muted small';el.textContent=teacherThreads.length?'Nenhuma conversa corresponde ao filtro.':'Nenhuma conversa iniciada nas turmas atribuídas.';root.append(el)}
  const unreadCount=teacherThreads.reduce((sum,t)=>sum+t.unread,0);
- inboxStatus(`${teacherThreads.length} conversa(s) recente(s) · ${unreadCount} aviso(s) não lido(s)${matching.length!==teacherThreads.length?' · '+matching.length+' exibida(s)':''}`);
+ const pendingCount=teacherThreads.filter(t=>t.lastKind==='student').length;
+ inboxStatus(`${teacherThreads.length} conversa(s) recente(s) · ${pendingCount} aguardando resposta · ${unreadCount} aviso(s) não lido(s)${matching.length!==teacherThreads.length?' · '+matching.length+' exibida(s)':''}`);
 }
 async function loadTeacherInbox(){
  if(!isStaff||!user?.id||inboxLoading)return;
@@ -254,7 +260,10 @@ async function boot(){
  if(staffRole==='admin')throw Error('Por privacidade, a conta administrativa não pode ler as conversas privadas. Entre com a conta do professor responsável.');
  isStaff=staffRole==='teacher';
  $('mode').textContent=isStaff?'Atendimento docente':'Conversa do estudante';$('studentWrap').hidden=!isStaff;
- if(isStaff){$('teacherInbox').hidden=false;$('inboxRefresh').onclick=loadTeacherInbox;$('inboxSearch').addEventListener('input',renderTeacherInbox);$('inboxUnreadOnly').addEventListener('change',renderTeacherInbox);}
+ $('privacy').textContent=isStaff
+  ?'Somente você e o estudante desta conversa podem acessar as mensagens. Não compartilhe dados sensíveis.'
+  :'Somente você e o professor responsável por sua turma podem ver esta conversa. Não compartilhe dados sensíveis.';
+ if(isStaff){$('teacherInbox').hidden=false;$('inboxRefresh').onclick=loadTeacherInbox;$('inboxSearch').addEventListener('input',renderTeacherInbox);$('inboxStatusFilter').addEventListener('change',renderTeacherInbox);$('inboxUnreadOnly').addEventListener('change',renderTeacherInbox);}
  if(isStaff){
   const assignments=await req(db.from('bv_classroom_teachers').select('classroom_id').eq('teacher_id',user.id));
   const ids=assignments.map(x=>x.classroom_id);
