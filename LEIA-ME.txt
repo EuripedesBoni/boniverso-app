@@ -1,30 +1,26 @@
-BONIVERSO — Gestão de Cursos v1
+BONIVERSO - GESTÃO DE CORREÇÕES v1 (02/11/2026)
 
-INSTALAÇÃO NO GITHUB
-1. Extraia este ZIP no iPad/computador.
-2. Envie o arquivo boniverso-gestao-cursos-v1.js à raiz do repositório EuripedesBoni/boniverso-app (mesma pasta do index.html).
-3. Abra index.html e localize, perto do fim:
-   <script defer src="./boniverso-indicadores-inicio-v2.js?v=2"></script>
-4. IMEDIATAMENTE ABAIXO dessa linha, antes de </body>, acrescente:
+INSTALAÇÃO - GITHUB
+1. Extraia este ZIP e envie boniverso-gestao-correcoes-v1.js à raiz do repositório EuripedesBoni/boniverso-app.
+2. Abra index.html e encontre o script:
    <script defer src="./boniverso-gestao-cursos-v1.js?v=1"></script>
-5. Clique em Commit changes. Aguarde GitHub Actions concluir.
-6. No BoniVerso, abra Cursos e aulas usando a conta ADMINISTRATIVA com autenticação em 2 etapas.
-7. A seção 'Gestão de cursos' aparecerá depois do formulário Novo curso.
+3. Logo ABAIXO acrescente:
+   <script defer src="./boniverso-gestao-correcoes-v1.js?v=1"></script>
+4. Clique em Commit changes e espere o GitHub Actions terminar.
+5. Abra BoniVerso > Corrigir redações com a conta docente.
 
-RECURSOS
-- Buscar cursos e filtrar por Publicado, Privado, Não publicado, Excluído.
-- Editar nome, categoria, descrição, preço, gratuidade e visibilidade.
-- Publicar/pausar curso que não esteja vinculado a turmas.
-- Excluir curso da interface (sem apagar aulas, redações nem documentos).
-- Restaurar cursos excluídos.
-- Abrir Aulas, Materiais e Videoteca.
+O QUE FOI CRIADO
+- 4 indicadores: entregas, pendentes, corrigidas, excluídas.
+- Filtro por situação, curso, turma e pesquisa de estudante/proposta.
+- Correção rápida (reaproveita a janela existente) e acesso à Central de Redações completa.
+- Abrir PDF original pelos controles existentes (Supabase privado).
+- Exportar CSV sem o texto da redação (não compartilhe dados de menores).
+- Exclusão reversível/recuperação, SOMENTE para administradores com 2FA.
 
-SEGURANÇA
-- Ações exigem perfil admin com MFA e passam por RPC validada no Supabase.
-- 'Excluir do aplicativo' é reversível; não é exclusão definitiva.
-- Cursos associados a turmas ficam protegidos contra pausa/exclusão.
-- Nenhum dado é alterado pela instalação deste módulo.
-- Alunos sem autorização não ganham novo acesso.
-
-NOTA
-Caso não apareça no primeiro acesso, atualize a página e confirme a sessão administrativa com MFA.
+SEGURANÇA E LIMITAÇÕES
+- Exclusão não apaga PDF, nota, devolutiva, histórico ou auditoria: altera apenas a visibilidade.
+- Não substitui a correção acadêmica nem a aprovação final do professor.
+- A consulta carrega até 400 registros. Se precisar de mais, paginar em próxima versão.
+- Contas sem perfil docente autorizado não podem carregar o painel.
+- Testar conta de aluno e outra turma antes de liberar para a turma-piloto.
+- A calibração da IA Luna segue para antes do lançamento oficial, como combinado.
